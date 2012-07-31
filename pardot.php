@@ -82,7 +82,7 @@ class PARDOT {
 		global $pagenow;
 		if ( current_user_can( 'install_plugins' ) && current_user_can( 'manage_options' ) && ( $pagenow != 'options-general.php' ) && !get_pardot_api_key()) {
             $settings_link = '<a href="'.admin_url('options-general.php?page=' . self::domain ) .'">'.__('configuration', self::domain).'</a>';
-			echo '<div class="updated"><p><b>Pardot plugin is activate</b>. It requires ' . $settings_link . ' before operating correctly.</p></div>';
+			echo '<div class="updated"><p><strong>The Pardot plugin is activated (yay!)</strong>, but it needs some quick ' . $settings_link . ' to start working correctly.</p></div>';
 		}
     }
 	
@@ -244,7 +244,7 @@ class PARDOT {
         );
         add_settings_field(
             self::settings_account_key . '_user_key',
-            __( 'User Key<br><i>You can find your User Key in the "My User Information" table on the <a href="https://pi.pardot.com/account">Settings page</a> for your account.</i>', self::domain ),
+            __( 'User Key', self::domain ),
             array( __CLASS__, 'control_user_key' ),
             self::settings_account_key,
             self::settings_account_key . '_account'
@@ -301,7 +301,7 @@ class PARDOT {
         );
 
         if (isset($_POST['reset-settings'])) {
-            add_settings_error('general', 'reset_settings', __('Settings Reset.'), 'updated');
+            add_settings_error('general', 'reset_settings', __('Settings have been reset!'), 'updated');
             return $clean;
         }
 
@@ -337,7 +337,7 @@ class PARDOT {
         }
 		
 		if (!get_pardot_api_key($clean['email'], $clean['password'], $clean['user_key'])) {
-            add_settings_error('general', 'update_settings', __('**Darn!** Would you review the errors below and click \'Save Settings\' again?'), 'error');
+            add_settings_error('general', 'update_settings', __('Darn! Would you check the fields below and click \'Save Settings\' again?'), 'error');
 		}
         return $clean;
     }
@@ -362,7 +362,7 @@ class PARDOT {
 					
                     $_POST['api_key'] =  $result;
                 } else{
-                    echo '<p style="color:red;">' . __('There was a problem logging your account. Please try again.', self::domain ) . '</p>';
+                    echo '<p style="color:red;">' . __('There was a problem logging into your account. Please try again.', self::domain ) . '</p>';
                 }
             }
             echo '</div>';
@@ -372,7 +372,7 @@ class PARDOT {
             $key = 'logout_account';
             $id = self::settings_account_key . '_' . $key;
             echo '<div id="' . $id . '_wrap">';
-            echo '<p style="color:green;">' . __('The Account Logouted.', self::domain ) . '</p>';
+            echo '<p style="color:green;">' . __('Successfully logged out!', self::domain ) . '</p>';
             echo '</div>';
             $_POST['status'] = '';
             self::set_setting(self::settings_status_key, 'status',  '');
@@ -388,7 +388,7 @@ class PARDOT {
      * @since      2012-04-25
      */
     static function section_account() {
-		echo("<i>Use your Pardot login information to securely connect (you\'ll only need to do this once).</i>");
+		echo("<em>Use your Pardot login information to securely connect (you'll only need to do this once).</em>");
 /*
 		echo '<p>';
         esc_html_e( 'Account Information', self::domain );
@@ -407,7 +407,7 @@ class PARDOT {
         $id = self::settings_account_key . '_' . $key;
         $saved = self::get_setting( self::settings_account_key, $key );
         echo '<div id="' . $id . '_wrap">';
-        echo '<input type="text" id="' . $id . '" class="' . $id . '" name="' . self::settings_account_key . '[' . $key . ']' . '" value="' . esc_attr($saved) . '" />';
+        echo '<input type="text" size="30" id="' . $id . '" class="' . $id . '" name="' . self::settings_account_key . '[' . $key . ']' . '" value="' . esc_attr($saved) . '" />';
         echo '</div>';
     }
 
@@ -421,7 +421,7 @@ class PARDOT {
         $id = self::settings_account_key . '_' . $key;
         $saved = self::get_setting( self::settings_account_key, $key );
         echo '<div id="' . $id . '_wrap">';
-        echo '<input type="password" id="' . $id . '" class="' . $id . '" name="' . self::settings_account_key . '[' . $key . ']' . '" value="' . esc_attr($saved) . '" />';
+        echo '<input type="password" size="30" id="' . $id . '" class="' . $id . '" name="' . self::settings_account_key . '[' . $key . ']' . '" value="' . esc_attr($saved) . '" />';
         echo '</div>';
     }
 
@@ -435,7 +435,8 @@ class PARDOT {
         $id = self::settings_account_key . '_' . $key;
         $saved = self::get_setting( self::settings_account_key, $key );
         echo '<div id="' . $id . '_wrap">';
-        echo '<input type="text" id="' . $id . '" class="' . $id . '" name="' . self::settings_account_key . '[' . $key . ']' . '" value="' . esc_attr($saved) . '" />';
+        echo '<input type="text" size="30" id="' . $id . '" class="' . $id . '" name="' . self::settings_account_key . '[' . $key . ']' . '" value="' . esc_attr($saved) . '" />';
+        echo '<p><em>You can find your User Key in the "My User Information" table on the <a href="https://pi.pardot.com/account" target="_blank">Settings page</a> for your account.</em></p>';
         echo '</div>';
     }
 
@@ -458,6 +459,8 @@ class PARDOT {
 				print "\n" . '<option ' . selected( $saved, $campaign, false ) . ' value="' . esc_attr( $campaign ) . '" /> ' . esc_html( $data->name ) . '</option>';
 			}
 			echo '</select></div>';
+		} else {
+			echo '<p>(These will show up once you\'re connected.)</p>';
 		}
     }
 
@@ -482,7 +485,7 @@ class PARDOT {
      * @since      2012-04-25
      */
     static function control_account_submit() {
-		echo '<input type="submit" class="button-primary" name="save-account" value="' . __( '&nbsp;&nbsp;Save&nbsp;&nbsp;&nbsp;Settings&nbsp;&nbsp;', self::domain ) . '" />';
+		echo '<input type="submit" class="button-primary" name="save-account" value="' . __( 'Save Settings', self::domain ) . '" />';
     }
 
     /**
@@ -491,7 +494,7 @@ class PARDOT {
      * @since      2012-04-01
      */
     static function control_reset_settings(){
-        echo '<input onclick="return confirm(\'This will remove all account information from the database\');" type="submit" class="button-secondary" name="reset-settings" value="' . __( 'Reset All Settings', self::domain ) . '" />';
+        echo '<input onclick="return confirm(\'Heads up! This will remove all your account information from the database. Click OK to proceed.\');" type="submit" class="button-secondary" name="reset-settings" value="' . __( 'Reset All Settings', self::domain ) . '" />';
     }
 
     /**
@@ -570,8 +573,7 @@ class PARDOT {
      */
     static function settings_page() {
         print "\n" . '<div class="wrap" id="' . esc_attr( self::$settings_page ) . '">';
-        screen_icon('pardot');
-        print "\n" . '<h2 style="padding: 40px;">' . esc_html__( 'Settings', self::domain ) . '</h2>';
+        print "\n" . '<h2 class="pardot-title"><img src="' . plugins_url( 'images/pardot-logo.png' , __FILE__ ) . '" alt="Pardot Logo" width="201" height="71" class="alignleft" />' . esc_html__( 'Settings', self::domain ) . '</h2>';
 
         $tab = isset( $_GET['tab'] ) ? $_GET['tab'] : self::settings_account_key;
         print "\n" . '<form action="options.php" method="post">';
@@ -697,9 +699,9 @@ class PARDOT_Widget extends WP_Widget {
 
     function PARDOT_Widget(){
         $this->WP_Widget(false,
-            __('WP PARDOT Widget'),
+            __('Pardot Forms'),
             array('classname' => 'PARDOT_widget',
-                'description' => 'Widget boosts your sales with Pardot.'
+                'description' => 'Embed a Pardot form in your sidebar.'
             )
         );
     }

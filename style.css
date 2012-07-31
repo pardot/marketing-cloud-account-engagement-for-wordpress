@@ -1,6 +1,7 @@
-.icon32.icon-settings, #icon-pardot {
-    background: url("images/pardot-logo.png") no-repeat transparent;
-    width: 201px;
-    height: 71px;
-    clear: both;
+h2.pardot-title {
+	padding: 40px 10px;
+}
+
+h2.pardot-title img {
+	margin: -20px 10px 0 0;
 }
