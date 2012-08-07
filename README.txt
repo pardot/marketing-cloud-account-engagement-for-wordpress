@@ -2,7 +2,7 @@
 Contributors: newclarity, cliffseal
 Donate link: http://pardot.com
 Tags: pardot, marketing automation, forms, tracking, web tracking
-Requires at least: 3.4.
+Requires at least: 3.4
 Tested up to: 3.4.1
 Stable tag: 1.0
 License: GPLv2 or later
