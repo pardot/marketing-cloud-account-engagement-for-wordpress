@@ -30,7 +30,6 @@ Since every WordPress theme is different, embedded forms won't always fit. We've
 <!DOCTYPE html>
 <html>
 	<head>
-		<base href="http://www2.pardot.com" >
 		<meta charset="utf-8"/>
 		<meta name="description" content="%%description%%"/>
 		<title>%%title%%</title>
