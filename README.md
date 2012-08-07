@@ -1,4 +1,4 @@
-# Pardot #
+# Pardot Plugin for WordPress #
 Integrate your Pardot campaigns with WordPress: easily track visitors, embed forms in pages and posts, or use the forms widget.
 
 ## Description ##
