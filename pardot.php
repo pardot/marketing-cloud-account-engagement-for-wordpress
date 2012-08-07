@@ -747,10 +747,11 @@ class PARDOT_Widget extends WP_Widget {
 		?>					
 			</select>
 		</p>
+		<p>If some of your form is cut off or the styling isn't quite right, please read our <a href="http://www.pardot.com/help/faqs/best-practices/pardot-wordpress-plugin" target="_blank">helpful Knowledge Base article</a>.</p>
 		<?php
 		} else {
 		?>
-			<p>No forms</p>
+			<p>It appears no forms are related to this campaign, or there's been a connection issue. Please check your <a href="<?php echo admin_url( 'options-general.php?page=pardot' );?>">Settings</a>.</p>
 		<?php	
 		}
 		?>		
