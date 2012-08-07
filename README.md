@@ -69,6 +69,7 @@ Since every WordPress theme is different, embedded forms won't always fit. We've
 `
 
 You might have to add `!important` as above to override some of the CSS.
+
 1. Create your new form or use an existing form, and change the Layout Template (under 'Look and Feel') to your new one. Make sure you save!
 1. Add the form and check the styling; tweak as needed.
 
