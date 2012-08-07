@@ -1,13 +1,4 @@
 # Pardot #
-Contributors: newclarity, cliffseal
-Donate link: http://pardot.com
-Tags: pardot, marketing automation, forms, tracking, web tracking
-Requires at least: 3.4.
-Tested up to: 3.4.1
-Stable tag: 1.0
-License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
-
 Integrate your Pardot campaigns with WordPress: easily track visitors, embed forms in pages and posts, or use the forms widget.
 
 ## Description ##
