@@ -29,7 +29,7 @@ Simply choose another campaign in Settings > Pardot Settings and click 'Save Set
 
 = Some of my form is cut off. What should I do? =
 
-Since every WordPress theme is different, embedded forms won't always fit. We've written a <a href="#" target="_blank">Knowledge Base article</a> to help you with this, but you'll want to make a Layout Template specifically for your WordPress theme:
+Since every WordPress theme is different, embedded forms won't always fit. We've written a <a href="http://www.pardot.com/help/faqs/best-practices/pardot-wordpress-plugin" target="_blank">Knowledge Base article</a> to help you with this, but you'll want to make a Layout Template specifically for your WordPress theme:
 
 1. Find out the width of the area in which you're embedding the form. You can do this using developer tools in your browser, like <a href="http://getfirebug.com" target="_blank">Firebug</a>.
 1. Go to <a href="https://pi.pardot.com/layoutTemplate" target="_blank">Layout Templates</a> in Pardot and click "+Create new layout template".
