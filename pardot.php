@@ -1,11 +1,28 @@
 <?php
 /*
-Plugin Name: Pardot Marketing Automation
-Description: Connect your WordPress installation with Pardot for campaign tracking and quick form access..
+Plugin Name: Pardot
+Description: Integrate your Pardot campaigns with WordPress: easily track visitors, embed forms in pages and posts, or use the forms widget.
 Version: 1.0
-Author: PARDOT.com
-Author URI: http://wordpress.org/extend/plugins/pardot/
-Plugin URI: http://pardot.com
+Author: Pardot
+Author URI: http://pardot.com
+Plugin URI: http://www.pardot.com/help/faqs/add-ons/pardot-wordpress-plugin
+License: GPL2
+
+	Copyright 2012 Pardot  (cliff.seal@pardot.com)
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License, version 2, as 
+    published by the Free Software Foundation.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
 */
 
 require_once('pardot-api.php');
