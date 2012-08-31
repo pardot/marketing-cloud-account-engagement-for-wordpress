@@ -253,7 +253,7 @@ HTML;
 			'email' 		=> __( 'Email', 'pardot' ),
 			'password'  => __( 'Password', 'pardot' ),
 			'user_key' 	=> __( 'User Key', 'pardot' ),
-			'campaign' 	=> __( 'Campaign', 'pardot' ),
+			'campaign' 	=> __( 'Campaign (for Tracking Code)', 'pardot' ),
 			'submit'	 	=> '',
 			'reset'	 		=> '',
 			'api_key' 	=> '',

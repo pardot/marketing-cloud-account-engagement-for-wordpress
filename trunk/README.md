@@ -10,7 +10,7 @@ Say hello to campaign simplicity! With a single login, your self-hosted WordPres
 1. Upload `pardot-for-wordpress` to your `/wp-content/plugins/` directory or go to Plugins > Add New in your WordPress Admin area and search for Pardot.
 1. Activate the plugin through the 'Plugins' menu in WordPress.
 1. Go to Settings > Pardot Settings to put in your email, password, and user key.
-1. Select your campaign
+1. Select your campaign (for tracking code usage).
 
 ## Frequently Asked Questions ##
 
@@ -20,7 +20,7 @@ Simply choose another campaign in Settings > Pardot Settings and click 'Save Set
 
 ### Some of my form is cut off. What should I do? ###
 
-Since every WordPress theme is different, embedded forms won't always fit. We've written a <a href="http://www.pardot.com/help/faqs/best-practices/pardot-wordpress-plugin" target="_blank">Knowledge Base article</a> to help you with this, but you'll want to make a Layout Template specifically for your WordPress theme:
+Since every WordPress theme is different, embedded forms won't always fit. We've written a <a href="http://www.pardot.com/help/faqs/add-ons/wordpress-plugin" target="_blank">Knowledge Base article</a> to help you with this, but you'll want to make a Layout Template specifically for your WordPress theme:
 
 1. Find out the width of the area in which you're embedding the form. You can do this using developer tools in your browser, like <a href="http://getfirebug.com" target="_blank">Firebug</a>.
 1. Go to <a href="https://pi.pardot.com/layoutTemplate" target="_blank">Layout Templates</a> in Pardot and click "+Create new layout template".
