@@ -1,5 +1,5 @@
 === Pardot ===
-Contributors: newclarity, cliffseal
+Contributors: newclarity, mikeschinkel, cliffseal
 Donate link: http://pardot.com
 Tags: pardot, marketing automation, forms, tracking, web tracking
 Requires at least: 3.4
