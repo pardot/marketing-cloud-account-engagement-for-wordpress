@@ -404,7 +404,7 @@ HTML;
 			 * Create a variable for help text to be used in the HEREDOC
 			 * Add the link into the help text.
 			 */
-			$help_text = __( 'If some of your form is cut off or the styling isn\'t quite right, please read our %s', 'pardot' );
+			$help_text = __( 'If some of your form is cut off or the styling isn\'t quite right, please read our %s.', 'pardot' );
 			$help_text = sprintf( $help_text, $help_link );
 
 			/**
