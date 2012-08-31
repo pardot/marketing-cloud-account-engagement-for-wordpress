@@ -1,9 +1,9 @@
 # Pardot Plugin for WordPress #
-Integrate your Pardot campaigns with WordPress: easily track visitors, embed forms in pages and posts, or use the forms widget.
+Integrate Pardot with WordPress: easily track visitors, embed forms in pages and posts, or use the forms widget.
 
 ## Description ##
 
-Say hello to campaign simplicity! With a single login, your self-hosted WordPress installation will be securely connected with Pardot. With the selection of your campaign, you'll be able to track visitors and work with forms without touching a single line of code. You can use the widget to place a campaign form anywhere a sidebar appears, or embed them in a page or post using a shortcode or the Pardot button on the Visual Editor's toolbar.
+Say hello to marketing automation simplicity! With a single login, your self-hosted WordPress installation will be securely connected with Pardot. With the selection of your campaign, you'll be able to track visitors and work with forms without touching a single line of code. You can use the widget to place a form anywhere a sidebar appears, or embed them in a page or post using a shortcode or the Pardot button on the Visual Editor's toolbar.
 
 ## Installation ##
 
