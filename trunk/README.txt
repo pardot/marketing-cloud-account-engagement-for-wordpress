@@ -74,7 +74,7 @@ You might have to add `!important` as above to override some of the CSS.
 
 1. Settings area
 1. Pardot button in the Visual Editor toolbar
-1. Choose from any form in the selected campaign
+1. Choose from any form
 1. Use forms in a widget
 1. A form widget (with corrected styling)
 1. A page can have two forms! Here, one is in the body and one in a widget.
