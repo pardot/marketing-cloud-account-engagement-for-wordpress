@@ -386,7 +386,7 @@ class Pardot_Plugin {
 		/**
 		 * Output the Pardot form
 		 */
-		echo self::get_form_body( $atts );
+		return self::get_form_body( $atts );
 	}
 
 	/**
