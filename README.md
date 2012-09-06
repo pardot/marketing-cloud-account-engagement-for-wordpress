@@ -66,5 +66,8 @@ You might have to add `!important` as above to override some of the CSS.
 
 ## Changelog ##
 
+### 1.0.1 ###
+Fix bug with form order in content
+
 ### 1.0 ###
 Initial release.

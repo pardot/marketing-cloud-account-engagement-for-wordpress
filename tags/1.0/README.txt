@@ -1,10 +1,10 @@
 === Pardot ===
-Contributors: NewClarity, MikeSchinkel, cliffseal
+Contributors: newclarity, mikeschinkel, cliffseal
 Donate link: http://pardot.com
 Tags: pardot, marketing automation, forms, tracking, web tracking
 Requires at least: 3.4
 Tested up to: 3.4.1
-Stable tag: 1.0.1
+Stable tag: 1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -80,9 +80,6 @@ You might have to add `!important` as above to override some of the CSS.
 1. A page can have two forms! Here, one is in the body and one in a widget.
 
 == Changelog ==
-
-= 1.0.1 =
-Fix bug with form order in content
 
 = 1.0 =
 Initial release.
