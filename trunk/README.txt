@@ -35,7 +35,7 @@ Since every WordPress theme is different, embedded forms won't always automatica
 1. Click ahead to the 'Look and Feel' step of the wizard and select the 'Styles' tab.
 1. Set 'Label Alignment' to 'Above' and click 'Confirm and Save.'.
 1. Click the link to the layout template being used by the form.
-1. Edit the layout template and add the following to the <head> section of the template:
+1. Edit the layout template and add the following to the <code><head></code> section of the template:
 `<style type="text/css">
 	#pardot-form input.text, #pardot-form textarea {
 		width: 150px;
