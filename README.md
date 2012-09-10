@@ -35,8 +35,7 @@ Since every WordPress theme is different, embedded forms won't always automatica
 	}
 </style>
 ```
-A width of 150px is just a starting point. Adjust this value until it fits on your page.
-1. Add additional styles as you see fit. For styling help, reference our <a href="http://www.pardot.com/help/faqs/forms/basic-css-for-forms" target="_blank">Basic CSS for Forms</a> page.
+A width of 150px is just a starting point. Adjust this value until it fits on your page and add additional styles as you see fit. For styling help, reference our <a href="http://www.pardot.com/help/faqs/forms/basic-css-for-forms" target="_blank">Basic CSS for Forms</a> page.
 
 ## Changelog ##
 
