@@ -20,36 +20,25 @@ Simply choose another campaign in Settings > Pardot Settings and click 'Save Set
 
 ### Some of my form is cut off. What should I do? ###
 
-Since every WordPress theme is different, embedded forms won't always fit. We've written a <a href="http://www.pardot.com/help/faqs/add-ons/wordpress-plugin" target="_blank">Knowledge Base article</a> to help you with this, but you'll want to make a Layout Template specifically for your WordPress theme:
+Since every WordPress theme is different, embedded forms won’t always automatically fit. You’ll want to make a Pardot Layout Template specifically for your WordPress theme:
 
-1. Find out the width of the area in which you're embedding the form. You can do this using developer tools in your browser, like <a href="http://getfirebug.com" target="_blank">Firebug</a>.
-1. Go to <a href="https://pi.pardot.com/layoutTemplate" target="_blank">Layout Templates</a> in Pardot and click "+Create new layout template".
-1. In the Layout tab, add styling in the `<head>` section of your template to suit your WordPress template. Once complete, it would look something like this, where your area is about 100px wide:
+1. Go to <a href="https://pi.pardot.com/form" target="_blank">Forms</a> in Pardot. Find and edit the form that needs updating.
+1. Click ahead to the ‘Look and Feel’ step of the wizard and select the ‘Styles’ tab.
+1. Set ‘Label Alignment’ to ‘Above’ and click ‘Confirm and Save.’.
+1. Click the link to the layout template being used by the form.
+1. Edit the layout template and add the following to the <head> section of the template:
 
 ```html
 <!DOCTYPE html>
 <html>
 	<head>
+		<base href="http://www2.pardot.com" >
 		<meta charset="utf-8"/>
 		<meta name="description" content="%%description%%"/>
 		<title>%%title%%</title>
 		<style type="text/css">
-			form.form input.text,  form.form textarea.standard {
-				width: 100px !important;
-			}
-			form.form p {
-				margin: 3px;
-			}
-			form.form p.submit input {
-				float: left;
-				margin: 3px;
-			}
-			form.form p label {
-				text-align: left;
-				width: auto !important;
-			}
-			form.form .submit {
-				display: inline;
+			#pardot-form input.text, #pardot-form textarea {
+				width: 150px;
 			}
 		</style>
 	</head>
@@ -58,11 +47,9 @@ Since every WordPress theme is different, embedded forms won't always fit. We've
 	</body>
 </html>
 ```
+A width of 150px is just a starting point. Adjust this value until it fits on your page.
 
-You might have to add `!important` as above to override some of the CSS.
-
-1. Create your new form or use an existing form, and change the Layout Template (under 'Look and Feel') to your new one. Make sure you save!
-1. Add the form and check the styling; tweak as needed.
+1. Add additional styles as you see fit. For styling help, reference our <a href="http://www.pardot.com/help/faqs/forms/basic-css-for-forms" target="_blank">Basic CSS for Forms</a> page.
 
 ## Changelog ##
 
