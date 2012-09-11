@@ -7,7 +7,7 @@
  * Plugin URI: http://wordpress.org/extend/plugins/pardot/
  * Developer: Mike Schinkel of NewClarity LLC
  * Developer URI: http://newclarity.net
- * Version: 1.0.2
+ * Version: 1.0.1
  * License: GPLv2
  *
  * Copyright 2012 Pardot LLC
@@ -28,13 +28,13 @@
  */
 
 define( 'PARDOT_PLUGIN_DIR', dirname( __FILE__ ) );
-define( 'PARDOT_PLUGIN_VER', '1.0.2' );
+define( 'PARDOT_PLUGIN_VER', '1.0.0' );
 
 if ( ! defined( 'PARDOT_FORM_INCLUDE_TYPE' ) )
 	define( 'PARDOT_FORM_INCLUDE_TYPE', 'iframe' );	// iframe or inline
 
 if ( ! defined( 'PARDOT_API_CACHE_TIMEOUT' ) )
-	define( 'PARDOT_API_CACHE_TIMEOUT', 2592000 ); // 2592000 = 30*24*60*60 = 30 days
+	define( 'PARDOT_API_CACHE_TIMEOUT', 180 ); // 3 minutes
 
 if ( ! defined( 'PARDOT_WIDGET_FORM_CACHE_TIMEOUT' ) )
 	define( 'PARDOT_WIDGET_FORM_CACHE_TIMEOUT', 2592000 ); // 2592000 = 30*24*60*60 = 30 days

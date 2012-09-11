@@ -4,7 +4,7 @@ Donate link: http://pardot.com
 Tags: pardot, marketing automation, forms, tracking, web tracking
 Requires at least: 3.4
 Tested up to: 3.4.1
-Stable tag: 1.0.2
+Stable tag: 1.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -54,10 +54,6 @@ A width of 150px is just a starting point. Adjust this value until it fits on yo
 1. A page can have two forms! Here, one is in the body and one in a widget.
 
 == Changelog ==
-
-= 1.0.2 =
-Fix a caching issue that was causing the most recently-used form to render on all posts/pages
-Extended API cache timeout
 
 = 1.0.1 =
 Fix bug with form order in content
