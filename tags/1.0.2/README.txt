@@ -4,7 +4,7 @@ Donate link: http://pardot.com
 Tags: pardot, marketing automation, forms, tracking, web tracking
 Requires at least: 3.4
 Tested up to: 3.4.1
-Stable tag: 1.0.3
+Stable tag: 1.0.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -55,12 +55,9 @@ A width of 150px is just a starting point. Adjust this value until it fits on yo
 
 == Changelog ==
 
-= 1.0.3 =
-Added form caching for faster rendering and less requests
-
 = 1.0.2 =
-1. Fix a caching issue that was causing the most recently-used form to render on all posts/pages
-1. Extended API cache timeout
+Fix a caching issue that was causing the most recently-used form to render on all posts/pages
+Extended API cache timeout
 
 = 1.0.1 =
 Fix bug with form order in content
