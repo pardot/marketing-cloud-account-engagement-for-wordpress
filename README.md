@@ -37,7 +37,18 @@ Since every WordPress theme is different, embedded forms won't always automatica
 ```
 A width of 150px is just a starting point. Adjust this value until it fits on your page and add additional styles as you see fit. For styling help, reference our <a href="http://www.pardot.com/help/faqs/forms/basic-css-for-forms" target="_blank">Basic CSS for Forms</a> page.
 
+### I just added a form, and it's not showing up in WordPress yet. ###
+
+Go to Settings > Pardot Settings and click 'Save Settings'. This should reinitialize and update your Pardot content.
+
 ## Changelog ##
+
+### 1.0.3 ###
+Added form caching for faster rendering and less requests
+
+### 1.0.2 ###
+1. Fix a caching issue that was causing the most recently-used form to render on all posts/pages
+1. Extended API cache timeout
 
 ### 1.0.1 ###
 Fix bug with form order in content
