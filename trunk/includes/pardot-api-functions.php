@@ -58,3 +58,15 @@ function get_pardot_forms( $args = array() ) {
 	return Pardot_Plugin::get_forms( $args );
 }
 
+/**
+ * Returns an array of dynamic content via the Pardot API as implemented in the Pardot_Plugin class.
+ *
+ * @param array $args
+ * @return Pardot_API
+ *
+ * @since 1.1.0
+ */
+function get_pardot_dynamic_content( $args = array() ) {
+	return Pardot_Plugin::get_dynamicContent( $args );
+}
+

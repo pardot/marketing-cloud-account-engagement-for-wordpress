@@ -5,6 +5,7 @@
  * Includes:
  *  - Automatic Javascript in the theme footer
  * 	- [pardot-form] Shortcode
+ *  - [pardot-dynamic-content] Shortcode
  *  - Caching support
  *  - Call and retrieve values from the Pardot API
  *  - Hooks to support the Pardot Forms Shortcode Insert button for TinyMCE
@@ -95,7 +96,12 @@ class Pardot_Plugin {
 		/**
 		 * 	Create the shortcode [pardot-form]
 		 */
-		add_shortcode( 'pardot-form', array( $this, 'shortcode' ) );
+		add_shortcode( 'pardot-form', array( $this, 'form_shortcode' ) );
+		
+		/**
+		 * 	Create the shortcode [pardot-dynamic-content]
+		 */
+		add_shortcode( 'pardot-dynamic-content', array( $this, 'dynamic_content_shortcode' ) );
 
 		/**
 		 * Add 'Settings' link on plugin list page and add TinyMCE button for post editor.
@@ -377,7 +383,7 @@ class Pardot_Plugin {
 	 *
 	 * @since 1.0.0
 	 */
-	function shortcode( $atts ) {
+	function form_shortcode( $atts ) {
 		/**
 		 * Translate from 'id' to 'form_id' which is what $this->get_form_body() uses.
 		 */
@@ -387,6 +393,25 @@ class Pardot_Plugin {
 		 * Output the Pardot form
 		 */
 		return self::get_form_body( $atts );
+	}
+	
+	/**
+	 * Register the shortcode [pardot-dynamic-content ...]
+	 *
+	 * @param array $atts Contains shortcode attributes provided by the user. Expect 'id' for Dyanamic Content ID.
+	 *
+	 * @since 1.1.0
+	 */
+	function dynamic_content_shortcode( $atts ) {
+		/**
+		 * Translate from 'id' to 'dynamicContent_id' which is what $this->get_dynamic_content_body() uses.
+		 */
+		$atts['dynamicContent_id'] = isset( $atts['id'] ) ? $atts['id'] : 0;
+
+		/**
+		 * Output the Pardot form
+		 */
+		return self::get_dynamic_content_body( $atts );
 	}
 
 	/**
@@ -582,6 +607,34 @@ class Pardot_Plugin {
 	}
 
 	/**
+	 * Grab the HTML for the Pardot Dynamic Content to be displayed via a widget or via a shortcode.
+	 *
+	 * @static
+	 * @param array $args Contains 'dynamicContent_id'
+	 * @return bool|string
+	 *
+	 * @since 1.1.0
+	 */
+	static function get_dynamic_content_body( $args = array() ) {
+		$dynamicContent_html = false;
+		/**
+		 * Grab the dynamicContent_id from the args passed.
+		 */
+		$dynamicContent_id = $args['dynamicContent_id'];
+	
+		if ( isset( $dynamicContents[$dynamicContent_id] ) ) {
+			/**
+			 * Use the dynamicContent_id to find the right form
+			 */
+			$dynamicContent = $dynamicContents[$dynamicContent_id];
+			$dynamicContent_html = $dynamicContent->embedCode;
+		}
+
+		return $dynamicContent_html;
+	}
+
+
+	/**
 	 * Get an instance of Pardot_API
 	 *
 	 * If API is not instantiated yet, passes $auth array which if empty will retrieve values from self::get_settings().
@@ -632,6 +685,18 @@ class Pardot_Plugin {
 	 */
 	static function get_forms( $args = array() ) {
 		return self::call_api( 'forms', $args );
+	}
+	
+	/**
+	 * Returns array of Dynamic Content as defined by the Pardot API.
+	 *
+	 * @param array $args Combined authorization parameters and query arguments.
+	 * @return array|bool The array of Forms, or false if not authenticated or API error.
+	 *
+	 * @since 1.1.0
+	 */
+	static function get_dynamicContent( $args = array() ) {
+		return self::call_api( 'dynamicContent', $args );
 	}
 
 	/**

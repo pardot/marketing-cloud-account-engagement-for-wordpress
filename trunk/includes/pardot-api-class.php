@@ -210,6 +210,29 @@ class Pardot_API {
 	}
 
 	/**
+	 * Returns an dynamic content from Pardot's API
+	 *
+	 * The structure of the dynamic content objects are based on Pardot's API returned XML format captured using PHP's SimpleXML
+	 * and converted to an array of stdClass objects.
+	 *
+	 * @param array $args Combined authorization parameters and query arguments.
+	 * @return array|bool Array of form objects, or false if API call failed.
+	 *
+	 * @since 1.1.0
+	 */
+	function get_dynamicContent( $args = array() ) {
+		$dynamicContents = false;
+		if ( $response = $this->get_response( 'dynamicContent', $args ) ) {
+			$dynamicContents = array();
+			for( $i = 0; $i < $response->result->total_results; $i++ ) {
+				$dynamicContent = $response->result->dynamicContent[$i];
+				$dynamicContents[(int)$dynamicContent->id] = $this->SimpleXMLElement_to_stdClass( $dynamicContent );
+			}
+		};
+		return $dynamicContents;
+	}
+
+	/**
 	 * Returns an object or array of stdClass objects from an SimpleXMLElement
 	 *
 	 *
