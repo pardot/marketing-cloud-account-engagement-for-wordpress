@@ -407,6 +407,11 @@ class Pardot_Plugin {
 		 * Translate from 'id' to 'dynamicContent_id' which is what $this->get_dynamic_content_body() uses.
 		 */
 		$atts['dynamicContent_id'] = isset( $atts['id'] ) ? $atts['id'] : 0;
+		
+		/**
+		 * Give a default to wrap in <noscript> for accesibility.
+		 */
+		$atts['dynamicContent_default'] = isset( $atts['default'] ) ? $atts['default'] : '';
 
 		/**
 		 * Output the Pardot form
@@ -621,7 +626,9 @@ class Pardot_Plugin {
 		 * Grab the dynamicContent_id from the args passed.
 		 */
 		$dynamicContent_id = $args['dynamicContent_id'];
-	
+		$dynamicContent_default = $args['dynamicContent_default'];
+		$dynamicContents = get_pardot_dynamic_content();
+
 		if ( isset( $dynamicContents[$dynamicContent_id] ) ) {
 			/**
 			 * Use the dynamicContent_id to find the right form
@@ -630,7 +637,7 @@ class Pardot_Plugin {
 			$dynamicContent_html = $dynamicContent->embedCode;
 		}
 
-		return $dynamicContent_html;
+		return $dynamicContent_html . "<noscript>" . $dynamicContent_default . "</noscript>";
 	}
 
 
