@@ -336,7 +336,7 @@ class Pardot_Plugin {
 			/**
 			 * Assemble an option where the value is the WordPress [pardot-dynamic-content] shortcode to insert into TinyMCE
 			 */
-			$lmth[] = "<option value=\"[pardot-dynamic-content id=&quot;{$dynamicContent->id}&quot;]\">{$dynamicContent->name}</option>";
+			$lmth[] = "<option value=\"[pardot-dynamic-content id=&quot;{$dynamicContent->id}&quot;\">{$dynamicContent->name}</option>";
 		}
 		$lmth[] = '</select>';
 

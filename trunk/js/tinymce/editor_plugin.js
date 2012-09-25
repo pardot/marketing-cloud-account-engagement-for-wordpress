@@ -10,14 +10,14 @@ Author: Mike Schinkel <mike@newclarity.net>
 				ed.windowManager.open({
 					file:url + '/pardot-forms-shortcode-popup.php',
 					width:420 + parseInt(ed.getLang('pardotformsshortcodeinsert.delta_width', 0)),
-					height:150 + parseInt(ed.getLang('pardotformsshortcodeinsert.delta_height', 0)),
+					height:250 + parseInt(ed.getLang('pardotformsshortcodeinsert.delta_height', 0)),
 					inline:1
 				},{
 					plugin_url:url
 				})
 			});
 			ed.addButton('pardotformsshortcodeinsert',{
-				title:'Insert a Pardot Forms Shortcode',
+				title:'Insert a Pardot Form or Dynamic Content Shortcode',
 				cmd:'mcePardotFormsShortcodeInsert',
 				image:url+"/img/pardot-button.png"}
 			);
@@ -27,7 +27,7 @@ Author: Mike Schinkel <mike@newclarity.net>
 		},
 		getInfo:function() {
 			return {
-				longname:"Pardot Forms Shortcode Insert Button",
+				longname:"Pardot Form or Dynamic Content Shortcode Insert Button",
 				author:"Pardot",
 				authorurl:"http://www.pardot.com",
 				infourl:"http://wordpress.org/extend/plugins/pardot",

@@ -43,6 +43,7 @@ class _Pardot_Forms_Shortcode_Popup {
 #pardot-forms-shortcode-popup .mceActionPanel {text-align:center;margin-top:20px;}
 #pardot-forms-shortcode-select .spinner {vertical-align:-3px;}
 #pardot-forms-shortcode-select #formshortcode, #pardot-dc-shortcode-select #dcshortcode {font-size:1em;}
+#shortcode-dc-input {width:70%;padding:3px 0;}
 CSS;
 		return $css;
 	}
@@ -68,7 +69,7 @@ var PardotShortcodePopup = {
 			tinyMCEPopup.editor.execCommand('mceInsertContent',false,jQuery('#formshortcode').val());
 		}
 		if ( jQuery('#dcshortcode').val() != '0' ) {
-			tinyMCEPopup.editor.execCommand('mceInsertContent',false,jQuery('#dcshortcode').val());
+			tinyMCEPopup.editor.execCommand('mceInsertContent',false,jQuery('#dcshortcode').val()+' default="'+jQuery('#shortcode-dc-input').val()+'"]');
 		}
 		tinyMCEPopup.close();
 	}
@@ -142,8 +143,11 @@ HTML;
 		/**
 		 * Allow label to be translated into other written languages.
 		 */
-		$labelform = __( 'Select a Form to Insert', 'pardot' );
-		$labeldc = __( 'Select Dynamic Content to Insert', 'pardot' );
+		$formsec = __( 'Forms', 'pardot' );
+		$labelform = __( 'Select a form to insert', 'pardot' );
+		$dcsec = __( 'Dynamic Content', 'pardot' );
+		$labeldc = __( 'Select dynamic content to insert', 'pardot' );
+		$labeldcalt = __( 'Default content to show JS-disabled users', 'pardot' );
 		/**
 		 * Use HEREDOC to make the form's HTML much more easy to understand.
 		 *
@@ -153,16 +157,21 @@ HTML;
 <div id="pardot-forms-shortcode-insert-dialog">
 <form method="post"	action="#">
 	<div class="fields">
-		<label for="shortcode" class="title">{$labelform}</label>:
+		<h2>{$formsec}</h2>
+		<label for="shortcode">{$labelform}</label>:
 		<span id="pardot-forms-shortcode-select">
 			<input type="hidden" id="shortcode">
 			<img class="spinner" src="{$spinner_url}" height="16" weight="16" alt="Time waits for no man.">
 		</span>
-		<label for="shortcode-dc" class="title">{$labeldc}</label>:
+		<h2>{$dcsec}</h2>
+		<label for="shortcode-dc">{$labeldc}</label>:
 		<span id="pardot-dc-shortcode-select">
 			<input type="hidden" id="shortcodedc">
 			<img class="spinner" src="{$spinner_url}" height="16" weight="16" alt="Time waits for no man.">
 		</span>
+		<br />
+		<label for="shortcode-dc-input">{$labeldcalt}</label>:
+		<input type="text" id="shortcode-dc-input">
 	</div>
 	<div class="mceActionPanel">
 		<span class="cancel-button">
