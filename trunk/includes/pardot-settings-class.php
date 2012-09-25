@@ -26,6 +26,11 @@ class Pardot_Settings {
 	const FORMS_URL = 'https://pi.pardot.com/form';
 
 	/**
+	 * @var string Admin page on Pardot's website that allows authenticated users to add forms to a campaign
+	 */
+	const DYNAMIC_CONTENT_URL = 'https://pi.pardot.com/content';
+
+	/**
 	 * @var string The root URL used to <iframe> a Pardot Forms. Used to add inline forms support.
 	 */
 	const POST_ROOT_URL = 'http://go.pardot.com';

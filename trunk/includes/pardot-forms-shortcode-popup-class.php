@@ -20,7 +20,7 @@ class _Pardot_Forms_Shortcode_Popup {
 	 * @since 1.0.0
 	 */
 	function __construct() {
-		$this->title = __( 'Insert a Pardot Form Shortcode', 'pardot' );
+		$this->title = __( 'Insert a Pardot Form or Dynamic Content Shortcode', 'pardot' );
 		$this->jquery_url  = site_url( '/wp-includes/js/jquery/jquery.js' );
 		$this->tiny_mce_popup_url = site_url( '/wp-includes/js/tinymce/tiny_mce_popup.js' );
 		$this->js = $this->get_js();
@@ -42,7 +42,7 @@ class _Pardot_Forms_Shortcode_Popup {
 #pardot-forms-shortcode-popup h1 {font-size:1.5em;margin-bottom:0.5em;}
 #pardot-forms-shortcode-popup .mceActionPanel {text-align:center;margin-top:20px;}
 #pardot-forms-shortcode-select .spinner {vertical-align:-3px;}
-#pardot-forms-shortcode-select #shortcode {font-size:1em;}
+#pardot-forms-shortcode-select #formshortcode, #pardot-dc-shortcode-select #dcshortcode {font-size:1em;}
 CSS;
 		return $css;
 	}
@@ -61,14 +61,19 @@ CSS;
 	 */
 	function get_js() {
 		$js =<<<JS
-var PardotFormsShortcodePopup = {
+var PardotShortcodePopup = {
 	init:function() {},
 	insert:function() {
-		tinyMCEPopup.editor.execCommand('mceInsertContent',false,jQuery('#shortcode').val());
+		if ( jQuery('#formshortcode').val() != '0' ) {
+			tinyMCEPopup.editor.execCommand('mceInsertContent',false,jQuery('#formshortcode').val());
+		}
+		if ( jQuery('#dcshortcode').val() != '0' ) {
+			tinyMCEPopup.editor.execCommand('mceInsertContent',false,jQuery('#dcshortcode').val());
+		}
 		tinyMCEPopup.close();
 	}
 };
-tinyMCEPopup.onInit.add(PardotFormsShortcodePopup.init,PardotFormsShortcodePopup);
+tinyMCEPopup.onInit.add(PardotShortcodePopup.init,PardotShortcodePopup);
 JS;
 		return $js;
 	}
@@ -103,7 +108,6 @@ HTML;
 		}
 		return <<<HTML
 <div id="pardot-forms-shortcode-popup">
-<h1>{$this->title}</h1>
 {$html}
 </div>
 HTML;
@@ -138,7 +142,8 @@ HTML;
 		/**
 		 * Allow label to be translated into other written languages.
 		 */
-		$label = __( 'Select which Form to Insert', 'pardot' );
+		$labelform = __( 'Select a Form to Insert', 'pardot' );
+		$labeldc = __( 'Select Dynamic Content to Insert', 'pardot' );
 		/**
 		 * Use HEREDOC to make the form's HTML much more easy to understand.
 		 *
@@ -148,9 +153,14 @@ HTML;
 <div id="pardot-forms-shortcode-insert-dialog">
 <form method="post"	action="#">
 	<div class="fields">
-		<label for="shortcode">{$label}</label>:
+		<label for="shortcode" class="title">{$labelform}</label>:
 		<span id="pardot-forms-shortcode-select">
 			<input type="hidden" id="shortcode">
+			<img class="spinner" src="{$spinner_url}" height="16" weight="16" alt="Time waits for no man.">
+		</span>
+		<label for="shortcode-dc" class="title">{$labeldc}</label>:
+		<span id="pardot-dc-shortcode-select">
+			<input type="hidden" id="shortcodedc">
 			<img class="spinner" src="{$spinner_url}" height="16" weight="16" alt="Time waits for no man.">
 		</span>
 	</div>
@@ -159,7 +169,7 @@ HTML;
 			<input type="submit" id="cancel" name="cancel" value="{#cancel}" class="button-secondary" onclick="tinyMCEPopup.close();" />
 		</span>
 		<span class="insert-button">
-			<input type="submit" id="insert" name="insert" value="{#insert}" class="button-primary" onclick="PardotFormsShortcodePopup.insert();" />
+			<input type="submit" id="insert" name="insert" value="{#insert}" class="button-primary" onclick="PardotShortcodePopup.insert();" />
 		</span>
 	</div>
 </form>
@@ -173,6 +183,15 @@ jQuery(document).ready(function($) {
 		data:{action:"get_pardot_forms_shortcode_select_html"},
 		success: function(html) {
 		 	$("#pardot-forms-shortcode-select").html(html);
+	 	}
+	});
+	$.ajax({
+		type:"post",
+		dataType:"html",
+		url:"{$ajax_url}",
+		data:{action:"get_pardot_dynamicContent_shortcode_select_html"},
+		success: function(lmth) {
+		 	$("#pardot-dc-shortcode-select").html(lmth);
 	 	}
 	});
 });
