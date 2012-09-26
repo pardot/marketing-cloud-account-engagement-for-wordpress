@@ -27,13 +27,13 @@ Say hello to marketing automation simplicity! With a single login, your self-hos
 
 Two simple shortcodes are available for use.
 
-== Form Shortcode ==
+= Form Shortcode =
 
 `[pardot-form id="{Form ID}" title="{Form Name}"]`
 
 Use `[pardot-form]` with at least the `id` parameter. You can also include the `title` parameter that is included when using the toolbar button, but it's not required for display. For instance, `[pardot-form id="1" title="Title"]` renders my Pardot form with an ID of 1.
 
-== Dynamic Content Shortcode ==
+= Dynamic Content Shortcode =
 
 `[pardot-dynamic-content id="{Dynamic Content ID}" default="{Non-JavaScript Content}"]`
 
