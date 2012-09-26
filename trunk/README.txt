@@ -4,7 +4,7 @@ Donate link: http://pardot.com
 Tags: pardot, marketing automation, forms, tracking, web tracking
 Requires at least: 3.4
 Tested up to: 3.4.1
-Stable tag: 1.0.3
+Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -58,6 +58,9 @@ Go to Settings > Pardot Settings and click 'Save Settings'. This should reinitia
 1. A page can have two forms! Here, one is in the body and one in a widget.
 
 == Changelog ==
+
+= 1.1.0 =
+Add dynamic content shortcodes
 
 = 1.0.3 =
 Added form caching for faster rendering and less requests
