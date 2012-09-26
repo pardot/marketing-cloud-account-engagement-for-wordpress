@@ -62,9 +62,9 @@ Since every WordPress theme is different, embedded forms won’t always automati
 
 A width of 150px is just a starting point. Adjust this value until it fits on your page and add additional styles as you see fit. For styling help, reference our <a href="http://www.pardot.com/help/faqs/forms/basic-css-for-forms" target="_blank">Basic CSS for Forms</a> page.
 
-= I just added a form, and it's not showing up in WordPress yet. =
+= I just added a form or dynamic content, and it's not showing up to select it yet. =
 
-Go to Settings > Pardot Settings and click 'Save Settings'. This should reinitialize and update your Pardot content.
+Go to Settings > Pardot Settings and click 'Reset Cache'. This should reinitialize and update your Pardot content.
 
 == Screenshots ==
 
@@ -81,6 +81,7 @@ Go to Settings > Pardot Settings and click 'Save Settings'. This should reinitia
 = 1.1.0 =
 1. Added dynamic content shortcodes
 1. Added title field to form widget
+1. Added 'Reset Cache' option
 
 = 1.0.3 =
 Added form caching for faster rendering and less requests

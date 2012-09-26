@@ -259,8 +259,9 @@ HTML;
 			'password'  => __( 'Password', 'pardot' ),
 			'user_key' 	=> __( 'User Key', 'pardot' ),
 			'campaign' 	=> __( 'Campaign (for Tracking Code)', 'pardot' ),
-			'submit'	 	=> '',
-			'reset'	 		=> '',
+			'submit'	=> '',
+			'clearcache'=> '',
+			'reset'	 	=> '',
 			'api_key' 	=> '',
 		);
 
@@ -330,6 +331,16 @@ HTML;
 		if ( isset( $_POST['reset'] ) ) {
 			add_settings_error( self::$OPTION_GROUP, 'reset_settings', __( 'Settings have been reset!', 'pardot' ), 'updated' );
 			return $clean;
+		}
+		
+		if ( isset( $_POST['clear'] ) ) {
+			global $wpdb;
+			$collecttrans = $wpdb->get_col( "SELECT option_name FROM {$wpdb->options} WHERE option_name LIKE '_transient_pardot%';" );
+			
+			foreach ( $collecttrans as $collecttran ) {
+				delete_transient(str_replace('_transient_', '', $collecttran));
+			}
+			add_settings_error( self::$OPTION_GROUP, 'reset_settings', __( 'The cache has been cleared!', 'pardot' ), 'updated' );
 		}
 
 		/**
@@ -671,7 +682,20 @@ HTML;
 		$value = __( 'Reset All Settings', 'pardot' );
 		$msg = __( 'This will remove all your Pardot account information from the database. Click OK to proceed', 'pardot' );
 		$html =<<<HTML
-<input onclick="return confirm(\'{$msg}.\');" type="submit" class="button-secondary" name="reset" value="{$value}" />
+<input onclick="return confirm('{$msg}.');" type="submit" class="button-secondary" name="reset" value="{$value}" />
+HTML;
+		echo $html;
+	}
+	
+	/**
+	 * Displays the Clear Cache button for the Settings API
+	 *
+	 * @since 1.1.0
+	 */
+	function clearcache_field() {
+		$value = __( 'Clear Cache', 'pardot' );
+		$html =<<<HTML
+<input type="submit" class="button-secondary" name="clear" value="{$value}" />
 HTML;
 		echo $html;
 	}
@@ -814,4 +838,3 @@ HTML;
  * This instantiation can only be done once (see it's __construct() to understand why.)
  */
 new Pardot_Settings();
-
