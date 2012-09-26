@@ -191,7 +191,7 @@ CSS;
 	 * @param array $args Arguments passed by the sidebar. $args can be one of:
 	 *
 	 *   - 'name'
-   *   - 'id'
+     *   - 'id'
 	 *   - 'description'
 	 *   - 'class'
 	 *   - 'before_widget'
@@ -220,7 +220,7 @@ CSS;
 		 * If no title specified by hook, give is a default value.
 		 */
 		if ( empty( $title ) )
-			$title = __( 'Request More Information:', 'pardot' );
+			$title = __( '', 'pardot' );
 
 		/**
 		 * Wrap a non-empty title with before and after content.
@@ -285,6 +285,8 @@ HTML;
 		 */
 		if ( isset( $new_instance['form_id'] ) )
 			$instance['form_id'] = $new_instance['form_id'];
+			
+		$instance['title'] = strip_tags( $new_instance['title'] );	
 
 		return $instance;
 	}
@@ -321,7 +323,7 @@ HTML;
 			 * Create a variable for help text to be used in the HEREDOC
 			 * Add the link into the help text.
 			 */
-			$help_text = __( 'You have no forms are related to this campaign, or a connection issue. Please check your %s.', 'pardot' );
+			$help_text = __( 'You have no forms yet, or there is a connection issue. Please check your %s.', 'pardot' );
 			$help_text = sprintf( $help_text, $help_link );
 
 			/**
@@ -415,7 +417,15 @@ HTML;
 <p>{$help_text}</p>
 HTML;
 		}
-
+		
+		if ( isset( $instance[ 'title' ] ) ) {
+			$title = $instance[ 'title' ];
+		} else {
+			$title = __( 'New title', 'text_domain' );
+		}
+		
+		$html .= '<p><label for="' . $this->get_field_id( "title" ) . '">' . __( 'Title:' ) . '</label><input class="widefat" id="' . $this->get_field_id( "title" ) . '" name="' . $this->get_field_name( "title" ) . '" type="text" value="' . esc_attr( $title ) . '" /></p>';
+		
 		/**
 		 * Display whatever HTML is appropriate; error message help or list of forms.
 		 */
@@ -427,3 +437,326 @@ HTML;
  * Calls startup method that add actions and filters to hook WordPress for this widget.
  */
 Pardot_Forms_Widget::on_load();
+
+/**
+ * WordPress Pardot Dynamic Content Widget
+ *
+ * @author Cliff Seal <cliff.seal@pardot.com>
+ *
+ * @see: http://codex.wordpress.org/Widgets_API
+ *
+ * @since 1.1.0
+ *
+ */
+class Pardot_Dynamic_Content_Widget extends WP_Widget {
+	/**
+	 * @var int Timeout value for front-end widget form that can reset in a hook, if need be. Initially 30 days.
+	 *
+	 * @since 1.1.0
+	 */
+	static $cache_timeout = PARDOT_WIDGET_FORM_CACHE_TIMEOUT;
+
+	/**
+	 * Add the hooks needed by this Widget.
+	 *
+	 * This method is called once immediately at the end of the class definition.
+	 *
+	 * @static
+	 *
+	 * @return void
+	 *
+	 * @since 1.1.0
+	 */
+	static function on_load() {
+		/**
+		 * Use 'widgets_init' to register this widget
+		 */
+		add_action( 'widgets_init', array( __CLASS__, 'widgets_init' ) );
+	}
+
+	/**
+	 * Register this widget with WordPress using the name of this PHP class.
+	 *
+	 * @static
+	 *
+	 * @return void
+	 *
+	 * @see: http://codex.wordpress.org/Widgets_API
+	 *
+	 * @since 1.1.0
+	 */
+	static function widgets_init() {
+		register_widget( __CLASS__ );
+	}
+
+	/**
+	 * PHP object constructor calls parent to enable setting Widget classname and description.
+	 *
+	 * @since 1.1.0
+	 */
+	function __construct() {
+		/**
+		 * @var array Set Widget's objects, i.e. classname and description.
+		 */
+		$widget_ops = array(
+			'classname' => 'pardot-dynamic-content',
+			'description' => __( 'Use Pardot Dynamic Content in your sidebar.', 'pardot' )
+		);
+		/**
+		 * @var array Empty array lists to document that parameters for the WP_Widget parent constructor.
+		 *
+		 */
+		$control_ops = array();
+
+		/**
+		 * Call the WP_Widget parent constructor.
+		 */
+		parent::__construct( 'pardot-dynamic-content', __( 'Pardot Dynamic Content', 'pardot' ), $widget_ops, $control_ops );
+	}
+/*
+
+*/
+	/**
+	 * Displays Pardot dynamic content for Widget HTML on front end of site.
+	 *
+	 * Echos dynamic content defined in Pardot account and specified for this widget. 
+	 *
+	 * @param array $args Arguments passed by the sidebar. $args can be one of:
+	 *
+	 *   - 'name'
+     *   - 'id'
+	 *   - 'description'
+	 *   - 'class'
+	 *   - 'before_widget'
+	 *   - 'after_widget'
+	 *   - 'before_title'
+	 *   - 'after_title'
+	 *   - 'widet_id'
+	 *   - 'widget_name'
+	 *
+	 * @param array $instance Contains 'form_id' value set in $this->form() and $this->update().
+	 * @return void
+	 *
+	 * @see WP_Widget::widget()
+	 * @see: http://codex.wordpress.org/Widgets_API
+	 *
+	 * @since 1.1.0
+	 */
+	function widget( $args, $instance ) {
+		/**
+		 * @var string $title Allow the widget title to be modified by the 'widget_title' hook.
+		 */
+		$title = apply_filters(
+			'widget_title', ! empty( $instance['title'] ) ? $instance['title'] : false, $instance, $this->id_base
+		);
+		/**
+		 * If no title specified by hook, give is a default value.
+		 */
+		if ( empty( $title ) )
+			$title = __( '', 'pardot' );
+
+		/**
+		 * Wrap a non-empty title with before and after content.
+		 */
+		$title_html = ! empty( $title ) ? "{$args['before_title']}{$title}{$args['after_title']}" : false;
+
+		/**
+		 * Grab form_id from the instance that we set in $this->update() and use it to grab the HTML for this Pardot Form.
+		 */
+		$body_html = Pardot_Plugin::get_dynamic_content_body( $instance );
+
+		/**
+		 * After all that if the $body_html is not empty, we can use it as a form.
+		 */
+		if ( $body_html ) {
+			/**
+			 * Allow others to modify the form HTML if needed.
+			 */
+			$body_html = apply_filters( 'pardot_widget_body_html', $body_html, $instance, $this, $args );
+			/**
+			 * Use a HEREDOC to assemble the HTML for the form.
+			 */
+			$html = <<<HTML
+{$args['before_widget']}
+<div class="pardot-dynamic-content-widget">
+	{$title_html}
+	<div class="pardot-dynamic-content-body">
+		{$body_html}
+	</div>
+</div>
+{$args['after_widget']}
+HTML;
+			/**
+			 * Lastly let other modify the HTML if needed.
+			 */
+			echo apply_filters( 'widget_html', $html, $instance, $this, $args );
+		}
+	}
+
+	/**
+	 * Sanitize widget form values as they are saved.
+	 *
+	 * @param array $new_instance Values just sent to be saved.
+	 * @param array $old_instance Previously saved values from database.
+	 *
+	 * @return array Updated safe values to be saved.
+	 *
+	 * @see WP_Widget::update()
+	 * @see: http://codex.wordpress.org/Widgets_API
+	 *
+	 *
+	 * @since 1.1.0
+	 */
+	function update( $new_instance, $old_instance ) {
+		/**
+		 * Default the 'form_id' to a non-selected form ID, i.e. '0'.
+		 */
+		$instance = array( 'dynamicContent' => 0 );
+
+		/**
+		 * If the new instance has 'form_id' then capture it's value before returning.
+		 */
+		if ( isset( $new_instance['dynamicContent_id'] ) )
+			$instance['dynamicContent_id'] = $new_instance['dynamicContent_id'];
+		
+		if ( isset( $new_instance['dynamicContent_default'] ) )	
+			$instance['dynamicContent_default'] = strip_tags( $new_instance['dynamicContent_default'] );
+		
+		$instance['title'] = strip_tags( $new_instance['title'] );
+		
+		return $instance;
+	}
+
+	/**
+	 * Display the widget configuration form in the Widgets section of the Admin.
+	 *
+	 * @param array $instance Contains 'form_id' value set in $this->update() and used in $this->widget().
+	 * @return void
+	 *
+	 * @see WP_Widget::form()
+	 * @see: http://codex.wordpress.org/Widgets_API
+	 *
+	 * @since 1.1.0
+	 */
+	function form( $instance ) {
+		/**
+		 * Check the cache and/or call the API to get the array of forms.
+		 */
+		$dynamicContents = get_pardot_dynamic_content();
+		if ( ! $dynamicContents ) {
+			/**
+			 * We have no forms!
+			 * Create link text for the help link
+			 */
+			$help_link_text = __( 'Settings', 'pardot' );
+
+			/**
+			 * Merge the link and help text link into a help link.
+			 */
+			$help_link = sprintf( '<a href="%s" target="_blank">%s</a>', Pardot_Settings::get_admin_page_url(), $help_link_text );
+
+			/**
+			 * Create a variable for help text to be used in the HEREDOC
+			 * Add the link into the help text.
+			 */
+			$help_text = __( 'You have no dynamic content yet, or there is a connection issue. Please check your %s.', 'pardot' );
+			$help_text = sprintf( $help_text, $help_link );
+
+			/**
+			 * Finally create the HTML containing the help message about no forms.
+			 */
+			$html = "<p>{$help_text}</p>";
+
+		} else {
+			/**
+			 * We DO have forms!
+			 *
+			 * If the instance hasn't been initialized via $this->update(), give it's 'form_id' element
+			 * a value indicating no Pardot form has yet to be selected by an admin user.
+			 */
+			if ( ! isset( $instance['dynamicContent_id'] ) )
+				$instance['dynamicContent_id'] = 0;
+
+			/**
+			 * Create an array to capture the HTML output into.
+			 */
+			$options = array();
+
+			/**
+			 * Give the zero (0) value meaning no form yet selected a default value.
+			 */
+			$label_option = (object) array( 'id' => 0, 'name' => __( ' Please Select Dynamic Content', 'pardot' ) );
+
+			/**
+			 * Insert the 'no form yet selected' value to the beginning of the list of options.
+			 */
+			array_unshift( $dynamicContents, $label_option );
+
+			/**
+			 * For each Pardot form that the current account has configured
+			 */
+			foreach ( $dynamicContents as $dynamicContent ) {
+				/**
+				 * For the selected value, assign $selected to be ' selected="selected"' for use in the <option> tag.
+				 */
+				$selected = selected( $instance['dynamicContent_id'], $dynamicContent->id, false );
+				/**
+				 * Add an array element containing the HTML for each option
+				 */
+				$options[] = "<option value=\"{$dynamicContent->id}\"{$selected}>{$dynamicContent->name}</option>";
+			}
+
+			/**
+			 * Convert array of HTML options to a string of HTML options
+			 */
+			$options = implode( '', $options );
+
+			/**
+			 * Get the Form ID into a variable for HTML id that can be used in the HEREDOC
+			 * This will leave dashes.
+			 */
+			$html_id = $this->get_field_id( 'dynamicContent_id' );
+
+			/**
+			 * Get the Form ID into a variable for HTML name that can be used in the HEREDOC
+			 * This will convert dashes to underscores.
+			 */
+			$html_name = $this->get_field_name( 'dynamicContent_id' );
+
+			/**
+			 * Create a variable for prompting the user to be used in the HEREDOC
+			 */
+			$prompt = __( 'Select Dynamic Content:', 'pardot' );
+
+			/**
+			 * Create the HTML for displaying the select of Pardot forms
+			 */
+			$html = <<<HTML
+<p><label for="{$html_id}">{$prompt}</label><select id="{$html_id}" name="{$html_name}">{$options}</select></p>
+HTML;
+		}
+		
+		if ( isset( $instance[ 'title' ] ) ) {
+			$title = $instance[ 'title' ];
+		} else {
+			$title = __( 'New title', 'text_domain' );
+		}
+		if ( isset( $instance[ 'dynamicContent_default' ] ) ) {
+			$defcon = $instance[ 'dynamicContent_default' ];
+		} else {
+			$defcon = __( 'Default Content', 'text_domain' );
+		}
+		
+		$html .= '<p><label for="' . $this->get_field_id( "title" ) . '">' . __( 'Title:' ) . '</label><input class="widefat" id="' . $this->get_field_id( "title" ) . '" name="' . $this->get_field_name( "title" ) . '" type="text" value="' . esc_attr( $title ) . '" /></p><p><label for="' . $this->get_field_id( "dynamicContent_default" ) . '">' . __( 'Default Content:' ) . '</label><input class="widefat" id="' . $this->get_field_id( "dynamicContent_default" ) . '" name="' . $this->get_field_name( "dynamicContent_default" ) . '" type="text" value="' . esc_attr( $defcon ) . '" /></p>';
+
+		/**
+		 * Display whatever HTML is appropriate; error message help or list of forms.
+		 */
+		echo $html;
+	}
+
+}
+/**
+ * Calls startup method that add actions and filters to hook WordPress for this widget.
+ */
+Pardot_Dynamic_Content_Widget::on_load();
