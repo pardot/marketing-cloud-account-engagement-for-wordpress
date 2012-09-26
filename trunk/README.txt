@@ -70,7 +70,7 @@ Go to Settings > Pardot Settings and click 'Reset Cache'. This should reinitiali
 
 1. Settings area
 1. Pardot button in the Visual Editor toolbar
-1. Choose from any form
+1. Choose from any form or dynamic content
 1. Use forms in a widget
 1. Use dynamic content in a widget
 1. A form widget (with corrected styling)
