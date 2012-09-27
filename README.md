@@ -69,9 +69,13 @@ Go to Settings > Pardot Settings and click 'Reset Cache'. This should reinitiali
 
 ## Changelog ##
 
+### 1.1.1 ###
+Make `<noscript>` default to Default Pardot Content
+
 ### 1.1.0 ###
 1. Added dynamic content shortcodes
 1. Added title field to form widget
+1. Added 'Reset Cache' option
 
 ### 1.0.3 ###
 Added form caching for faster rendering and less requests
