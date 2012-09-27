@@ -336,8 +336,7 @@ class Pardot_Plugin {
 			/**
 			 * Assemble an option where the value is the WordPress [pardot-dynamic-content] shortcode to insert into TinyMCE
 			 */
-			$defaultContent = urlencode($dynamicContent->baseContent);
-			$lmth[] = "<option value=\"[pardot-dynamic-content id=&quot;{$dynamicContent->id}&quot; default=&quot;{$defaultContent}&quot;]\">{$dynamicContent->name}</option>";
+			$lmth[] = "<option value=\"[pardot-dynamic-content id=&quot;{$dynamicContent->id}&quot;\">{$dynamicContent->name}</option>";
 		}
 		$lmth[] = '</select>';
 
@@ -748,6 +747,7 @@ class Pardot_Plugin {
 		 * Grab the dynamicContent_id from the args passed.
 		 */
 		$dynamicContent_id = $args['dynamicContent_id'];
+		$dynamicContent_default = $args['dynamicContent_default'];
 		
 		$dynamicContent_html = get_transient( 'pardot_dynamicContent_html_' . $dynamicContent_id );
 		
@@ -761,15 +761,21 @@ class Pardot_Plugin {
 				 */
 				$dynamicContent = $dynamicContents[$dynamicContent_id];
 				$dynamicContent_html = $dynamicContent->embedCode;
-				$dynamicContent_default = $dynamicContent->baseContent;
 			}
 			
-			set_transient( 'pardot_dynamicContent_html_' . $dynamicContent_id, $dynamicContent_html . "<noscript>" . $dynamicContent_default . "</noscript>", self::$cache_timeout );
+			set_transient( 'pardot_dynamicContent_html_' . $dynamicContent_id, $dynamicContent_html, self::$cache_timeout );
 			
 		}	
-									
-		return $dynamicContent_html;
+		
+		if ( $dynamicContent_default != '' ) {
+
+			return $dynamicContent_html . "<noscript>" . $dynamicContent_default . "</noscript>";
 			
+		} else {
+			
+			return $dynamicContent_html;
+			
+		}
 	}
 
 

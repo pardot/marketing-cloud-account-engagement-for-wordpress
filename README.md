@@ -30,7 +30,15 @@ Use `[pardot-form]` with at least the `id` parameter. You can also include the `
 
 Use `[pardot-dynamic-content]` with at least the `id` parameter.
 
-The `default` parameter is used for accessibility. Whatever is placed here is wrapped in `<noscript>` tags and is shown to users who have JavaScript disabled. In most cases, you should use whatever you're using as your default content in the Dynamic Content itself. So, `[pardot-dynamic-content id="1" default="My default content."]` would render something like: `<script type="text/javascript" src="http://go.pardot.com/dcjs/99999/99/dc.js"></script><noscript>My default content.</noscript>`, which would show the dynamic content to users with JavaScript enabled, and 'My default content' to users with it disabled.
+The `default` parameter is used for accessibility. Whatever is placed here is wrapped in `<noscript>` tags and is shown only to users who have JavaScript disabled. By default, it will automatically be your "Default Content" as designated in Pardot. So, 
+
+`[pardot-dynamic-content id="1" default="My default content."]` 
+
+would render something like:
+
+`<script type="text/javascript" src="http://go.pardot.com/dcjs/99999/99/dc.js"></script><noscript>My default content.</noscript>`
+
+...which would show the dynamic content to users with JavaScript enabled, and 'My default content' to users with it disabled. Note that, due to the way the WordPress Visual Editor works, HTML tags for the parameter will be URL encoded to avoid strange formatting.
 
 ### How do I change my campaign? ###
 

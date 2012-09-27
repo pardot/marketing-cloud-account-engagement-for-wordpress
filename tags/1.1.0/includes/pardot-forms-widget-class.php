@@ -619,6 +619,9 @@ HTML;
 		if ( isset( $new_instance['dynamicContent_id'] ) )
 			$instance['dynamicContent_id'] = $new_instance['dynamicContent_id'];
 		
+		if ( isset( $new_instance['dynamicContent_default'] ) )	
+			$instance['dynamicContent_default'] = strip_tags( $new_instance['dynamicContent_default'] );
+		
 		$instance['title'] = strip_tags( $new_instance['title'] );
 		
 		return $instance;
@@ -738,8 +741,13 @@ HTML;
 		} else {
 			$title = __( 'New title', 'text_domain' );
 		}
+		if ( isset( $instance[ 'dynamicContent_default' ] ) ) {
+			$defcon = $instance[ 'dynamicContent_default' ];
+		} else {
+			$defcon = __( 'Default Content', 'text_domain' );
+		}
 		
-		$html .= '<p><label for="' . $this->get_field_id( "title" ) . '">' . __( 'Title:' ) . '</label><input class="widefat" id="' . $this->get_field_id( "title" ) . '" name="' . $this->get_field_name( "title" ) . '" type="text" value="' . esc_attr( $title ) . '" /></p>';
+		$html .= '<p><label for="' . $this->get_field_id( "title" ) . '">' . __( 'Title:' ) . '</label><input class="widefat" id="' . $this->get_field_id( "title" ) . '" name="' . $this->get_field_name( "title" ) . '" type="text" value="' . esc_attr( $title ) . '" /></p><p><label for="' . $this->get_field_id( "dynamicContent_default" ) . '">' . __( 'Default Content:' ) . '</label><input class="widefat" id="' . $this->get_field_id( "dynamicContent_default" ) . '" name="' . $this->get_field_name( "dynamicContent_default" ) . '" type="text" value="' . esc_attr( $defcon ) . '" /></p>';
 
 		/**
 		 * Display whatever HTML is appropriate; error message help or list of forms.

@@ -69,7 +69,7 @@ var PardotShortcodePopup = {
 			tinyMCEPopup.editor.execCommand('mceInsertContent',false,jQuery('#formshortcode').val());
 		}
 		if ( jQuery('#dcshortcode').val() != '0' ) {
-			tinyMCEPopup.editor.execCommand('mceInsertContent',false,jQuery('#dcshortcode').val());
+			tinyMCEPopup.editor.execCommand('mceInsertContent',false,jQuery('#dcshortcode').val()+' default="'+jQuery('#shortcode-dc-input').val()+'"]');
 		}
 		tinyMCEPopup.close();
 	}
@@ -169,6 +169,9 @@ HTML;
 			<input type="hidden" id="shortcodedc">
 			<img class="spinner" src="{$spinner_url}" height="16" weight="16" alt="Time waits for no man.">
 		</span>
+		<br />
+		<label for="shortcode-dc-input">{$labeldcalt}</label>:
+		<input type="text" id="shortcode-dc-input">
 	</div>
 	<div class="mceActionPanel">
 		<span class="cancel-button">
