@@ -313,7 +313,7 @@ HTML;
 	 * @since 1.0.0
 	 */
 	function sanitize_fields( $dirty ) {
-	
+
 		/**
 		 * Nothing passed? Then nothing to sanitize.
 		 */
@@ -329,13 +329,6 @@ HTML;
 		$clean = self::get_empty_settings();
 
 		if ( isset( $_POST['reset'] ) ) {
-			global $wpdb;
-			$collecttrans = $wpdb->get_col( "SELECT option_name FROM {$wpdb->options} WHERE option_name LIKE '_transient_pardot%';" );
-			
-			foreach ( $collecttrans as $collecttran ) {
-				delete_transient(str_replace('_transient_', '', $collecttran));
-			}
-			
 			add_settings_error( self::$OPTION_GROUP, 'reset_settings', __( 'Settings have been reset!', 'pardot' ), 'updated' );
 			return $clean;
 		}
@@ -355,7 +348,7 @@ HTML;
 		 */
 		foreach( $clean as $name => $value )
 			if ( isset( $dirty[$name] ) )
-				$clean[$name] = trim( esc_attr( $dirty[$name] ) );
+				$clean[$name] = esc_attr( $dirty[$name] );
 
 		/**
 		 * Call the Pardot API to attempt to authenticate
@@ -482,13 +475,6 @@ HTML;
 		 */
 		unset( $new_options['submit'] );
 		unset( $new_options['reset'] );
-		
-		/**
-		 * Trim whitespace
-		 */
-		$new_options['email'] = trim( $new_options['email'] );
-		$new_options['password'] = trim( $new_options['password'] );
-		$new_options['user_key'] = trim( $new_options['user_key'] );
 
 		/**
 		 * Add 'prying eyes' encryption for passsword.

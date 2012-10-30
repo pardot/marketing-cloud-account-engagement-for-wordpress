@@ -4,7 +4,7 @@ Donate link: http://pardot.com
 Tags: pardot, marketing automation, forms, tracking, web tracking
 Requires at least: 3.4
 Tested up to: 3.4.1
-Stable tag: 1.1.2
+Stable tag: 1.1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -86,11 +86,6 @@ Go to Settings > Pardot Settings and click 'Reset Cache'. This should reinitiali
 
 == Changelog ==
 
-= 1.1.2 =
-
-1. Clear cache when resetting all settings
-1. Be more forgiving with login whitespace
-
 = 1.1.1 =
 Make `<noscript>` default to Default Pardot Content
 
@@ -113,11 +108,6 @@ Fix bug with form order in content
 Initial release.
 
 == Upgrade Notice ==
-
-= 1.1.2 =
-
-1. Clear cache when resetting all settings
-1. Be more forgiving with login whitespace
 
 = 1.1.1 =
 Make `<noscript>` default to Default Pardot Content
