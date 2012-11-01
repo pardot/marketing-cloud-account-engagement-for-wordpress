@@ -495,7 +495,7 @@ HTML;
 		 * Base64 won't stop a hacker if they get access to the database but will keep
 		 * endusers from being able to see a valid password.
 		 */
-		$new_options['password'] = base64_encode( $new_options['password'] );
+		$new_options['password'] = self::pardot_encrypt( $new_options['password'], 'pardot_key' );
 
 		return $new_options;
 	}
@@ -713,6 +713,30 @@ HTML;
 HTML;
 		echo $html;
 	}
+	
+	/**
+	 * Encrypts with a bit more complexity
+	 *
+	 * @since 1.1.2
+	 */
+	function pardot_encrypt($input_string, $key='pardot_key'){
+		$iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_ECB);
+		$iv = mcrypt_create_iv($iv_size, MCRYPT_RAND);
+		$h_key = hash('sha256', $key, TRUE);
+		return base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, $h_key, $input_string, MCRYPT_MODE_ECB, $iv));
+	}
+	
+	/**
+	 * Decrypts with a bit more complexity
+	 *
+	 * @since 1.1.2
+	 */
+	function pardot_decrypt($encrypted_input_string, $key='pardot_key'){
+	    $iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_ECB);
+	    $iv = mcrypt_create_iv($iv_size, MCRYPT_RAND);
+	    $h_key = hash('sha256', $key, TRUE);
+	    return trim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, $h_key, base64_decode($encrypted_input_string), MCRYPT_MODE_ECB, $iv));
+	}
 
 	/**
 	 * Return list of Pardot plugin settings
@@ -743,7 +767,7 @@ HTML;
 			 * If there was infothere's nothing in the database make sure all
 			 * expected setting keys are in returned array.
 			 */
-			$settings['password'] = base64_decode( $settings['password'] );
+			$settings['password'] = self::pardot_decrypt( $settings['password'], 'pardot_key' );
 
 		}
 
@@ -793,7 +817,7 @@ HTML;
 		/**
 		 * Encode password for 'prying eyes' security
 		 */
-		$settings['password'] = base64_encode( $settings['password'] );
+		$settings['password'] = self::pardot_encrypt( $settings['password'], 'pardot_key' );
 
 		/**
 		 * Now update all the settings as a serialized array

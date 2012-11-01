@@ -334,16 +334,17 @@ x	 */
 			return false;
 		}
 
-		if ( ! $this->api_key && 'login' != $item_type )
+		if ( ! $this->api_key && 'login' != $item_type ) {
 			$this->authenticate( $args );
-			
+		}	
+									
 		$args = array_merge( $args, 
 			array( 
 				'user_key' => $this->user_key,
 				'api_key' => $this->api_key 
 			)
-		);	
-
+		);		
+				
 		$http_response = wp_remote_request(
 			$this->_get_url( $item_type, $args ),
 			array_merge( array(
@@ -357,7 +358,10 @@ x	 */
 				'body'          => $args
 			), $args )
 		);
-
+				
+		$args['email'] = urlencode( $args['email'] );
+		$args['password'] = urlencode( $args['password'] );
+				
 		$response = false;
 		if( wp_remote_retrieve_response_code( $http_response ) == 200 ) {
 			$response = new SimpleXMLElement( wp_remote_retrieve_body( $http_response ) );
@@ -407,7 +411,7 @@ x	 */
 	 * @return array containing email, password and user_key elements.
 	 *
 	 * @since 1.0.0
-x	 */
+	 */
 	function get_auth() {
 		return array(
 			'email' => $this->email,
