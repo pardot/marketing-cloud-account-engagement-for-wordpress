@@ -90,6 +90,7 @@ Go to Settings > Pardot Settings and click 'Reset Cache'. This should reinitiali
 
 1. Clear cache when resetting all settings
 1. Be more forgiving with login whitespace
+1. Make some security improvements
 
 = 1.1.1 =
 Make `<noscript>` default to Default Pardot Content
