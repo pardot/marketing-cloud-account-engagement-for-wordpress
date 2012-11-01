@@ -1,9 +1,9 @@
 # Pardot Plugin for WordPress #
-Integrate Pardot with WordPress: easily track visitors, embed forms in pages and posts, or use the forms widget.
+Integrate Pardot with WordPress: easily track visitors, embed forms and dynamic content in pages and posts, or use the forms or dynamic content widgets.
 
 ## Description ##
 
-Say hello to marketing automation simplicity! With a single login, your self-hosted WordPress installation will be securely connected with Pardot. With the selection of your campaign, you'll be able to track visitors and work with forms without touching a single line of code. You can use the widget to place a form anywhere a sidebar appears, or embed them in a page or post using a shortcode or the Pardot button on the Visual Editor's toolbar.
+Say hello to marketing automation simplicity! With a single login, your self-hosted WordPress installation will be securely connected with Pardot. With the selection of your campaign, you'll be able to track visitors and work with forms and dynamic content without touching a single line of code. You can use the widget to place a form or dynamic content anywhere a sidebar appears, or embed them in a page or post using a shortcode or the Pardot button on the Visual Editor's toolbar.
 
 ## Installation ##
 
@@ -68,6 +68,11 @@ A width of 150px is just a starting point. Adjust this value until it fits on yo
 Go to Settings > Pardot Settings and click 'Reset Cache'. This should reinitialize and update your Pardot content.
 
 ## Changelog ##
+
+### 1.1.2 ###
+1. Clear cache when resetting all settings
+1. Be more forgiving with login whitespace
+1. Make some security improvements
 
 ### 1.1.1 ###
 Make `<noscript>` default to Default Pardot Content

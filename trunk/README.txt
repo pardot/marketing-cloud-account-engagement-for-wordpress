@@ -8,7 +8,7 @@ Stable tag: 1.1.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Integrate Pardot with WordPress: easily track visitors, embed forms in pages and posts, or use the forms widget.
+Integrate Pardot with WordPress: easily track visitors, embed forms and dynamic content in pages and posts, or use the forms or dynamic content widgets.
 
 == Description ==
 
