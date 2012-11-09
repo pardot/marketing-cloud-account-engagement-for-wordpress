@@ -69,6 +69,9 @@ Go to Settings > Pardot Settings and click 'Reset Cache'. This should reinitiali
 
 ## Changelog ##
 
+### 1.1.3 ###
+Checks for mcrypt and falls back safely if not (fixes blank admin screen bug)
+
 ### 1.1.2 ###
 1. Clear cache when resetting all settings
 1. Be more forgiving with login whitespace
