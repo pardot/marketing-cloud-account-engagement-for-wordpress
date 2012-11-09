@@ -7,7 +7,7 @@
  * Plugin URI: http://wordpress.org/extend/plugins/pardot/
  * Developer: Mike Schinkel of NewClarity LLC
  * Developer URI: http://newclarity.net
- * Version: 1.1.2
+ * Version: 1.1.3
  * License: GPLv2
  *
  * Copyright 2012 Pardot LLC
