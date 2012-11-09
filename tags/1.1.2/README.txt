@@ -4,15 +4,15 @@ Donate link: http://pardot.com
 Tags: pardot, marketing automation, forms, tracking, web tracking
 Requires at least: 3.4
 Tested up to: 3.4.1
-Stable tag: 1.1.3
+Stable tag: 1.1.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Integrate Pardot with WordPress: easily track visitors, embed forms and dynamic content in pages and posts, or use the forms or dynamic content widgets.
+Integrate Pardot with WordPress: easily track visitors, embed forms in pages and posts, or use the forms widget.
 
 == Description ==
 
-Say hello to marketing automation simplicity! With a single login, your self-hosted WordPress installation will be securely connected with Pardot. With the selection of your campaign, you'll be able to track visitors and work with forms and dynamic content without touching a single line of code. You can use the widget to place a form or dynamic content anywhere a sidebar appears, or embed them in a page or post using a shortcode or the Pardot button on the Visual Editor's toolbar.
+Say hello to marketing automation simplicity! With a single login, your self-hosted WordPress installation will be securely connected with Pardot. With the selection of your campaign, you'll be able to track visitors and work with forms without touching a single line of code. You can use the widget to place a form anywhere a sidebar appears, or embed them in a page or post using a shortcode or the Pardot button on the Visual Editor's toolbar.
 
 == Installation ==
 
@@ -86,10 +86,6 @@ Go to Settings > Pardot Settings and click 'Reset Cache'. This should reinitiali
 
 == Changelog ==
 
-= 1.1.3 =
-
-Checks for mcrypt and falls back safely if not (fixes blank admin screen bug)
-
 = 1.1.2 =
 
 1. Clear cache when resetting all settings
@@ -118,10 +114,6 @@ Fix bug with form order in content
 Initial release.
 
 == Upgrade Notice ==
-
-= 1.1.3 =
-
-Fixes blank admin screen bug (by checking for mcrypt and falling back safely if not)
 
 = 1.1.2 =
 

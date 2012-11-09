@@ -28,7 +28,7 @@
  */
 
 define( 'PARDOT_PLUGIN_DIR', dirname( __FILE__ ) );
-define( 'PARDOT_PLUGIN_VER', '1.1.3' );
+define( 'PARDOT_PLUGIN_VER', '1.1.2' );
 
 if ( ! defined( 'PARDOT_FORM_INCLUDE_TYPE' ) )
 	define( 'PARDOT_FORM_INCLUDE_TYPE', 'iframe' );	// iframe or inline
