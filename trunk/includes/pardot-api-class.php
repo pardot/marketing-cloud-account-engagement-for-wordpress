@@ -202,11 +202,29 @@ class Pardot_API {
 	function get_forms( $args = array() ) {
 		$forms = false;
 		if ( $response = $this->get_response( 'form', $args ) ) {
+			
 			$forms = array();
-			for( $i = 0; $i < $response->result->total_results; $i++ ) {
+			
+			if ( $response->result->total_results >= 200 ) {
+				$limit = 200;
+			} else {
+				$limit = $response->result->total_results;
+			}
+			
+			for( $i = 0; $i < $limit; $i++ ) {
 				$form = $response->result->form[$i];
 				$forms[(int)$form->id] = $this->SimpleXMLElement_to_stdClass( $form );	
 			}
+			
+			if ( $response->result->total_results >= 200 ) {
+				if ( $response = $this->get_response( 'form', $args, 'result', 2 ) ) {
+					for( $i = 0; $i < ($response->result->total_results-200); $i++ ) {
+						$form = $response->result->form[$i];
+						$forms[(int)$form->id] = $this->SimpleXMLElement_to_stdClass( $form );	
+					}
+				}
+			}
+			
 		};
 		return $forms;
 	}
@@ -225,11 +243,29 @@ class Pardot_API {
 	function get_dynamicContent( $args = array() ) {
 		$dynamicContents = false;
 		if ( $response = $this->get_response( 'dynamicContent', $args ) ) {
+			
 			$dynamicContents = array();
-			for( $i = 0; $i < $response->result->total_results; $i++ ) {
+			
+			if ( $response->result->total_results >= 200 ) {
+				$limit = 200;
+			} else {
+				$limit = $response->result->total_results;
+			}
+			
+			for( $i = 0; $i < $limit; $i++ ) {
 				$dynamicContent = $response->result->dynamicContent[$i];
 				$dynamicContents[(int)$dynamicContent->id] = $this->SimpleXMLElement_to_stdClass( $dynamicContent );
 			}
+			
+			if ( $response->result->total_results >= 200 ) {
+				if ( $response = $this->get_response( 'form', $args, 'result', 2 ) ) {
+					for( $i = 0; $i < ($response->result->total_results-200); $i++ ) {
+						$dynamicContent = $response->result->dynamicContent[$i];
+						$dynamicContents[(int)$dynamicContent->id] = $this->SimpleXMLElement_to_stdClass( $dynamicContent );	
+					}
+				}
+			}
+			
 		};
 		return $dynamicContents;
 	}
@@ -328,7 +364,7 @@ x	 */
 	 *
 	 * @since 1.0.0
 	 */
-	function get_response( $item_type, $args = array(), $property = 'result' ) {
+	function get_response( $item_type, $args = array(), $property = 'result', $paged=1 ) {
 		$this->error = false;
 
 		if ( ! $this->has_auth() ) {
@@ -346,7 +382,7 @@ x	 */
 				'api_key' => $this->api_key,
 				// Here for Pardot root-level debugging only
 				//'act_as_user' => 'user@example.com',
-				'output' => 'mobile'
+				'offset' => $paged > 1 ? ($paged-1)*200 : 0
 			)
 		);		
 				
