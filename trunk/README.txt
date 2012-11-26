@@ -125,6 +125,12 @@ Initial release.
 
 == Upgrade Notice ==
 
+= 1.1.4 =
+
+1. Fix TinyMCE modal bug when no forms or dynamic content is present
+1. Support for 200+ forms and dynamic content items
+1. Other minor checks
+
 = 1.1.3 =
 
 Fixes blank admin screen bug (by checking for mcrypt and falling back safely if not)
