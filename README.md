@@ -69,6 +69,11 @@ Go to Settings > Pardot Settings and click 'Reset Cache'. This should reinitiali
 
 ## Changelog ##
 
+### 1.1.4 ###
+1. Fix TinyMCE modal bug when no forms or dynamic content is present
+1. Add support for 200+ forms
+1. Other minor checks
+
 ### 1.1.3 ###
 Checks for mcrypt and falls back safely if not (fixes blank admin screen bug)
 
