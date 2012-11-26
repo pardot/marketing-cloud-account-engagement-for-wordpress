@@ -222,7 +222,7 @@ class Pardot_Plugin {
 			/**
 			 * Grab link text so it can be translated seperately.
 			 */
-			$link_text = __( 'create one', 'pardot' );
+			$link_text = __( 'create some', 'pardot' );
 
 			/**
 			 * Assemble the link for where Pardot dynamicContents can be defined.
@@ -232,7 +232,7 @@ class Pardot_Plugin {
 			/**
 			 * Assemble the link for where Pardot dynamicContents can be defined.
 			 */
-			$error_msg = __( 'It looks like you don\'t have any Dynamic Content set up yet. Please %s.', 'pardot' );
+			$error_msg = __( '<br />It looks like you don\'t have any Dynamic Content set up yet. Please %s.', 'pardot' );
 
 			/**
 			 * Insert the link into the error message.
@@ -288,7 +288,9 @@ class Pardot_Plugin {
 			/**
 			 * Assemble an option where the value is the WordPress [pardot-form] shortcode to insert into TinyMCE
 			 */
-			$html[] = "<option value=\"[pardot-form id=&quot;{$form->id}&quot; title=&quot;{$form->name}&quot;]\">{$form->name}</option>";
+			if ( isset($form->id) ) {
+				$html[] = "<option value=\"[pardot-form id=&quot;{$form->id}&quot; title=&quot;{$form->name}&quot;]\">{$form->name}</option>";
+			}	
 		}
 		$html[] = '</select>';
 

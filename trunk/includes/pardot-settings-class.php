@@ -667,7 +667,9 @@ HTML;
 			foreach ( $campaigns as $campaign => $data ) {
 				$value = esc_attr( $campaign );
 				$selected = selected( $selected_value, $value, false );
-				$campaign_name = esc_html( $data->name );
+				if ( isset($data->name) ) {
+					$campaign_name = esc_html( $data->name );
+				}	
 				$html[] = "<option {$selected} value=\"{$value}\">{$campaign_name}</option>";
 			}
 			$html[] = '</select></div>';

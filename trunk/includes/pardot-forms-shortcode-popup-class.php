@@ -65,10 +65,10 @@ CSS;
 var PardotShortcodePopup = {
 	init:function() {},
 	insert:function() {
-		if ( jQuery('#formshortcode').val() != '0' ) {
+		if ( ( jQuery('#formshortcode').length != 0 ) && ( jQuery('#formshortcode').val() != '0' ) ) {
 			tinyMCEPopup.editor.execCommand('mceInsertContent',false,jQuery('#formshortcode').val());
 		}
-		if ( jQuery('#dcshortcode').val() != '0' ) {
+		if ( ( jQuery('#dcshortcode').length != 0 ) && ( jQuery('#dcshortcode').val() != '0' ) ) {
 			tinyMCEPopup.editor.execCommand('mceInsertContent',false,jQuery('#dcshortcode').val());
 		}
 		tinyMCEPopup.close();

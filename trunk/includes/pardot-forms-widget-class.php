@@ -363,11 +363,14 @@ HTML;
 				/**
 				 * For the selected value, assign $selected to be ' selected="selected"' for use in the <option> tag.
 				 */
-				$selected = selected( $instance['form_id'], $form->id, false );
-				/**
-				 * Add an array element containing the HTML for each option
-				 */
-				$options[] = "<option value=\"{$form->id}\"{$selected}>{$form->name}</option>";
+				if ( isset($form->id) ) {
+					$selected = selected( $instance['form_id'], $form->id, false );
+					
+					/**
+					 * Add an array element containing the HTML for each option
+					 */
+						$options[] = "<option value=\"{$form->id}\"{$selected}>{$form->name}</option>";
+				}
 			}
 
 			/**

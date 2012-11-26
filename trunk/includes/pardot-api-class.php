@@ -160,7 +160,9 @@ class Pardot_API {
 			$campaigns = array();
 			for( $i = 0; $i < $response->result->total_results; $i++ ) {
 				$campaign = (object)$response->result->campaign[$i];
-				$campaigns[(int)$campaign->id] = $this->SimpleXMLElement_to_stdClass( $campaign );
+				if ( isset($campaign->id) ) {
+					$campaigns[(int)$campaign->id] = $this->SimpleXMLElement_to_stdClass( $campaign );
+				}	
 			}
 		}
 		return $campaigns;
@@ -203,7 +205,7 @@ class Pardot_API {
 			$forms = array();
 			for( $i = 0; $i < $response->result->total_results; $i++ ) {
 				$form = $response->result->form[$i];
-				$forms[(int)$form->id] = $this->SimpleXMLElement_to_stdClass( $form );
+				$forms[(int)$form->id] = $this->SimpleXMLElement_to_stdClass( $form );	
 			}
 		};
 		return $forms;
@@ -341,7 +343,10 @@ x	 */
 		$args = array_merge( $args, 
 			array( 
 				'user_key' => $this->user_key,
-				'api_key' => $this->api_key 
+				'api_key' => $this->api_key,
+				// Here for Pardot root-level debugging only
+				//'act_as_user' => 'user@example.com',
+				'output' => 'mobile'
 			)
 		);		
 				
@@ -358,9 +363,14 @@ x	 */
 				'body'          => $args
 			), $args )
 		);
-				
-		$args['email'] = urlencode( $args['email'] );
-		$args['password'] = urlencode( $args['password'] );
+		
+		if ( isset($args['email']) ) {	
+			$args['email'] = urlencode( $args['email'] );
+		}
+		
+		if ( isset($args['password']) ) {	
+			$args['password'] = urlencode( $args['password'] );
+		}
 				
 		$response = false;
 		if( wp_remote_retrieve_response_code( $http_response ) == 200 ) {
