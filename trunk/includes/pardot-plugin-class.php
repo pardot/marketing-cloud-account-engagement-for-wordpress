@@ -117,6 +117,11 @@ class Pardot_Plugin {
 		 * Listen for AJAX post back for the dynamic content's shortcode selector.
 		 */
 		add_action( 'wp_ajax_get_pardot_dynamicContent_shortcode_select_html', array( $this, 'wp_ajax_get_pardot_dynamicContent_shortcode_select_html' ) );
+		
+		/**
+		 * Listen for AJAX post back for the reload button.
+		 */
+		add_action( 'wp_ajax_popup_reset_cache',  array( $this, 'wp_ajax_popup_reset_cache' ) );
 	}
 
 	/**
@@ -249,6 +254,21 @@ class Pardot_Plugin {
 		 * And we're done.  Don't fall through and let WordPress echo a '0'.
 		 */
 		die();
+	}
+	
+	/**
+	 * AJAX function used to clear the cache in the popups.
+	 *
+	 * @since 1.1.5
+	 */
+	
+	function wp_ajax_popup_reset_cache() {
+		
+		delete_transient('pardot_forms');
+		delete_transient('pardot_dynamicContent');		
+				
+		die();
+		
 	}
 
 	/**
