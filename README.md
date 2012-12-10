@@ -79,6 +79,13 @@ Go to Settings > Pardot Settings and click 'Reset Cache'. This should reinitiali
 
 ## Changelog ##
 
+### 1.1.5 ###
+
+1. Add some helpful links to the Reset Cache button
+2. Minor UI tweaks
+3. Updated the Pardot logos
+4. Updated screenshots for 3.5
+
 ### 1.1.4 ###
 1. Fix TinyMCE modal bug when no forms or dynamic content is present
 1. Support for 200+ forms and dynamic content items

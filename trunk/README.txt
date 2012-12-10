@@ -132,6 +132,13 @@ Initial release.
 
 == Upgrade Notice ==
 
+= 1.1.5 =
+
+1. Add some helpful links to the Reset Cache button
+2. Minor UI tweaks
+3. Updated the Pardot logos
+4. Updated screenshots for 3.5
+
 = 1.1.3 =
 
 Fixes blank admin screen bug (by checking for mcrypt and falling back safely if not)
