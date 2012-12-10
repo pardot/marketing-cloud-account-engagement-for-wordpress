@@ -411,23 +411,35 @@ HTML;
 			 */
 			$help_text = __( 'If some of your form is cut off or the styling isn\'t quite right, please read our %s.', 'pardot' );
 			$help_text = sprintf( $help_text, $help_link );
+			
+			/**
+			 * Create link to Settings Page
+			 */
+			$pardot_settings_url = admin_url( '/options-general.php?page=pardot' );
+			$cache_text = __( '<strong>Not seeing something you added recently in Pardot?</strong> Please click the Clear Cache button on the %s.', 'pardot' );
+			$cache_link = sprintf( '<a href="%s" target="_parent">%s</a>', $pardot_settings_url, 'Pardot Settings Page' );
+			$cache_text = sprintf( $cache_text, $cache_link );
 
 			/**
 			 * Create the HTML for displaying the select of Pardot forms
 			 */
 			$html = <<<HTML
-<p><label for="{$html_id}">{$prompt}</label><select id="{$html_id}" name="{$html_name}">{$options}</select></p>
-<p>{$help_text}</p>
+<p><label for="{$html_id}">{$prompt}</label><select id="{$html_id}" name="{$html_name}" style="max-width:100%">{$options}</select></p>
 HTML;
 		}
 		
 		if ( isset( $instance[ 'title' ] ) ) {
 			$title = $instance[ 'title' ];
 		} else {
-			$title = __( 'New title', 'text_domain' );
+			$title = __( '', 'text_domain' );
 		}
 		
 		$html .= '<p><label for="' . $this->get_field_id( "title" ) . '">' . __( 'Title:' ) . '</label><input class="widefat" id="' . $this->get_field_id( "title" ) . '" name="' . $this->get_field_name( "title" ) . '" type="text" value="' . esc_attr( $title ) . '" /></p>';
+		
+		$html .= <<<HTML
+<p><small>{$help_text}</small></p>
+<p><small>{$cache_text}</small></p>
+HTML;
 		
 		/**
 		 * Display whatever HTML is appropriate; error message help or list of forms.
@@ -727,12 +739,21 @@ HTML;
 			 * Create a variable for prompting the user to be used in the HEREDOC
 			 */
 			$prompt = __( 'Select Dynamic Content:', 'pardot' );
+						
+			/**
+			 * Create link to Settings Page
+			 */
+			$pardot_settings_url = admin_url( '/options-general.php?page=pardot' );
+			$cache_text = __( '<strong>Not seeing something you added recently in Pardot?</strong> Please click the Clear Cache button on the %s.', 'pardot' );
+			$cache_link = sprintf( '<a href="%s" target="_parent">%s</a>', $pardot_settings_url, 'Pardot Settings Page' );
+			$cache_text = sprintf( $cache_text, $cache_link );
 
 			/**
 			 * Create the HTML for displaying the select of Pardot forms
 			 */
 			$html = <<<HTML
-<p><label for="{$html_id}">{$prompt}</label><select id="{$html_id}" name="{$html_name}">{$options}</select></p>
+<p><label for="{$html_id}">{$prompt}</label><select id="{$html_id}" name="{$html_name}" style="max-width:100%">{$options}</select></p>
+<p><small>{$cache_text}</small></p>
 HTML;
 		}
 		

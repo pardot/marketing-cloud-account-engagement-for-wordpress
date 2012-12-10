@@ -4,7 +4,7 @@ Donate link: http://pardot.com
 Tags: pardot, marketing automation, forms, tracking, web tracking
 Requires at least: 3.4
 Tested up to: 3.4.1
-Stable tag: 1.1.4
+Stable tag: 1.1.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -22,16 +22,6 @@ Say hello to marketing automation simplicity! With a single login, your self-hos
 1. Select your campaign (for tracking code usage).
 
 == Frequently Asked Questions ==
-
-= How do I add the tracking code? =
-
-Once you add your credentials to the Settings page and click "Save Settings" (which authenticates you), a dropdown of your campaigns will appear. Select the one you want to use for your tracking code, and click "Save Settings" again. The tracking code will automatically be added to the footer of every page.
-
-= Why isn't the tracking code appearing on some or any of my pages? =
-
-Make sure you've authenticated successfully, first of all, then make sure you've selected a campaign on the Settings page and clicked "Save Settings".
-
-If you've done this, it may be that your current template isn't coded well. This plugin hooks into the `wp_footer` action, which *should* be called every time a non-admin page loads. If you don't see this anywhere in your theme (a common place is your theme's `footer.php` file), you'll need to add `<?php wp_footer(); ?>` appropriately.
 
 = How can I use the shortcodes without the Visual Editor? =
 
@@ -96,6 +86,13 @@ Go to Settings > Pardot Settings and click 'Reset Cache'. This should reinitiali
 
 == Changelog ==
 
+= 1.1.5 =
+
+1. Add some helpful links to the Reset Cache button
+2. Minor UI tweaks
+3. Updated the Pardot logos
+4. Updated screenshots for 3.5
+
 = 1.1.4 =
 
 1. Fix TinyMCE modal bug when no forms or dynamic content is present
@@ -134,12 +131,6 @@ Fix bug with form order in content
 Initial release.
 
 == Upgrade Notice ==
-
-= 1.1.4 =
-
-1. Fix TinyMCE modal bug when no forms or dynamic content is present
-1. Support for 200+ forms and dynamic content items
-1. Other minor checks
 
 = 1.1.3 =
 
