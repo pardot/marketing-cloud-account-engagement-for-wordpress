@@ -287,6 +287,9 @@ HTML;
 			$instance['form_id'] = $new_instance['form_id'];
 			
 		$instance['title'] = strip_tags( $new_instance['title'] );	
+		$instance['height'] = strip_tags( $new_instance['height'] );	
+		$instance['width'] = strip_tags( $new_instance['width'] );	
+		$instance['class'] = strip_tags( $new_instance['class'] );	
 
 		return $instance;
 	}
@@ -435,6 +438,34 @@ HTML;
 		}
 		
 		$html .= '<p><label for="' . $this->get_field_id( "title" ) . '">' . __( 'Title:' ) . '</label><input class="widefat" id="' . $this->get_field_id( "title" ) . '" name="' . $this->get_field_name( "title" ) . '" type="text" value="' . esc_attr( $title ) . '" /></p>';
+		
+		$html .= '<p><strong>Customize iframe Parameters</strong></p>';
+		
+		if ( isset( $instance[ 'height' ] ) ) {
+			$height = $instance[ 'height' ];
+		} else {
+			$height = __( '', 'text_domain' );
+		}
+		
+		$html .= '<p><label for="' . $this->get_field_id( "height" ) . '">' . __( 'Height:' ) . '</label><input id="' . $this->get_field_id( "height" ) . '" name="' . $this->get_field_name( "height" ) . '" type="text" value="' . esc_attr( $height ) . '" size="6" />';
+		
+		if ( isset( $instance[ 'width' ] ) ) {
+			$width = $instance[ 'width' ];
+		} else {
+			$width = __( '', 'text_domain' );
+		}
+		
+		$html .= '<label for="' . $this->get_field_id( "width" ) . '">' . __( 'Width:' ) . '</label><input id="' . $this->get_field_id( "width" ) . '" name="' . $this->get_field_name( "width" ) . '" type="text" value="' . esc_attr( $width ) . '" size="6" /></p>';
+		
+		if ( isset( $instance[ 'class' ] ) ) {
+			$class = $instance[ 'class' ];
+		} else {
+			$class = __( '', 'text_domain' );
+		}
+		
+		$html .= '<p><label for="' . $this->get_field_id( "class" ) . '">' . __( 'Class:' ) . '</label><input class="widefat" id="' . $this->get_field_id( "class" ) . '" name="' . $this->get_field_name( "class" ) . '" type="text" value="' . esc_attr( $class ) . '" /></p>';
+		
+		
 		
 		$html .= <<<HTML
 <p><small>{$help_text}</small></p>

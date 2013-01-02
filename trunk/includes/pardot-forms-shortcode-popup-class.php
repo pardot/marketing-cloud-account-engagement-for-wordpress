@@ -152,6 +152,10 @@ HTML;
 		 */
 		$formsec = __( 'Forms', 'pardot' );
 		$labelform = __( 'Select a form to insert', 'pardot' );
+		$formcust = __( 'Custom iframe Parameters', 'pardot' );
+		$labelformh = __( 'Height', 'pardot' );
+		$labelformw = __( 'Width', 'pardot' );
+		$labelformc = __( 'Class', 'pardot' );
 		$dcsec = __( 'Dynamic Content', 'pardot' );
 		$labeldc = __( 'Select dynamic content to insert', 'pardot' );
 		$labeldcalt = __( 'Default content to show JS-disabled users', 'pardot' );
@@ -175,6 +179,15 @@ HTML;
 			<img class="spinner" src="{$spinner_url}" height="16" weight="16" alt="Time waits for no man.">
 		</span>
 		<br clear="all" />
+		<h4>{$formcust}</h4>
+		<label for="formh">{$labelformh}</label>:
+		<input type="text" size="6" id="formh" name="formh" />
+		<label for="formw">{$labelformw}</label>:
+		<input type="text" size="6" id="formw" name="formw" />
+		<label for="formc">{$labelformc}</label>:
+		<input type="text" id="formhc" name="formc"/>
+		<br clear="all" />
+		<br />
 		<h2>{$dcsec}</h2>
 		<label for="shortcode-dc">{$labeldc}</label>:
 		<span id="pardot-dc-shortcode-select">
