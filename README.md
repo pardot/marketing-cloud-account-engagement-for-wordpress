@@ -30,9 +30,11 @@ Two simple shortcodes are available for use.
 
 #### Form Shortcode ####
 
-`[pardot-form id="{Form ID}" title="{Form Name}"]`
+`[pardot-form id="{Form ID}" title="{Form Name}" height="500px"]`
 
-Use `[pardot-form]` with at least the `id` parameter. You can also include the `title` parameter that is included when using the toolbar button, but it's not required for display. For instance, `[pardot-form id="1" title="Title"]` renders my Pardot form with an ID of 1.
+Use `[pardot-form]` with at least the `id` parameter. You can include the `title` parameter that is included when using the toolbar button, but it's not required for display. For instance, `[pardot-form id="1" title="Title"]` renders my Pardot form with an ID of 1.
+
+You can include a height explicitly in pixels or percentage, else it defaults to 500px. For instance `[pardot-form id="1" title="Title" height="300px"]` will make the iframe 300px tall. You could also do something like `[pardot-form id="1" title="Title" height="100%"]`.
 
 #### Dynamic Content Shortcode ####
 
