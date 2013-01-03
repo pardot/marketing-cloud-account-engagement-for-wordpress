@@ -439,7 +439,7 @@ HTML;
 		
 		$html .= '<p><label for="' . $this->get_field_id( "title" ) . '">' . __( 'Title:' ) . '</label><input class="widefat" id="' . $this->get_field_id( "title" ) . '" name="' . $this->get_field_name( "title" ) . '" type="text" value="' . esc_attr( $title ) . '" /></p>';
 		
-		$html .= '<p><strong>Customize iframe Parameters</strong></p>';
+		$html .= '<p><strong>Optional iframe Parameters</strong></p>';
 		
 		if ( isset( $instance[ 'height' ] ) ) {
 			$height = $instance[ 'height' ];

@@ -1,10 +1,10 @@
 === Pardot ===
-Contributors: NewClarity, MikeSchinkel, cliffseal
+Contributors: cliffseal, NewClarity, MikeSchinkel 
 Donate link: http://pardot.com
-Tags: pardot, marketing automation, forms, tracking, web tracking
+Tags: pardot, marketing automation, forms, dynamic content, tracking, web tracking
 Requires at least: 3.4
-Tested up to: 3.4.1
-Stable tag: 1.1.5
+Tested up to: 3.5
+Stable tag: 1.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -29,11 +29,19 @@ Two simple shortcodes are available for use.
 
 = Form Shortcode =
 
-`[pardot-form id="{Form ID}" title="{Form Name}" height="500px"]`
+`[pardot-form id="{Form ID}" title="{Form Name}" class="" width="100%" height="500"]`
 
-Use `[pardot-form]` with at least the `id` parameter. You can also include the `title` parameter that is included when using the toolbar button, but it's not required for display. For instance, `[pardot-form id="1" title="Title"]` renders my Pardot form with an ID of 1.
+Use `[pardot-form]` with at least the `id` parameter. For instance, `[pardot-form id="1" title="Title"]` renders my Pardot form with an ID of 1.
 
-You can include a height explicitly in pixels or percentage, else it defaults to 500px. For instance `[pardot-form id="1" title="Title" height="300px"]` will make the iframe 300px tall. You could also do something like `[pardot-form id="1" title="Title" height="100%"]`.
+Optional parameters:
+
+The `title` parameter is included when using the toolbar button, but it's not required for display. There is no default.
+
+The `class` parameter allows you to add additonal classes to the iframe element. There is no default, but the class `pardotform` is now automatically added, regardless of any additional classes.
+
+The `width` parameter will set the width of the iframe in pixels or percentage. For example, "500", "500px", and "80%" are all valid. The default is 100%.
+
+The `height` parameter will set the height of the iframe in pixels only. For example, "500" or "500px" are valid. The default is 500px.
 
 = Dynamic Content Shortcode =
 
@@ -80,13 +88,18 @@ Go to Settings > Pardot Settings and click 'Reset Cache'. This should reinitiali
 
 1. Settings area
 1. Pardot button in the Visual Editor toolbar
-1. Choose from any form
+1. Choose from any form or Dynamic Content
 1. Use forms in a widget
 1. Use dynamic content in a widget
 1. A form widget (with corrected styling)
 1. A page can have two forms! Here, one is in the body and one in a widget.
 
 == Changelog ==
+
+= 1.2 =
+
+1. Added ability to specify height, width, and class on the form
+1. Added class 'pardotform' to every iframe for easier styling
 
 = 1.1.5 =
 
@@ -134,12 +147,9 @@ Initial release.
 
 == Upgrade Notice ==
 
-= 1.1.5 =
+= 1.2 =
 
-1. Add some helpful links to the Reset Cache button
-2. Minor UI tweaks
-3. Updated the Pardot logos
-4. Updated screenshots for 3.5
+Thanks to your feedback, we've added the ability to specify height, width, and additional classes on the form iframes; the 'pardotform' class is also automatically added to every form iframe for easier styling
 
 = 1.1.3 =
 
