@@ -796,6 +796,11 @@ HTML;
 		
 		$html .= '<p><label for="' . $this->get_field_id( "title" ) . '">' . __( 'Title:' ) . '</label><input class="widefat" id="' . $this->get_field_id( "title" ) . '" name="' . $this->get_field_name( "title" ) . '" type="text" value="' . esc_attr( $title ) . '" /></p>';
 
+        if ( is_active_widget(false, false, $this->id_base, true) ) {
+            wp_register_script( 'pddc', plugins_url( 'js/asyncdc.min.js' , dirname(__FILE__) ), 'jquery', false, true);
+            wp_enqueue_script( 'pddc' );
+        }
+
 		/**
 		 * Display whatever HTML is appropriate; error message help or list of forms.
 		 */

@@ -517,6 +517,7 @@ class Pardot_Plugin {
 	 * @since 1.0.0
 	 */
 	function wp_footer() {
+        pardot_dc_async_script();
 		the_pardot_tracking_js();
 	}
 
@@ -547,7 +548,7 @@ class Pardot_Plugin {
 	 * @since 1.1.0
 	 */
 	function dynamic_content_shortcode( $atts ) {
-		/**
+        /**
 		 * Translate from 'id' to 'dynamicContent_id' which is what $this->get_dynamic_content_body() uses.
 		 */
 		$atts['dynamicContent_id'] = isset( $atts['id'] ) ? $atts['id'] : 0;
@@ -849,10 +850,17 @@ class Pardot_Plugin {
 				 */
 				$dynamicContent = $dynamicContents[$dynamicContent_id];
 				$dynamicContent_html = $dynamicContent->embedCode;
+                $dynamicContent_url = $dynamicContent->embedUrl;
 				$dynamicContent_default = $dynamicContent->baseContent;
 			}
+
+            if ( $dynamicContent_url ) {
+                $newdcembed = "<div data-dc-url='" . $dynamicContent_url . "'></div>";
+            } else {
+                $newdcembed = $dynamicContent_html;
+            }
 			
-			set_transient( 'pardot_dynamicContent_html_' . $dynamicContent_id, $dynamicContent_html . "<noscript>" . $dynamicContent_default . "</noscript>", self::$cache_timeout );
+			set_transient( 'pardot_dynamicContent_html_' . $dynamicContent_id, $newdcembed . "<noscript>" . $dynamicContent_default . "</noscript>", self::$cache_timeout );
 			
 		}	
 									
@@ -1028,4 +1036,3 @@ class Pardot_Plugin {
  * This instantiation can only be done once (see it's __construct() to understand why.)
  */
 new Pardot_Plugin();
-
