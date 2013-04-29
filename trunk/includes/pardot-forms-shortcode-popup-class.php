@@ -85,7 +85,20 @@ var PardotShortcodePopup = {
 			tinyMCEPopup.editor.execCommand('mceInsertContent',false,formval);
 		}
 		if ( ( jQuery('#dcshortcode').length != 0 ) && ( jQuery('#dcshortcode').val() != '0' ) ) {
-			tinyMCEPopup.editor.execCommand('mceInsertContent',false,jQuery('#dcshortcode').val());
+		    var dcval = jQuery('#dcshortcode').val();
+			var dcheight = jQuery('#dch').val();
+			if ( dcheight ) {
+				dcval = dcval.replace('pardot-dynamic-content', 'pardot-dynamic-content height="'+dcheight+'"')
+			}
+			var dcwidth = jQuery('#dcw').val();
+			if ( dcwidth ) {
+				dcval = dcval.replace('pardot-dynamic-content', 'pardot-dynamic-content width="'+dcwidth+'"')
+			}
+			var dcclass = jQuery('#dcc').val();
+			if ( dcclass ) {
+				dcval = dcval.replace('pardot-dynamic-content', 'pardot-dynamic-content class="'+dcclass+'"')
+			}
+			tinyMCEPopup.editor.execCommand('mceInsertContent',false,dcval);
 		}
 		tinyMCEPopup.close();
 	}
@@ -166,9 +179,13 @@ HTML;
 		$formsec = __( 'Forms', 'pardot' );
 		$labelform = __( 'Select a form to insert', 'pardot' );
 		$formcust = __( 'Optional iframe Parameters', 'pardot' );
+        $dccust = __( 'Optional iframe Parameters', 'pardot' );
 		$labelformh = __( 'Height', 'pardot' );
 		$labelformw = __( 'Width', 'pardot' );
 		$labelformc = __( 'Class', 'pardot' );
+        $labeldch = __( 'Height', 'pardot' );
+        $labeldcw = __( 'Width', 'pardot' );
+        $labeldcc = __( 'Class', 'pardot' );
 		$dcsec = __( 'Dynamic Content', 'pardot' );
 		$labeldc = __( 'Select dynamic content to insert', 'pardot' );
 		$labeldcalt = __( 'Default content to show JS-disabled users', 'pardot' );
@@ -207,6 +224,14 @@ HTML;
 			<input type="hidden" id="shortcodedc">
 			<img class="spinner" src="{$spinner_url}" height="16" weight="16" alt="Time waits for no man.">
 		</span>
+		<br clear="all" />
+		<h4>{$dccust}</h4>
+		<label for="dch">{$labeldch}</label>:
+		<input type="text" size="6" id="dch" name="dch" />
+		<label for="dcw">{$labeldcw}</label>:
+		<input type="text" size="6" id="dcw" name="dcw" />
+		<label for="dcc">{$labeldcc}</label>:
+		<input type="text" id="dcc" name="dcc"/>
 	</div>
 	<div class="mceActionPanel">
 		<span class="insert-button">

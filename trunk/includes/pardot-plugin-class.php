@@ -837,10 +837,8 @@ class Pardot_Plugin {
 		 * Grab the dynamicContent_id from the args passed.
 		 */
 		$dynamicContent_id = $args['dynamicContent_id'];
-		
-		$dynamicContent_html = get_transient( 'pardot_dynamicContent_html_' . $dynamicContent_id );
-		
-		if ( ! $dynamicContent_html ) {
+
+        if ( false === ( $dynamicContent_html = get_transient( 'pardot_dynamicContent_html_' . $dynamicContent_id ) ) ) {
 		
 			$dynamicContents = get_pardot_dynamic_content();
 
@@ -855,14 +853,31 @@ class Pardot_Plugin {
 			}
 
             if ( $dynamicContent_url ) {
-                $newdcembed = "<div data-dc-url='" . $dynamicContent_url . "'></div>";
+                $dynamicContent_html = "<div data-dc-url='" . $dynamicContent_url . "' style='height:auto;width:auto;' class='pardotdc'>" . $dynamicContent_default . "</div>";
             } else {
-                $newdcembed = $dynamicContent_html;
+                $dynamicContent_html = $dynamicContent_html . "<noscript>" . $dynamicContent_default . "</noscript>";
             }
+
+			set_transient( 'pardot_dynamicContent_html_' . $dynamicContent_id, $dynamicContent_html, self::$cache_timeout );
 			
-			set_transient( 'pardot_dynamicContent_html_' . $dynamicContent_id, $newdcembed . "<noscript>" . $dynamicContent_default . "</noscript>", self::$cache_timeout );
-			
-		}	
+		} else {
+
+            $dynamicContent_html = get_transient( 'pardot_dynamicContent_html_' . $dynamicContent_id );
+
+        }
+
+        if ( ! empty( $args['height'] ) ) {
+            /**
+             * If 'inline' add to the <div> using style
+             */
+            $dynamicContent_html = str_replace( 'height:auto', "height:{$args['height']}", $dynamicContent_html );
+        }
+        if ( ! empty( $args['width'] ) ) {
+            $dynamicContent_html = str_replace( 'width:auto', "width:{$args['width']}", $dynamicContent_html );
+        }
+        if ( ! empty( $args['class'] ) ) {
+            $dynamicContent_html = str_replace( 'pardotdc', "pardotdc {$args['class']}", $dynamicContent_html );
+        }
 									
 		return $dynamicContent_html;
 			
