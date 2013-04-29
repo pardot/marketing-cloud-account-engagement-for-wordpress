@@ -10,7 +10,7 @@ Author: Mike Schinkel <mike@newclarity.net>
 				ed.windowManager.open({
 					file:url + '/pardot-forms-shortcode-popup.php',
 					width:420 + parseInt(ed.getLang('pardotformsshortcodeinsert.delta_width', 0)),
-					height:350 + parseInt(ed.getLang('pardotformsshortcodeinsert.delta_height', 0)),
+					height:420 + parseInt(ed.getLang('pardotformsshortcodeinsert.delta_height', 0)),
 					inline:1
 				},{
 					plugin_url:url

@@ -4,7 +4,7 @@ Donate link: http://pardot.com
 Tags: pardot, marketing automation, forms, dynamic content, tracking, web tracking
 Requires at least: 3.4
 Tested up to: 3.5
-Stable tag: 1.2
+Stable tag: 1.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -96,6 +96,10 @@ Go to Settings > Pardot Settings and click 'Reset Cache'. This should reinitiali
 
 == Changelog ==
 
+= 1.3 =
+
+1. Use new asynchronous loading for Dynamic Content
+
 = 1.2 =
 
 1. Added ability to specify height, width, and class on the form
@@ -146,6 +150,10 @@ Fix bug with form order in content
 Initial release.
 
 == Upgrade Notice ==
+
+= 1.3 =
+
+Load multiple pieces of Dynamic Content without a performance hit with our new asynchronous loading technique!
 
 = 1.2 =
 
