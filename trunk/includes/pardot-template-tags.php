@@ -1,4 +1,21 @@
 <?php
+
+if ( !function_exists('has_shortcode') ) {
+    function has_shortcode( $content, $tag ) {
+        if ( shortcode_exists( $tag ) ) {
+            preg_match_all( '/' . get_shortcode_regex() . '/s', $content, $matches, PREG_SET_ORDER );
+            if ( empty( $matches ) )
+                return false;
+
+            foreach ( $matches as $shortcode ) {
+                if ( $tag === $shortcode[2] )
+                    return true;
+            }
+        }
+        return false;
+    }
+}
+
 /**
  * Template Tag for Pardot Javascript Tracking Code.
  *
