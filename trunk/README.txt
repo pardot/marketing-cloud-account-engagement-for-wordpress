@@ -3,8 +3,8 @@ Contributors: cliffseal, NewClarity, MikeSchinkel
 Donate link: http://pardot.com
 Tags: pardot, marketing automation, forms, dynamic content, tracking, web tracking
 Requires at least: 3.4
-Tested up to: 3.5
-Stable tag: 1.3
+Tested up to: 3.6
+Stable tag: 1.3.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -37,7 +37,7 @@ Optional parameters:
 
 The `title` parameter is included when using the toolbar button, but it's not required for display. There is no default.
 
-The `class` parameter allows you to add additional classes to the iframe element. There is no default, but the class `pardotform` is now automatically added, regardless of any additional classes.
+The `class` parameter allows you to add additonal classes to the iframe element. There is no default, but the class `pardotform` is now automatically added, regardless of any additional classes.
 
 The `width` parameter will set the width of the iframe in pixels or percentage. For example, "500", "500px", and "80%" are all valid. The default is 100%.
 
@@ -45,25 +45,19 @@ The `height` parameter will set the height of the iframe in pixels only. For exa
 
 = Dynamic Content Shortcode =
 
-`[pardot-dynamic-content id="{Dynamic Content ID}" height="{height in px/%}" width="{width in px/%}" class="{additional classes}"]`
+`[pardot-dynamic-content id="{Dynamic Content ID}" default="{Non-JavaScript Content}"]`
 
 Use `[pardot-dynamic-content]` with at least the `id` parameter.
 
 The `default` parameter is used for accessibility. Whatever is placed here is wrapped in `<noscript>` tags and is shown only to users who have JavaScript disabled. By default, it will automatically be your "Default Content" as designated in Pardot. So, 
 
-`[pardot-dynamic-content id="1"]` 
+`[pardot-dynamic-content id="1" default="My default content."]` 
 
 would render something like:
 
-`<div data-dc-url="http://go.pardot.com/dcjs/99999/99/dc.js" style="height:auto;width:auto;" class="pardotdc">My default content.</div>`
+`<script type="text/javascript" src="http://go.pardot.com/dcjs/99999/99/dc.js"></script><noscript>My default content.</noscript>`
 
-...which would show the dynamic content to users with JavaScript enabled, and 'My default content' to users with it disabled.
-
-The `class` parameter allows you to add additional classes to the dynamic content element. There is no default, but the class `pardotdc` is now automatically added, regardless of any additional classes.
-
-The `width` parameter will set the width of the element in pixels or percentage. For example, "500px" and "80%" are valid. The default is "auto".
-
-The `height` parameter will set the height of the element in pixels or percentage. For example, "500px" and "80%" are valid. The default is "auto".
+...which would show the dynamic content to users with JavaScript enabled, and 'My default content' to users with it disabled. Note that, due to the way the WordPress Visual Editor works, HTML tags for the parameter will be URL encoded to avoid strange formatting.
 
 = How do I change my campaign? =
 
@@ -102,9 +96,17 @@ Go to Settings > Pardot Settings and click 'Reset Cache'. This should reinitiali
 
 == Changelog ==
 
+= 1.3.1 =
+
+Fixed a bug with `shortcode_exists` fatal error
+
+= 1.3.1 =
+
+Fixed a bug with `has_shortcode` fatal error
+
 = 1.3 =
 
-1. Use new asynchronous loading for Dynamic Content
+Use new asynchronous loading for Dynamic Content
 
 = 1.2 =
 
@@ -156,6 +158,10 @@ Fix bug with form order in content
 Initial release.
 
 == Upgrade Notice ==
+
+= 1.3.2 =
+
+1.3.2 fixes two fatal error bugs that were showing on install. With today's overall 1.3 update, you can now load multiple pieces of Dynamic Content without a performance hit with our new asynchronous loading technique!
 
 = 1.3 =
 
