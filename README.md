@@ -95,6 +95,23 @@ Go to Settings > Pardot Settings and click 'Reset Cache'. This should reinitiali
 
 ## Changelog ##
 
+### 1.3.4 ###
+
+Fixed a bug where tracking code might show the wrong ID.
+
+### 1.3.3 ###
+
+1. Accounts for a minor API change in the tracking code
+1. Adds support for 200+ campaigns
+
+### 1.3.1 ###
+
+Fixed a bug with `shortcode_exists` fatal error
+
+### 1.3.1 ###
+
+Fixed a bug with `has_shortcode` fatal error
+
 ### 1.3 ###
 
 1. Use new asynchronous loading for Dynamic Content
