@@ -154,7 +154,38 @@ class Pardot_API {
 	 *
 	 * @since 1.0.0
 	 */
-	function get_campaigns( $args = array() ) {
+
+    function get_campaigns( $args = array() ) {
+		$campaigns = false;
+		if ( $response = $this->get_response( 'campaign', $args ) ) {
+			$campaigns = array();
+            if ( $response->result->total_results >= 200 ) {
+                $limit = 200;
+            } else {
+                $limit = $response->result->total_results;
+            }
+
+            for( $i = 0; $i < $limit; $i++ ) {
+                $campaign = (object)$response->result->campaign[$i];
+                if ( isset($campaign->id) ) {
+                    $campaigns[(int)$campaign->id] = $this->SimpleXMLElement_to_stdClass( $campaign );
+                }
+            }
+
+            if ( $response->result->total_results >= 200 ) {
+                if ( $response = $this->get_response( 'campaign', $args, 'result', 2 ) ) {
+                    for( $i = 0; $i < ($response->result->total_results-200); $i++ ) {
+                        $campaign = $response->result->campaign[$i];
+                        $campaigns[(int)$campaign->id] = $this->SimpleXMLElement_to_stdClass( $campaign );
+                    }
+                }
+            }
+
+		}
+		return $campaigns;
+	}
+
+	/*function get_campaigns( $args = array() ) {
 		$campaigns = false;
 		if ( $response = $this->get_response( 'campaign', $args ) ) {
 			$campaigns = array();
@@ -162,11 +193,11 @@ class Pardot_API {
 				$campaign = (object)$response->result->campaign[$i];
 				if ( isset($campaign->id) ) {
 					$campaigns[(int)$campaign->id] = $this->SimpleXMLElement_to_stdClass( $campaign );
-				}	
+				}
 			}
 		}
 		return $campaigns;
-	}
+	}*/
 
 	/**
 	 * Returns an account object from Pardot's API
