@@ -707,9 +707,9 @@ class Pardot_Plugin {
 								/**
 								 * Add it.
 								 */
-								$form_html = str_replace( 'iframe', "iframe class=\"pardotform {$class}\"", $form_html );
+								$form_html = str_replace( '<iframe', "<iframe class=\"pardotform {$class}\"", $form_html );
 							} else {
-								$form_html = str_replace( 'iframe', "iframe class=\"pardotform\"", $form_html );
+								$form_html = str_replace( '<iframe', "<iframe class=\"pardotform\"", $form_html );
 							}
 						} else {
 							/**

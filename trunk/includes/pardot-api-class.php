@@ -175,8 +175,10 @@ class Pardot_API {
             if ( $response->result->total_results >= 200 ) {
                 if ( $response = $this->get_response( 'campaign', $args, 'result', 2 ) ) {
                     for( $i = 0; $i < ($response->result->total_results-200); $i++ ) {
-                        $campaign = $response->result->campaign[$i];
-                        $campaigns[(int)$campaign->id] = $this->SimpleXMLElement_to_stdClass( $campaign );
+                        $campaign = (object)$response->result->campaign[$i];
+                        if ( isset($campaign->id) ) {
+                            $campaigns[(int)$campaign->id] = $this->SimpleXMLElement_to_stdClass( $campaign );
+                        }
                     }
                 }
             }
@@ -415,7 +417,7 @@ x	 */
 				//'act_as_user' => 'test@example.com',
 				'offset' => $paged > 1 ? ($paged-1)*200 : 0
 			)
-		);		
+		);
 				
 		$http_response = wp_remote_request(
 			$this->_get_url( $item_type, $args ),

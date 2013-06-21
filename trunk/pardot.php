@@ -1,13 +1,13 @@
 <?php
 /*
  * Plugin Name: Pardot
- * Description: Connect your WordPress to Pardot Marketing Automation with Shortcode and Widgets for campaign tracking and quick form access.
- * Author: Pardot LLC
+ * Description: Connect your WordPress to Pardot with shortcode and widgets for campaign tracking, quick form access, and dynamic content.
+ * Author: Pardot
  * Author URI: http://www.pardot.com
  * Plugin URI: http://wordpress.org/extend/plugins/pardot/
- * Developer: Mike Schinkel of NewClarity LLC
- * Developer URI: http://newclarity.net
- * Version: 1.3.4
+ * Developer: Cliff Seal of Pardot and Mike Schinkel of NewClarity LLC
+ * Developer URI: http://pardot.com
+ * Version: 1.3.5
  * License: GPLv2
  *
  * Copyright 2012 Pardot LLC
@@ -28,7 +28,7 @@
  */
 
 define( 'PARDOT_PLUGIN_DIR', dirname( __FILE__ ) );
-define( 'PARDOT_PLUGIN_VER', '1.3.4' );
+define( 'PARDOT_PLUGIN_VER', '1.3.5' );
 
 if ( ! defined( 'PARDOT_FORM_INCLUDE_TYPE' ) )
 	define( 'PARDOT_FORM_INCLUDE_TYPE', 'iframe' );	// iframe or inline

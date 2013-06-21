@@ -4,7 +4,7 @@ Donate link: http://pardot.com
 Tags: pardot, marketing automation, forms, dynamic content, tracking, web tracking
 Requires at least: 3.4
 Tested up to: 3.6
-Stable tag: 1.3.4
+Stable tag: 1.3.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -96,6 +96,12 @@ Go to Settings > Pardot Settings and click 'Reset Cache'. This should reinitiali
 
 == Changelog ==
 
+= 1.3.5 =
+
+1. Fixed a bug where pardotform class might be applied to closing iframe tag (thanks palpatine1976!)
+1. Optimize code to remove some debug messages
+1. Improve campaign retrieval for over 200 campaigns
+
 = 1.3.4 =
 
 Fixed a bug where tracking code might show the wrong ID.
@@ -167,6 +173,10 @@ Fix bug with form order in content
 Initial release.
 
 == Upgrade Notice ==
+
+= 1.3.5 =
+
+This update fixes a bug where pardotform class might be applied to closing iframe tag (thanks palpatine1976!), optimizes code to remove some debug messages, and improves campaign retrieval for over 200 campaigns. <3
 
 = 1.3.4 =
 

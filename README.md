@@ -95,6 +95,12 @@ Go to Settings > Pardot Settings and click 'Reset Cache'. This should reinitiali
 
 ## Changelog ##
 
+### 1.3.5 ###
+
+1. Fixed a bug where pardotform class might be applied to closing iframe tag (thanks palpatine1976!)
+1. Optimize code to remove some debug messages
+1. Improve campaign retrieval for over 200 campaigns
+
 ### 1.3.4 ###
 
 Fixed a bug where tracking code might show the wrong ID.
