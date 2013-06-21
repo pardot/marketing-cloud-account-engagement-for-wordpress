@@ -671,45 +671,7 @@ class Pardot_Plugin {
 									$form_html = str_replace( 'iframe', "iframe height=\"{$height}\"", $form_html );
 								}
 							}
-							/**
-							 * If width is passed as a shortcode argument
-							 */
-							if ( ! empty( $atts['width'] ) ) {
-								/**
-								 * If width is passed as a shortcode argument
-								 */
-								$width = $atts['width'];
-								/**
-								 * Find it in the embedCode HTML returned by Pardot's API
-								 */
-								if ( preg_match( '#width="[^"]+"#', $form_html, $matches ) ) {
-									/**
-									 * And replace with width passed
-									 */
-									$form_html = str_replace( $matches[0], "width=\"{$width}\"", $form_html );
-								} else {
-									/**
-									 * Or just add to the iframe.
-									 */
-									$form_html = str_replace( 'iframe', "iframe width=\"{$width}\"", $form_html );
-								}
-							}
-							
-							/**
-							 * If class is passed as a shortcode argument
-							 */
-							if ( ! empty( $atts['class'] ) ) {
-								/**
-								 * If width is passed as a shortcode argument
-								 */
-								$class = $atts['class'];
-								/**
-								 * Add it.
-								 */
-								$form_html = str_replace( 'iframe', "iframe class=\"pardotform {$class}\"", $form_html );
-							} else {
-								$form_html = str_replace( 'iframe', "iframe class=\"pardotform\"", $form_html );
-							}
+
 						} else {
 							/**
 							 * But if it's INLINE then we need to do some work; extract URL from embed code
@@ -787,34 +749,6 @@ class Pardot_Plugin {
 					 */
 					$height_html = " style=\"height:{$args['height']}px\"";
 					$body_html = str_replace( '<div class="pardot-inline-form">', "<div class=\"pardot-inline-form\"{$height_html}>", $body_html );
-				}
-			}
-			if ( ! empty( $args['width'] ) ) {
-				/**
-				 * If "width" is passed via shortcode create HTML to insert in form's <div>
-				 */
-				if ( $is_iframe ) {
-					/**
-					 * If 'iframe' add to the <iframe>
-					 */
-					$body_html = preg_replace( '#( width="[^"]+")#', " width=\"{$args['width']}\"", $body_html );
-				} else {
-					/**
-					 * If 'inline' add to the <div> using style
-					 */
-					$width_html = " style=\"width:{$args['width']}px\"";
-					$body_html = str_replace( '<div class="pardot-inline-form">', "<div class=\"pardot-inline-form\"{$width_html}>", $body_html );
-				}
-			}
-			if ( ! empty( $args['class'] ) ) {
-				/**
-				 * If "width" is passed via shortcode create HTML to insert in form's <div>
-				 */
-				if ( $is_iframe ) {
-					/**
-					 * If 'iframe' add to the <iframe>
-					 */
-					$body_html = str_replace( ' class="pardotform"', " class=\"pardotform {$args['class']}\"", $body_html );
 				}
 			}
 		}

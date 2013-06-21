@@ -42,11 +42,8 @@ class _Pardot_Forms_Shortcode_Popup {
 #pardot-forms-shortcode-popup h1 {font-size:1.5em;margin-bottom:0.5em;}
 #pardot-forms-shortcode-popup .mceActionPanel {text-align:center;margin-top:20px;}
 #pardot-forms-shortcode-select .spinner {vertical-align:-3px;}
-#pardot-forms-shortcode-select #formshortcode, #pardot-dc-shortcode-select #dcshortcode {font-size:1em;max-width:100%;float:left;}
+#pardot-forms-shortcode-select #formshortcode, #pardot-dc-shortcode-select #dcshortcode {font-size:1em;}
 #shortcode-dc-input {width:70%;padding:3px 0;}
-.mceActionPanel {width:100%;float:left;}
-.mceActionPanel #insert {float:left;}
-.mceActionPanel #cancel {float:right;}
 CSS;
 		return $css;
 	}
@@ -174,16 +171,12 @@ HTML;
 		</span>
 	</div>
 	<div class="mceActionPanel">
-		<span class="insert-button">
-			<input type="submit" id="insert" name="insert" value="{#insert}" class="button-primary" onclick="PardotShortcodePopup.insert();" />
-		</span>
-		<span class="reload-button">
-			<input type="submit" id="reload" name="reload" value="Reload" class="updateButton" onclick="refresh_cache();" />
-		</span>
 		<span class="cancel-button">
 			<input type="submit" id="cancel" name="cancel" value="{#cancel}" class="button-secondary" onclick="tinyMCEPopup.close();" />
 		</span>
-
+		<span class="insert-button">
+			<input type="submit" id="insert" name="insert" value="{#insert}" class="button-primary" onclick="PardotShortcodePopup.insert();" />
+		</span>
 	</div>
 </form>
 </div>
@@ -208,33 +201,9 @@ jQuery(document).ready(function($) {
 	 	}
 	});
 });
-function refresh_cache() {
-	jQuery.ajax({
-		type:"post",
-		url:"{$ajax_url}",
-		data:{action:"popup_reset_cache"}
-	});
-	jQuery.ajax({
-		type:"post",
-		dataType:"html",
-		url:"{$ajax_url}",
-		data:{action:"get_pardot_forms_shortcode_select_html"},
-		success: function(html) {
-		 	$("#pardot-forms-shortcode-select").html(html);
-	 	}
-	});
-	jQuery.ajax({
-		type:"post",
-		dataType:"html",
-		url:"{$ajax_url}",
-		data:{action:"get_pardot_dynamicContent_shortcode_select_html"},
-		success: function(lmth) {
-		 	$("#pardot-dc-shortcode-select").html(lmth);
-	 	}
-	});
-}
 </script>
 HTML;
 		return $html;
 	}
 }
+
