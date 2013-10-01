@@ -95,6 +95,11 @@ Go to Settings > Pardot Settings and click 'Reset Cache'. This should reinitiali
 
 ## Changelog ##
 
+### 1.3.6 ###
+
+1. Adds support for 400+ campaigns, form, and dynamic content blocks
+1. Updates branding
+
 ### 1.3.5 ###
 
 1. Fixed a bug where pardotform class might be applied to closing iframe tag (thanks palpatine1976!)

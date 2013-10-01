@@ -313,7 +313,7 @@ HTML;
 	 * @since 1.0.0
 	 */
 	function sanitize_fields( $dirty ) {
-	
+
 		/**
 		 * Nothing passed? Then nothing to sanitize.
 		 */
@@ -331,19 +331,19 @@ HTML;
 		if ( isset( $_POST['reset'] ) ) {
 			global $wpdb;
 			$collecttrans = $wpdb->get_col( "SELECT option_name FROM {$wpdb->options} WHERE option_name LIKE '_transient_pardot%';" );
-			
+
 			foreach ( $collecttrans as $collecttran ) {
 				delete_transient(str_replace('_transient_', '', $collecttran));
 			}
-			
+
 			add_settings_error( self::$OPTION_GROUP, 'reset_settings', __( 'Settings have been reset!', 'pardot' ), 'updated' );
 			return $clean;
 		}
-		
+
 		if ( isset( $_POST['clear'] ) ) {
 			global $wpdb;
 			$collecttrans = $wpdb->get_col( "SELECT option_name FROM {$wpdb->options} WHERE option_name LIKE '_transient_pardot%';" );
-			
+
 			foreach ( $collecttrans as $collecttran ) {
 				delete_transient(str_replace('_transient_', '', $collecttran));
 			}
@@ -482,7 +482,7 @@ HTML;
 		 */
 		unset( $new_options['submit'] );
 		unset( $new_options['reset'] );
-		
+
 		/**
 		 * Trim whitespace
 		 */
@@ -546,7 +546,7 @@ HTML;
 		 */
 		$html =<<<HTML
 <div class="wrap" id="{$admin_page}">
-	<h2 class="pardot-title"><img src="{$logo_url}" alt="{$alt_text}" width="201" height="71" class="alignleft" />{$title}</h2>
+	<h2 class="pardot-title"><img src="{$logo_url}" alt="{$alt_text}" width="135" height="71" class="alignleft" />{$title}</h2>
 	<form action="{$options_url}" method="post">
 HTML;
 		echo $html;
@@ -669,7 +669,7 @@ HTML;
 				$selected = selected( $selected_value, $value, false );
 				if ( isset($data->name) ) {
 					$campaign_name = esc_html( $data->name );
-				}	
+				}
 				$html[] = "<option {$selected} value=\"{$value}\">{$campaign_name}</option>";
 			}
 			$html[] = '</select></div>';
@@ -702,7 +702,7 @@ HTML;
 HTML;
 		echo $html;
 	}
-	
+
 	/**
 	 * Displays the Clear Cache button for the Settings API
 	 *
@@ -715,7 +715,7 @@ HTML;
 HTML;
 		echo $html;
 	}
-	
+
 	/**
 	 * Encrypts with a bit more complexity
 	 *
@@ -731,7 +731,7 @@ HTML;
 			return base64_encode($input_string);
 		}
 	}
-	
+
 	/**
 	 * Decrypts with a bit more complexity
 	 *

@@ -1,10 +1,10 @@
 === Pardot ===
-Contributors: cliffseal, NewClarity, MikeSchinkel 
+Contributors: cliffseal, NewClarity, MikeSchinkel
 Donate link: http://pardot.com
 Tags: pardot, marketing automation, forms, dynamic content, tracking, web tracking
 Requires at least: 3.4
 Tested up to: 3.6
-Stable tag: 1.3.5
+Stable tag: 1.3.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -49,9 +49,9 @@ The `height` parameter will set the height of the iframe in pixels only. For exa
 
 Use `[pardot-dynamic-content]` with at least the `id` parameter.
 
-The `default` parameter is used for accessibility. Whatever is placed here is wrapped in `<noscript>` tags and is shown only to users who have JavaScript disabled. By default, it will automatically be your "Default Content" as designated in Pardot. So, 
+The `default` parameter is used for accessibility. Whatever is placed here is wrapped in `<noscript>` tags and is shown only to users who have JavaScript disabled. By default, it will automatically be your "Default Content" as designated in Pardot. So,
 
-`[pardot-dynamic-content id="1" default="My default content."]` 
+`[pardot-dynamic-content id="1" default="My default content."]`
 
 would render something like:
 
@@ -95,6 +95,11 @@ Go to Settings > Pardot Settings and click 'Reset Cache'. This should reinitiali
 1. A page can have two forms! Here, one is in the body and one in a widget.
 
 == Changelog ==
+
+= 1.3.6 =
+
+1. Adds support for 400+ campaigns, form, and dynamic content blocks
+1. Updates branding
 
 = 1.3.5 =
 
@@ -173,6 +178,10 @@ Fix bug with form order in content
 Initial release.
 
 == Upgrade Notice ==
+
+= 1.3.6 =
+
+This update adds support for 400+ campaigns, forms, and dynamic content blocks (cheers to Twig Interactive). We've also updated some branding.
 
 = 1.3.5 =
 
