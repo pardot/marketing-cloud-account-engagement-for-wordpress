@@ -13,7 +13,7 @@ class Pardot_Settings {
 	/**
 	 * @var string Help page on Pardot's website discussing this plugin.
 	 */
-	const HELP_URL = 'http://www.pardot.com/faqs/add-ons/wordpress-plugin/';
+	const HELP_URL = 'http://www.pardot.com/help/faqs/add-ons/wordpress-plugin';
 
 	/**
 	 * @var string Admin page on Pardot's website linked to an authenticated user's account.
@@ -693,8 +693,11 @@ HTML;
 	 */
 	function submit_field() {
 		$value = __( 'Save Settings', 'pardot' );
+		$valuecache = __( 'Clear Cache', 'pardot' );
+		$valuereset = __( 'Reset All Settings', 'pardot' );
+		$msgreset = __( 'This will remove all your Pardot account information from the database. Click OK to proceed', 'pardot' );
 		$html =<<<HTML
-<input type="submit" class="button-primary" name="save" value="{$value}" />
+<input type="submit" class="button-primary" name="save" value="{$value}" /> <input type="submit" class="button-secondary" name="clear" value="{$valuecache}" style="margin-left: 50px;" /> <input onclick="return confirm('{$msgreset}.');" type="submit" class="button-secondary" name="reset" value="{$valuereset}" />
 HTML;
 		echo $html;
 	}
@@ -710,7 +713,7 @@ HTML;
 		$html =<<<HTML
 <input onclick="return confirm('{$msg}.');" type="submit" class="button-secondary" name="reset" value="{$value}" />
 HTML;
-		echo $html;
+		//echo $html;
 	}
 
 	/**
@@ -720,10 +723,12 @@ HTML;
 	 */
 	function clearcache_field() {
 		$value = __( 'Clear Cache', 'pardot' );
+		$valuetwo = __( 'Reset All Settings', 'pardot' );
+		$msg = __( 'This will remove all your Pardot account information from the database. Click OK to proceed', 'pardot' );
 		$html =<<<HTML
-<input type="submit" class="button-secondary" name="clear" value="{$value}" />
+<input type="submit" class="button-secondary" name="clear" value="{$value}" /> <input onclick="return confirm('{$msg}.');" type="submit" class="button-secondary" name="reset" value="{$valuetwo}" />
 HTML;
-		echo $html;
+		//echo $html;
 	}
 
 	/**

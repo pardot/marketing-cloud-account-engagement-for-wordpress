@@ -4,7 +4,7 @@ Donate link: http://pardot.com
 Tags: pardot, marketing automation, forms, dynamic content, tracking, web tracking
 Requires at least: 3.7
 Tested up to: 3.8.1
-Stable tag: 1.3.7
+Stable tag: 1.3.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -98,6 +98,10 @@ Go to Settings > Pardot Settings and click 'Reset Cache'. This should reinitiali
 
 = 1.3.7 =
 
+Add Chosen selector to forms and dynamic content
+
+= 1.3.7 =
+
 1. Add Chosen selector to campaign settings
 1. Fix authentication issue
 
@@ -183,6 +187,10 @@ Fix bug with form order in content
 Initial release.
 
 == Upgrade Notice ==
+
+= 1.3.8 =
+
+This update improves form and dynamic content selection.
 
 = 1.3.7 =
 

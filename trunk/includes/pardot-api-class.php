@@ -448,12 +448,6 @@ x	 */
 
 		if ( isset($args['password']) ) {
 			$args['password'] = urlencode( $args['password'] );
-			$args['password'] = str_replace(
-				array("%27"),
-				array("'"),
-				$args['password']
-			);
-			//var_dump($args['password']); exit;
 		}
 
 		$response = false;

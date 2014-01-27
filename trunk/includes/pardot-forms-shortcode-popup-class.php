@@ -10,6 +10,8 @@ class _Pardot_Forms_Shortcode_Popup {
 	var $title;
 	var $jquery_url;
 	var $tiny_mce_popup_url;
+	var $chosen_js_url;
+	var $chosen_css_url;
 	var $js;
 	var $css;
 	var $body_inner_html;
@@ -23,6 +25,8 @@ class _Pardot_Forms_Shortcode_Popup {
 		$this->title = __( 'Insert a Pardot Form or Dynamic Content Shortcode', 'pardot' );
 		$this->jquery_url  = site_url( '/wp-includes/js/jquery/jquery.js' );
 		$this->tiny_mce_popup_url = site_url( '/wp-includes/js/tinymce/tiny_mce_popup.js' );
+		$this->chosen_js_url = '//cdnjs.cloudflare.com/ajax/libs/chosen/1.0/chosen.jquery.min.js';
+		$this->chosen_css_url = '//cdnjs.cloudflare.com/ajax/libs/chosen/1.0/chosen.min.css';
 		$this->js = $this->get_js();
 		$this->css = $this->get_css();
 		$this->body_inner_html = $this->get_body_inner_html();
@@ -263,6 +267,7 @@ jQuery(document).ready(function($) {
 		data:{action:"get_pardot_forms_shortcode_select_html"},
 		success: function(html) {
 		 	$("#pardot-forms-shortcode-select").html(html);
+		 	$('#formshortcode').chosen();
 	 	}
 	});
 	$.ajax({
@@ -272,6 +277,7 @@ jQuery(document).ready(function($) {
 		data:{action:"get_pardot_dynamicContent_shortcode_select_html"},
 		success: function(lmth) {
 		 	$("#pardot-dc-shortcode-select").html(lmth);
+		 	$('#dcshortcode').chosen();
 	 	}
 	});
 });

@@ -36,6 +36,8 @@ $html =<<<HTML
 <title>{$popup->title}</title>
 <script type="text/javascript" src="{$popup->jquery_url}"></script>
 <script type="text/javascript" src="{$popup->tiny_mce_popup_url}"></script>
+<script type="text/javascript" src="{$popup->chosen_js_url}"></script>
+<link rel="stylesheet" type="text/css" href= "{$popup->chosen_css_url}">
 <script type="text/javascript">{$popup->js}</script>
 <style type="text/css">{$popup->css}</style>
 </head>
