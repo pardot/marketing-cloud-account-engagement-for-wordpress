@@ -95,6 +95,15 @@ Go to Settings > Pardot Settings and click 'Reset Cache'. This should reinitiali
 
 ## Changelog ##
 
+### 1.3.8 (Pending Release) ###
+
+Add Chosen selector to forms and dynamic content
+
+### 1.3.7 ###
+
+1. Add Chosen selector to campaign settings
+1. Fix authentication issue
+
 ### 1.3.6 ###
 
 1. Adds support for 400+ campaigns, form, and dynamic content blocks

@@ -96,7 +96,7 @@ Go to Settings > Pardot Settings and click 'Reset Cache'. This should reinitiali
 
 == Changelog ==
 
-= 1.3.7 =
+= 1.3.8 =
 
 Add Chosen selector to forms and dynamic content
 
