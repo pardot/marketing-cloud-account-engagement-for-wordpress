@@ -4,3 +4,5 @@
 .svn/format
 
 *.db
+
+.idea/*

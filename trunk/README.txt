@@ -2,9 +2,9 @@
 Contributors: cliffseal, NewClarity, MikeSchinkel
 Donate link: http://pardot.com
 Tags: pardot, marketing automation, forms, dynamic content, tracking, web tracking
-Requires at least: 3.4
-Tested up to: 3.6
-Stable tag: 1.3.6
+Requires at least: 3.7
+Tested up to: 3.8.1
+Stable tag: 1.3.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -96,6 +96,11 @@ Go to Settings > Pardot Settings and click 'Reset Cache'. This should reinitiali
 
 == Changelog ==
 
+= 1.3.7 =
+
+1. Add Chosen selector to campaign settings
+1. Fix authentication issue
+
 = 1.3.6 =
 
 1. Adds support for 400+ campaigns, form, and dynamic content blocks
@@ -178,6 +183,10 @@ Fix bug with form order in content
 Initial release.
 
 == Upgrade Notice ==
+
+= 1.3.7 =
+
+This update improves campaign selection and fixes a bug with settings where certain user credentials would fail to authenticate.
 
 = 1.3.6 =
 

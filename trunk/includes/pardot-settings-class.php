@@ -13,7 +13,7 @@ class Pardot_Settings {
 	/**
 	 * @var string Help page on Pardot's website discussing this plugin.
 	 */
-	const HELP_URL = 'http://www.pardot.com/help/faqs/add-ons/wordpress-plugin';
+	const HELP_URL = 'http://www.pardot.com/faqs/add-ons/wordpress-plugin/';
 
 	/**
 	 * @var string Admin page on Pardot's website linked to an authenticated user's account.
@@ -215,6 +215,7 @@ class Pardot_Settings {
 #settings_page_pardot .instructions{font-style:italic;}
 -->
 </style>
+<script>jQuery(document).ready(function(){jQuery("#campaign").chosen();});</script>
 HTML;
 		echo $html;
 	}
@@ -250,6 +251,12 @@ HTML;
 		 * overridden by other CSS.
 		 */
 		add_action( 'admin_head', array( $this, 'admin_head' ), 0 );
+
+		/**
+		 * Add Chosen to Campaign Selector
+		 */
+		wp_enqueue_script(  'chosen', '//cdnjs.cloudflare.com/ajax/libs/chosen/1.0/chosen.jquery.min.js', array( 'jquery' ), '1.0' );
+		wp_enqueue_style( 'chosen', '//cdnjs.cloudflare.com/ajax/libs/chosen/1.0/chosen.min.css' );
 
 		/**
 		 * Define fields and their labels
@@ -354,8 +361,11 @@ HTML;
 		 * Sanitize each of the fields values
 		 */
 		foreach( $clean as $name => $value )
-			if ( isset( $dirty[$name] ) )
+			if ( isset( $dirty[$name] ) && $name !== 'password' ) {
 				$clean[$name] = trim( esc_attr( $dirty[$name] ) );
+			} elseif ( isset( $dirty[$name] ) && $name === 'password' ) {
+				$clean[$name] = trim( $dirty[$name] );
+			}
 
 		/**
 		 * Call the Pardot API to attempt to authenticate
