@@ -117,6 +117,12 @@ class Pardot_Settings {
 		 */
 		add_action( 'admin_notices', array( $this, 'admin_notices' ) );
 
+		/**
+		 * Enqueue JS for Chosen on Widgets Screen
+		 */
+		add_action( 'admin_enqueue_scripts', array( $this, 'pardot_chosen_enqueue' ) );
+		add_action( 'in_admin_footer', array( $this, 'pardot_chosen_init' ) );
+
 	}
 	/**
 	 * Use to determine if we are in the Pardot Settings admin page.
@@ -761,6 +767,44 @@ HTML;
 	    } else {
 		    return base64_decode($encrypted_input_string);
 	    }
+	}
+
+
+	/**
+	 * Enqueue Chosen on Widgets Screen
+	 *
+	 * @public
+	 *
+	 * @since 1.3.8
+	 */
+	public function pardot_chosen_enqueue($hook) {
+		if( 'widgets.php' != $hook )
+			return;
+		wp_enqueue_script(  'chosen', '//cdnjs.cloudflare.com/ajax/libs/chosen/1.0/chosen.jquery.min.js', array( 'jquery' ), '1.0' );
+		wp_enqueue_style( 'chosen', '//cdnjs.cloudflare.com/ajax/libs/chosen/1.0/chosen.min.css' );
+	}
+
+	/**
+	 * Initiate Chosen on Widgets Screen (on load and after save)
+	 *
+	 * @public
+	 *
+	 * @since 1.3.8
+	 */
+	public function pardot_chosen_init() {
+		echo '
+	<script>
+		jQuery(document).ready(function(){
+			jQuery(".widgets-holder-wrap:not(#available-widgets) .js-chosen").chosen({width: "100%"});
+		});
+		jQuery(document).ajaxSuccess(function(e, xhr, settings) {
+			var widget_id_base = "pardot";
+
+			if(settings.data.search("action=save-widget") != -1 && settings.data.search("id_base=" + widget_id_base) != -1) {
+				jQuery(".widgets-holder-wrap:not(#available-widgets) .js-chosen").chosen({width: "100%"});
+			}
+		});
+	</script>';
 	}
 
 	/**

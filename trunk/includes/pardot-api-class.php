@@ -447,7 +447,7 @@ x	 */
 		}
 
 		if ( isset($args['password']) ) {
-			$args['password'] = urlencode( $args['password'] );
+			$args['password'] = base64_encode( $args['password'] );
 		}
 
 		$response = false;
