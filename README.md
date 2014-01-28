@@ -95,9 +95,11 @@ Go to Settings > Pardot Settings and click 'Reset Cache'. This should reinitiali
 
 ## Changelog ##
 
-### 1.3.8 (Pending Release) ###
+### 1.3.8 ###
 
-Add Chosen selector to forms and dynamic content
+1. Add Chosen selector to forms and dynamic content
+2. Fix async DC bug
+3. Enchance password authentication encoding
 
 ### 1.3.7 ###
 
