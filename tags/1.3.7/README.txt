@@ -4,7 +4,7 @@ Donate link: http://pardot.com
 Tags: pardot, marketing automation, forms, dynamic content, tracking, web tracking
 Requires at least: 3.7
 Tested up to: 3.8.1
-Stable tag: 1.3.9
+Stable tag: 1.3.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -96,16 +96,6 @@ Go to Settings > Pardot Settings and click 'Reset Cache'. This should reinitiali
 
 == Changelog ==
 
-= 1.3.9 =
-
-Fixes a small bug with a JS library being called in the wrong place
-
-= 1.3.8 =
-
-1. Add Chosen selector to forms and dynamic content
-2. Fix async DC bug
-3. Enchance password authentication encoding
-
 = 1.3.7 =
 
 1. Add Chosen selector to campaign settings
@@ -193,14 +183,6 @@ Fix bug with form order in content
 Initial release.
 
 == Upgrade Notice ==
-
-= 1.3.9 =
-
-This update fixes a bug that caused some Dashboards to act funny.
-
-= 1.3.8 =
-
-This update improves form and dynamic content selection, fixes a bug with asynchronous dynamic content loading, and improves password encoding.
 
 = 1.3.7 =
 

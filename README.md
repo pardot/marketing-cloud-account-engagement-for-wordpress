@@ -95,6 +95,10 @@ Go to Settings > Pardot Settings and click 'Reset Cache'. This should reinitiali
 
 ## Changelog ##
 
+### 1.3.9 ###
+
+Fixes a small bug with a JS library being called in the wrong place
+
 ### 1.3.8 ###
 
 1. Add Chosen selector to forms and dynamic content
