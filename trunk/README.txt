@@ -3,8 +3,8 @@ Contributors: cliffseal, NewClarity, MikeSchinkel
 Donate link: http://pardot.com
 Tags: pardot, marketing automation, forms, dynamic content, tracking, web tracking
 Requires at least: 3.7
-Tested up to: 3.8.1
-Stable tag: 1.3.9
+Tested up to: 3.9
+Stable tag: 1.3.10
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -95,6 +95,10 @@ Go to Settings > Pardot Settings and click 'Reset Cache'. This should reinitiali
 1. A page can have two forms! Here, one is in the body and one in a widget.
 
 == Changelog ==
+
+= 1.3.10 =
+
+Improve WordPress 3.9 compatibility (Tiny popup titles; update Chosen)
 
 = 1.3.9 =
 
@@ -193,6 +197,10 @@ Fix bug with form order in content
 Initial release.
 
 == Upgrade Notice ==
+
+= 1.3.10 =
+
+This updates improves compatibility with WordPress 3.9 in the Visual Editor.
 
 = 1.3.9 =
 

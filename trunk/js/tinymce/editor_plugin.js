@@ -17,7 +17,7 @@ Author: Mike Schinkel <mike@newclarity.net>
 				})
 			});
 			ed.addButton('pardotformsshortcodeinsert',{
-				title:'Insert a Pardot Form or Dynamic Content Shortcode',
+				title:'Pardot',
 				cmd:'mcePardotFormsShortcodeInsert',
 				image:url+"/img/pardot-button.png"}
 			);

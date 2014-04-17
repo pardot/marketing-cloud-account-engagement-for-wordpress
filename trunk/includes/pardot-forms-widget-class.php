@@ -811,7 +811,9 @@ HTML;
 		
 		$html .= '<p><label for="' . $this->get_field_id( "title" ) . '">' . __( 'Title:' ) . '</label><input class="widefat" id="' . $this->get_field_id( "title" ) . '" name="' . $this->get_field_name( "title" ) . '" type="text" value="' . esc_attr( $title ) . '" /></p>';
 
-        $html .= '<p><strong>Optional Parameters</strong><br/><small>' . $param_text . '</small></p>';
+        if ( isset($param_text) ) {
+            $html .= '<p><strong>Optional Parameters</strong><br/><small>' . $param_text . '</small></p>';
+        }
 
         if ( isset( $instance[ 'height' ] ) ) {
             $height = $instance[ 'height' ];
@@ -837,7 +839,9 @@ HTML;
 
         $html .= '<p><label for="' . $this->get_field_id( "class" ) . '">' . __( 'Class:' ) . '</label><input class="widefat" id="' . $this->get_field_id( "class" ) . '" name="' . $this->get_field_name( "class" ) . '" type="text" value="' . esc_attr( $class ) . '" /></p>';
 
-        $html .= '<p><small>' . $cache_text . '</small></p>';
+        if ( isset($cache_text) ) {
+			$html .= '<p><small>' . $cache_text . '</small></p>';
+        }
 
 		/**
 		 * Display whatever HTML is appropriate; error message help or list of forms.

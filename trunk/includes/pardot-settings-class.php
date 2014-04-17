@@ -260,8 +260,8 @@ HTML;
 		/**
 		 * Add Chosen to Campaign Selector
 		 */
-		wp_enqueue_script(  'chosen', '//cdnjs.cloudflare.com/ajax/libs/chosen/1.0/chosen.jquery.min.js', array( 'jquery' ), '1.0' );
-		wp_enqueue_style( 'chosen', '//cdnjs.cloudflare.com/ajax/libs/chosen/1.0/chosen.min.css' );
+		wp_enqueue_script(  'chosen', '//cdnjs.cloudflare.com/ajax/libs/chosen/1.1.0/chosen.jquery.min.js', array( 'jquery' ), '1.0' );
+		wp_enqueue_style( 'chosen', '//cdnjs.cloudflare.com/ajax/libs/chosen/1.1.0/chosen.min.css' );
 
 		/**
 		 * Define fields and their labels
@@ -779,8 +779,8 @@ HTML;
 	public function pardot_chosen_enqueue($hook) {
 		if( 'widgets.php' != $hook )
 			return;
-		wp_enqueue_script(  'chosen', '//cdnjs.cloudflare.com/ajax/libs/chosen/1.0/chosen.jquery.min.js', array( 'jquery' ), '1.0' );
-		wp_enqueue_style( 'chosen', '//cdnjs.cloudflare.com/ajax/libs/chosen/1.0/chosen.min.css' );
+		wp_enqueue_script(  'chosen', '//cdnjs.cloudflare.com/ajax/libs/chosen/1.1.0/chosen.jquery.min.js', array( 'jquery' ), '1.0' );
+		wp_enqueue_style( 'chosen', '//cdnjs.cloudflare.com/ajax/libs/chosen/1.1.0/chosen.min.css' );
 		add_action( 'in_admin_footer', array( $this, 'pardot_chosen_init' ) );
 	}
 
