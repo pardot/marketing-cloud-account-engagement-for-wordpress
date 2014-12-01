@@ -157,7 +157,7 @@ class Pardot_Settings {
 	 * @since 1.0.0
 	 */
 	function admin_menu() {
-		$title = __( 'Pardot Settings', 'pardot' );
+		$title = __( 'Pardot', 'pardot' );
 		self::$admin_page = add_options_page( $title, $title, 'manage_options', self::$PAGE , array( $this, 'settings_page' ) );
 	}
 
@@ -267,10 +267,11 @@ HTML;
 		 * Define fields and their labels
 		 */
 		self::$FIELDS = array(
-			'email' 		=> __( 'Email', 'pardot' ),
+			'email' 	=> __( 'Email', 'pardot' ),
 			'password'  => __( 'Password', 'pardot' ),
 			'user_key' 	=> __( 'User Key', 'pardot' ),
 			'campaign' 	=> __( 'Campaign (for Tracking Code)', 'pardot' ),
+			'https' 	=> __( 'Use HTTPS?', 'pardot' ),
 			'submit'	=> '',
 			'clearcache'=> '',
 			'reset'	 	=> '',
@@ -287,7 +288,7 @@ HTML;
 		/**
 		 * Add the settings sections required by WordPress Settings API.
 		 */
-		add_settings_section( self::$OPTION_GROUP, __( 'User Account', 'pardot' ), array( $this, 'user_account_section' ),	self::$PAGE );
+		add_settings_section( self::$OPTION_GROUP, __( 'User Account Settings', 'pardot' ), array( $this, 'user_account_section' ),	self::$PAGE );
 
 		/**
 		 * Add the setting fields required by WordPress Settings API.
@@ -544,7 +545,7 @@ HTML;
 		/**
 		 * Grab alt text the logo
 		 */
-		$alt_text = __( 'Pardot Logo', 'pardot' );
+		$alt_text = __( 'Pardot, a Salesforce Company', 'pardot' );
 
 		/**
 		 * Grab title to be displayed behind the logo
@@ -561,7 +562,7 @@ HTML;
 		 */
 		$html =<<<HTML
 <div class="wrap" id="{$admin_page}">
-	<h2 class="pardot-title"><img src="{$logo_url}" alt="{$alt_text}" width="135" height="71" class="alignleft" />{$title}</h2>
+	<h2 class="pardot-title"><img src="{$logo_url}" alt="{$alt_text}" width="181" height="71" class="alignleft" /></h2>
 	<form action="{$options_url}" method="post">
 HTML;
 		echo $html;
@@ -652,7 +653,6 @@ HTML;
 	function api_key_field() {
 		$api_key = self::get_setting( 'api_key' );
 		$html_name = $this->_get_html_name( 'api_key' );
-		// TODO: Change to <input type="password" ... >
 $html =<<<HTML
 <input type="hidden" id="api-key" name="{$html_name}" value="{$api_key}" />
 HTML;
@@ -691,6 +691,21 @@ HTML;
 			echo implode( '', $html );
 		}
 	}
+
+	/**
+	 * Displays the HTTPS-only checkbox for the Settings API
+	 *
+	 * @since 1.4
+	 */
+	function https_field() {
+		$https = self::get_setting( 'https' );
+		$html_name = $this->_get_html_name( 'https' );
+		$html =<<<HTML
+<input type="checkbox" id="https" name="{$html_name}" value="{$https}" />
+HTML;
+		echo $html;
+	}
+
 	/**
 	 * Displays the Submit button for the Settings API
 	 *

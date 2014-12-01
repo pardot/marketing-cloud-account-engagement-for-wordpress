@@ -4,7 +4,7 @@ Donate link: http://pardot.com
 Tags: pardot, marketing automation, forms, dynamic content, tracking, web tracking
 Requires at least: 3.7
 Tested up to: 3.9
-Stable tag: 1.3.10
+Stable tag: 1.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -95,6 +95,12 @@ Go to Settings > Pardot Settings and click 'Reset Cache'. This should reinitiali
 1. A page can have two forms! Here, one is in the body and one in a widget.
 
 == Changelog ==
+
+= 1.4 =
+
+1. Add HTTPS option
+1. Change "Pardot Settings" link to "Pardot"
+1. Update branding
 
 = 1.3.10 =
 
@@ -197,6 +203,10 @@ Fix bug with form order in content
 Initial release.
 
 == Upgrade Notice ==
+
+= 1.4 =
+
+This updates adds an option to embed HTTPS forms. Activate it in Settings > Pardot.
 
 = 1.3.10 =
 
