@@ -30,7 +30,7 @@ Two simple shortcodes are available for use.
 
 #### Form Shortcode ####
 
-`[pardot-form id="{Form ID}" title="{Form Name}" class="" width="100%" height="500"]`
+`[pardot-form id="{Form ID}" title="{Form Name}" class="" width="100%" height="500" querystring=""]`
 
 Use `[pardot-form]` with at least the `id` parameter. For instance, `[pardot-form id="1" title="Title"]` renders my Pardot form with an ID of 1.
 
@@ -43,6 +43,8 @@ The `class` parameter allows you to add additional classes to the iframe element
 The `width` parameter will set the width of the iframe in pixels or percentage. For example, "500", "500px", and "80%" are all valid. The default is 100%.
 
 The `height` parameter will set the height of the iframe in pixels only. For example, "500" or "500px" are valid. The default is 500px.
+
+The `querystring` parameter appends an arbitrary string to the end of the form's iframe source. This is helpful for passing data directly into the form. You can also do this with filters (see below).
 
 #### Dynamic Content Shortcode ####
 
@@ -93,7 +95,55 @@ A width of 150px is just a starting point. Adjust this value until it fits on yo
 
 Go to Settings > Pardot Settings and click 'Reset Cache'. This should reinitialize and update your Pardot content.
 
+### The editor popup doesn't work, and I know that my WordPress installation is a little different. ###
+
+As of version 1.4, developers can now deal with various directory configurations that would previously cause the plugin to break. This is due to the plugin not being able to find `wp-load.php`.
+
+To fix it, add a new file called `pardot-custom-wp-load.php` to the `plugins/pardot/includes` directory (this will never be overridden by updates). In that file, define a constant that gives the absolute path to your `wp-load.php` file. For instance:
+
+```
+<?php
+define('PARDOT_WP_LOAD', '/path/to/wp-load.php');
+```
+
+## Filters ##
+
+`pardot_form_embed_code_[Form ID]`
+
+Filter the entire embed code for a given form. A common usage for this is conditionally appending a query string. So, for instance, the following will filter the embed code for form #545 and append an arbitrary parameter along with the post ID of the page being viewed:
+
+```
+function pardot_custom_append_querystring($body_html) {
+	return preg_replace( '/src="([^"]+)"/', 'src="$1?this=that&postID=' . get_the_ID() . '"', $body_html );
+}
+
+add_filter( 'pardot_form_embed_code_54796', 'pardot_custom_append_querystring' );
+```
+
+You can apply any conditional logic you want. For instance, this will append the same information, but only if you're on the "About" page:
+
+```
+function pardot_custom_append_querystring($body_html) {
+	if ( is_page('About') ) {
+		$body_html = preg_replace( '/src="([^"]+)"/', 'src="$1?this=that&postID=' . get_the_ID() . '"', $body_html );
+	}
+	return $body_html;
+}
+
+add_filter( 'pardot_form_embed_code_54796', 'pardot_custom_append_querystring' );
+```
+
 ## Changelog ##
+
+### 1.4 ###
+
+1. Add HTTPS option
+1. Add "querystring" parameter in shortcode
+1. Allow embed code to be filtered
+1. Change "Pardot Settings" link to "Pardot"
+1. Update branding
+1. Allow override for wp-load.php in various installation configurations
+1. Fixes errant notice on 404 pages
 
 ### 1.3.10 ###
 

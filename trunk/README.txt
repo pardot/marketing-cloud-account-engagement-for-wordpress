@@ -139,6 +139,8 @@ add_filter( 'pardot_form_embed_code_54796', 'pardot_custom_append_querystring' )
 = 1.4 =
 
 1. Add HTTPS option
+1. Add "querystring" parameter in shortcode
+1. Allow embed code to be filtered
 1. Change "Pardot Settings" link to "Pardot"
 1. Update branding
 1. Allow override for wp-load.php in various installation configurations
@@ -248,7 +250,7 @@ Initial release.
 
 = 1.4 =
 
-This updates adds an option to embed HTTPS forms (activate it in Settings > Pardot), allows custom overrides for various directory configurations, updates branding, and fixes some bugs.
+This updates adds an option to embed HTTPS forms (activate it in Settings > Pardot), adds the "querystring" parameter to the shortcode, makes the form embed code filterable, allows custom overrides for various directory configurations, updates branding, and fixes some bugs.
 
 = 1.3.10 =
 
