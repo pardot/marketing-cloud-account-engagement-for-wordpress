@@ -101,6 +101,7 @@ Go to Settings > Pardot Settings and click 'Reset Cache'. This should reinitiali
 1. Add HTTPS option
 1. Change "Pardot Settings" link to "Pardot"
 1. Update branding
+1. Fixes errant notice on 404 pages
 
 = 1.3.10 =
 
@@ -206,7 +207,7 @@ Initial release.
 
 = 1.4 =
 
-This updates adds an option to embed HTTPS forms. Activate it in Settings > Pardot.
+This updates adds an option to embed HTTPS forms (activate it in Settings > Pardot) and fixes some bugs.
 
 = 1.3.10 =
 
