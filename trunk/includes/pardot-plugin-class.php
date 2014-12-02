@@ -624,6 +624,7 @@ class Pardot_Plugin {
 					 * then grab the cached part which comes after "IFRAME:" or "INLINE:".
 					 */
 					$form_html = $matches[2];
+
 					/**
 					 * If HTTPS is desired, override the protocol and domain
 					 */
@@ -789,6 +790,17 @@ class Pardot_Plugin {
 			 */
 			$body_html = preg_match( '#^(IFRAME|INLINE):#', $form_html ) ? substr( $form_html, strlen( 'INLINE:' ) ) : $form_html;
 
+			if ( ! empty( $args['querystring'] ) ) {
+				/**
+				 * If "querystring" is passed via shortcode create HTML to insert in form's <div>
+				 */
+				if ( $is_iframe ) {
+					/**
+					 * If 'iframe' add to the <iframe>
+					 */
+					$body_html = preg_replace( '/src="([^"]+)"/', 'src="$1?' . $args['querystring'] . '"', $body_html );
+				}
+			}
 			if ( ! empty( $args['height'] ) ) {
 				/**
 				 * If "height" is passed via shortcode create HTML to insert in form's <div>
@@ -835,7 +847,7 @@ class Pardot_Plugin {
 				}
 			}
 		}
-		return $body_html;
+		return apply_filters('pardot_form_embed_code_' . $args['form_id'], $body_html);
 	}
 
 	/**
