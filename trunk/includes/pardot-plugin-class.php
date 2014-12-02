@@ -624,6 +624,22 @@ class Pardot_Plugin {
 					 * then grab the cached part which comes after "IFRAME:" or "INLINE:".
 					 */
 					$form_html = $matches[2];
+					/**
+					 * If HTTPS is desired, override the protocol and domain
+					 */
+					if ( Pardot_Settings::get_setting( 'https' ) ) {
+						/**
+						 * Look for URLs in the embed code
+						 */
+						$reg_exUrl = "/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/";
+						preg_match( $reg_exUrl, $form_html, $url );
+						/**
+						 * Replace whatever is there with the approved Pardot HTTPS URL
+						 */
+						$urlpieces = parse_url($url[0]);
+						$httpsurl = 'https://go.pardot.com' . $urlpieces['path'];
+						$form_html = preg_replace( $reg_exUrl, $httpsurl, $form_html );
+					}
 				}
 			}
 			/**
@@ -648,16 +664,6 @@ class Pardot_Plugin {
 						 * And if it's an IFRAME value then it's simple; just concat the embed code.
 						 */
 						if ( $is_iframe ) {
-							/**
-							 * If HTTPS is desired, override the protocol and domain
-							 */
-							if ( Pardot_Settings::get_setting( 'https' ) ) {
-								$reg_exUrl = "/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/";
-								preg_match( $reg_exUrl, $form->embedCode, $url );
-								$urlpieces = parse_url($url[0]);
-								$httpsurl = 'https://go.pardot.com' . $urlpieces['path'];
-								$form->embedCode = preg_replace( $reg_exUrl, $httpsurl, $form->embedCode );
-							}
 							$form_html = 'IFRAME:' . $form->embedCode;
 							/**
 							 * If height is passed as a shortcode argument
