@@ -699,9 +699,12 @@ HTML;
 	 */
 	function https_field() {
 		$https = self::get_setting( 'https' );
+		if ( $https ) {
+			$https = "checked";
+		}
 		$html_name = $this->_get_html_name( 'https' );
 		$html =<<<HTML
-<input type="checkbox" id="https" name="{$html_name}" value="{$https}" />
+<input type="checkbox" id="https" name="{$html_name}" {$https} />
 HTML;
 		echo $html;
 	}

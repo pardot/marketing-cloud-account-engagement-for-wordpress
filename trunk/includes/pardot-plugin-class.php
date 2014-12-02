@@ -97,7 +97,7 @@ class Pardot_Plugin {
 		 * 	Create the shortcode [pardot-form]
 		 */
 		add_shortcode( 'pardot-form', array( $this, 'form_shortcode' ) );
-		
+
 		/**
 		 * 	Create the shortcode [pardot-dynamic-content]
 		 */
@@ -112,12 +112,12 @@ class Pardot_Plugin {
 		 * Listen for AJAX post back for the form's shortcode selector.
 		 */
 		add_action( 'wp_ajax_get_pardot_forms_shortcode_select_html', array( $this, 'wp_ajax_get_pardot_forms_shortcode_select_html' ) );
-		
+
 		/**
 		 * Listen for AJAX post back for the dynamic content's shortcode selector.
 		 */
 		add_action( 'wp_ajax_get_pardot_dynamicContent_shortcode_select_html', array( $this, 'wp_ajax_get_pardot_dynamicContent_shortcode_select_html' ) );
-		
+
 		/**
 		 * Listen for AJAX post back for the reload button.
 		 */
@@ -189,7 +189,7 @@ class Pardot_Plugin {
 		 */
 		die();
 	}
-	
+
 	/**
 	 * AJAX function used to return the list of Pardot dynamic content for the current accounts selected campaign.
 	 *
@@ -205,7 +205,7 @@ class Pardot_Plugin {
 		 * Do we have Pardot dynamicContents?
 		 */
 		if ( ! empty( $dynamicContents ) ) {
-						
+
 			/**
 			 * YES, we have Pardot dynamicContents! :-)
 			 *
@@ -215,7 +215,7 @@ class Pardot_Plugin {
 			$lmth = $this->get_dynamicContents_shortcode_select_html( 'dcshortcode', $dynamicContents );
 
 		} else {
-		
+
 			/**
 			 * No, we have no Pardot dynamicContents today. :-(
 			 *
@@ -255,20 +255,20 @@ class Pardot_Plugin {
 		 */
 		die();
 	}
-	
+
 	/**
 	 * AJAX function used to clear the cache in the popups.
 	 *
 	 * @since 1.1.5
 	 */
-	
+
 	function wp_ajax_popup_reset_cache() {
-		
+
 		delete_transient('pardot_forms');
-		delete_transient('pardot_dynamicContent');		
-				
+		delete_transient('pardot_dynamicContent');
+
 		die();
-		
+
 	}
 
 	/**
@@ -300,7 +300,7 @@ class Pardot_Plugin {
 		$html[] = "<select id=\"{$select_id}\" name=\"{$select_name}\">";
 
 		$html[] = "<option value=\"0\">Select</option>";
-		
+
 		/**
 		 * For each Pardot Form
 		 */
@@ -310,7 +310,7 @@ class Pardot_Plugin {
 			 */
 			if ( isset($form->id) ) {
 				$html[] = "<option value=\"[pardot-form id=&quot;{$form->id}&quot; title=&quot;{$form->name}&quot;]\">{$form->name}</option>";
-			}	
+			}
 		}
 		$html[] = '</select>';
 
@@ -320,7 +320,7 @@ class Pardot_Plugin {
 		return implode( '', $html );
 
 	}
-	
+
 	/**
 	 * Assemble <select> element for selected Pardot dynamicContents.
 	 *
@@ -348,7 +348,7 @@ class Pardot_Plugin {
 		 * Assemble the opening <select> tag.
 		 */
 		$lmth[] = "<select id=\"{$select_id}\" name=\"{$select_name}\">";
-		
+
 		$lmth[] = "<option value=\"0\">Select</option>";
 
 		/**
@@ -368,7 +368,7 @@ class Pardot_Plugin {
 		 */
 		return implode( '', $lmth );
 
-	}	
+	}
 
 	/**
 	 * Load the text domain for language translation after the plugin is loaded.
@@ -539,7 +539,7 @@ class Pardot_Plugin {
 		 */
 		return self::get_form_body( $atts );
 	}
-	
+
 	/**
 	 * Register the shortcode [pardot-dynamic-content ...]
 	 *
@@ -552,7 +552,7 @@ class Pardot_Plugin {
 		 * Translate from 'id' to 'dynamicContent_id' which is what $this->get_dynamic_content_body() uses.
 		 */
 		$atts['dynamicContent_id'] = isset( $atts['id'] ) ? $atts['id'] : 0;
-		
+
 		/**
 		 * Give a default to wrap in <noscript> for accesibility.
 		 */
@@ -648,6 +648,16 @@ class Pardot_Plugin {
 						 * And if it's an IFRAME value then it's simple; just concat the embed code.
 						 */
 						if ( $is_iframe ) {
+							/**
+							 * If HTTPS is desired, override the protocol and domain
+							 */
+							if ( Pardot_Settings::get_setting( 'https' ) ) {
+								$reg_exUrl = "/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/";
+								preg_match( $reg_exUrl, $form->embedCode, $url );
+								$urlpieces = parse_url($url[0]);
+								$httpsurl = 'https://go.pardot.com' . $urlpieces['path'];
+								$form->embedCode = preg_replace( $reg_exUrl, $httpsurl, $form->embedCode );
+							}
 							$form_html = 'IFRAME:' . $form->embedCode;
 							/**
 							 * If height is passed as a shortcode argument
@@ -695,7 +705,7 @@ class Pardot_Plugin {
 									$form_html = str_replace( 'iframe', "iframe width=\"{$width}\"", $form_html );
 								}
 							}
-							
+
 							/**
 							 * If class is passed as a shortcode argument
 							 */
@@ -839,7 +849,7 @@ class Pardot_Plugin {
 		$dynamicContent_id = $args['dynamicContent_id'];
 
         if ( false === ( $dynamicContent_html = get_transient( 'pardot_dynamicContent_html_' . $dynamicContent_id ) ) ) {
-		
+
 			$dynamicContents = get_pardot_dynamic_content();
 
 			if ( isset( $dynamicContents[$dynamicContent_id] ) ) {
@@ -859,7 +869,7 @@ class Pardot_Plugin {
             }
 
 			set_transient( 'pardot_dynamicContent_html_' . $dynamicContent_id, $dynamicContent_html, self::$cache_timeout );
-			
+
 		} else {
 
             $dynamicContent_html = get_transient( 'pardot_dynamicContent_html_' . $dynamicContent_id );
@@ -878,9 +888,9 @@ class Pardot_Plugin {
         if ( ! empty( $args['class'] ) ) {
             $dynamicContent_html = str_replace( 'pardotdc', "pardotdc {$args['class']}", $dynamicContent_html );
         }
-									
+
 		return $dynamicContent_html;
-			
+
 	}
 
 
@@ -936,7 +946,7 @@ class Pardot_Plugin {
 	static function get_forms( $args = array() ) {
 		return self::call_api( 'forms', $args );
 	}
-	
+
 	/**
 	 * Returns array of Dynamic Content as defined by the Pardot API.
 	 *
