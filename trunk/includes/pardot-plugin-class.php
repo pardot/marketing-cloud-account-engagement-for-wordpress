@@ -632,7 +632,7 @@ class Pardot_Plugin {
 						/**
 						 * Look for URLs in the embed code
 						 */
-						$reg_exUrl = "/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/";
+						$reg_exUrl = "/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+(\/\S*)?/";
 						preg_match( $reg_exUrl, $form_html, $url );
 						/**
 						 * Replace whatever is there with the approved Pardot HTTPS URL
