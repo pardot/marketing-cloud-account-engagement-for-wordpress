@@ -129,6 +129,10 @@ You can apply any conditional logic you want. For instance, this will append the
 
 == Changelog ==
 
+= 1.4.1 =
+
+Improve regex for HTTPS and add filtering
+
 = 1.4 =
 
 1. Add HTTPS option
@@ -241,13 +245,17 @@ Initial release.
 
 == Upgrade Notice ==
 
+= 1.4.1 =
+
+This update improves the HTTPS functionality used to find and replace the Pardot URLs. If the HTTPS option has not been working for you, please upgrade.
+
 = 1.4 =
 
-This updates adds an option to embed HTTPS forms (activate it in Settings > Pardot), adds the "querystring" parameter to the shortcode, makes the form embed code filterable, allows custom overrides for various directory configurations, updates branding, and fixes some bugs.
+This update adds an option to embed HTTPS forms (activate it in Settings > Pardot), adds the "querystring" parameter to the shortcode, makes the form embed code filterable, allows custom overrides for various directory configurations, updates branding, and fixes some bugs.
 
 = 1.3.10 =
 
-This updates improves compatibility with WordPress 3.9 in the Visual Editor.
+This update improves compatibility with WordPress 3.9 in the Visual Editor.
 
 = 1.3.9 =
 
