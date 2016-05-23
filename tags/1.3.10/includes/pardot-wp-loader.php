@@ -23,19 +23,6 @@ function pardot_get_wp_load_filepath() {
 				break;
 			}
 		}
-		/**
-		 * Since the function hasn't exited,
-		 * look for the custom load file.
-		 */
-		if ( !$wp_load || !file_exists( $wp_load ) ) {
-			$customfile = dirname( __FILE__ ) . '/pardot-custom-wp-load.php';
-			if ( file_exists( $customfile ) ) {
-				require($customfile);
-				if ( defined('PARDOT_WP_LOAD') ) {
-					$wp_load = PARDOT_WP_LOAD;
-				}
-			}
-		}
 	}
 	return $wp_load;
 }
