@@ -29,7 +29,7 @@ class Pardot_API {
 	 *
 	 * @since 1.0.0
 	 */
-	const VERSION = '3';
+	const VERSION = '4';
 
 	/**
 	 * @var string Defacto constant defining the URL path template for the API.
@@ -189,20 +189,6 @@ class Pardot_API {
 		}
 		return $campaigns;
 	}
-
-	/*function get_campaigns( $args = array() ) {
-		$campaigns = false;
-		if ( $response = $this->get_response( 'campaign', $args ) ) {
-			$campaigns = array();
-			for( $i = 0; $i < $response->result->total_results; $i++ ) {
-				$campaign = (object)$response->result->campaign[$i];
-				if ( isset($campaign->id) ) {
-					$campaigns[(int)$campaign->id] = $this->SimpleXMLElement_to_stdClass( $campaign );
-				}
-			}
-		}
-		return $campaigns;
-	}*/
 
 	/**
 	 * Returns an account object from Pardot's API
@@ -454,6 +440,11 @@ x	 */
 		if( wp_remote_retrieve_response_code( $http_response ) == 200 ) {
 			$response = new SimpleXMLElement( wp_remote_retrieve_body( $http_response ) );
 			if ( ! empty( $response->err ) ) {
+				if ( 'Your account is unable to use version 4 of the API.' == $response->err ) {
+					Pardot_Settings::set_setting( 'version', '3' );
+				} elseif ( 'Your account must use version 4 of the API.' == $response->err ) {
+					Pardot_Settings::set_setting( 'version', '4' );
+				}
 				$this->error = $response->err;
 				if ( 'login' == $item_type ) {
 					$this->api_key = false;
@@ -524,16 +515,32 @@ x	 */
 	private function _get_url( $item_type, $args = array() ) {
 		if ( 'login' == $item_type ) {
 			$this->set_auth( $args );
-			$base_url = str_replace( '%%VERSION%%', self::VERSION, self::$LOGIN_URL_PATH_TEMPLATE );
+			$base_url = str_replace( '%%VERSION%%', self::_get_version(), self::$LOGIN_URL_PATH_TEMPLATE );
 			$url = $base_url;
 		} else {
 			$base_url = str_replace(
 				array( '%%VERSION%%', '%%ITEM_TYPE%%', '%%ACTION%%' ),
-				array( self::VERSION, $item_type, 'account' == $item_type ? 'read' : 'query' ),
+				array( self::_get_version(), $item_type, 'account' == $item_type ? 'read' : 'query' ),
 				self::$URL_PATH_TEMPLATE
 			);
 			$url = $base_url;
 		}
 		return self::ROOT_URL . $url;
+	}
+
+	/**
+	 * Update to the correct API version when necessary
+	 *
+	 * @param boolean $override_version Look for overriding API version string
+	 * @return string Url for a valid API call.
+	 *
+	 * @since 1.4.1
+	 */
+	private function _get_version() {
+		if ( Pardot_Settings::get_setting( 'version' ) ) {
+			return Pardot_Settings::get_setting( 'version' );
+		} else {
+			return self::VERSION;
+		}
 	}
 }

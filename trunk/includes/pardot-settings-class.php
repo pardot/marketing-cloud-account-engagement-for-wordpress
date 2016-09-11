@@ -271,6 +271,7 @@ HTML;
 			'password'  => __( 'Password', 'pardot' ),
 			'user_key' 	=> __( 'User Key', 'pardot' ),
 			'campaign' 	=> __( 'Campaign (for Tracking Code)', 'pardot' ),
+			'version' 	=> __( 'API Version', 'pardot' ),
 			'https' 	=> __( 'Use HTTPS?', 'pardot' ),
 			'submit'	=> '',
 			'clearcache'=> '',
@@ -690,6 +691,29 @@ HTML;
 			$html[] = '</select></div>';
 			echo implode( '', $html );
 		}
+	}
+
+	/**
+	 * Displays the API Version drop-down field for the Settings API
+	 *
+	 * @since 1.4.1
+	 */
+	function version_field() {
+		$version = self::get_setting( 'version' );
+		$html_name = $this->_get_html_name( 'version' );
+		$html = '<div id="version-wrap"><select id="version" name="' . $html_name . '">';
+		$html .= '<option';
+		if ( $version === '3' ) {
+			$html .= ' selected="selected"';
+		}
+		$html .= ' value="3">3</option>';
+		$html .= '<option';
+		if ( $version === '4' ) {
+			$html .= ' selected="selected"';
+		}
+		$html .= ' value="4">4</option>';
+		$html .= '</select></div>';
+		echo $html;
 	}
 
 	/**
