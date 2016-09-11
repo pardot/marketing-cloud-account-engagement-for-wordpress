@@ -1,5 +1,5 @@
 === Pardot ===
-Contributors: cliffseal, NewClarity, MikeSchinkel
+Contributors: cliffseal
 Donate link: http://pardot.com
 Tags: pardot, marketing automation, forms, dynamic content, tracking, web tracking
 Requires at least: 4.5
