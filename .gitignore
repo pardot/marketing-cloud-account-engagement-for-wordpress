@@ -1,7 +1,5 @@
 .DS_Store
-.svn/entries
-
-.svn/format
+.svn/
 
 *.db
 
