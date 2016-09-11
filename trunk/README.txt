@@ -4,7 +4,7 @@ Donate link: http://pardot.com
 Tags: pardot, marketing automation, forms, dynamic content, tracking, web tracking
 Requires at least: 4.5
 Tested up to: 4.6.1
-Stable tag: 1.4
+Stable tag: 1.4.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -131,7 +131,8 @@ You can apply any conditional logic you want. For instance, this will append the
 
 = 1.4.1 =
 
-Improve regex for HTTPS and add filtering
+1. Allow connection with API v4
+1. Improve regex for HTTPS and add filtering
 
 = 1.4 =
 
