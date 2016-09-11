@@ -2,8 +2,8 @@
 Contributors: cliffseal, NewClarity, MikeSchinkel
 Donate link: http://pardot.com
 Tags: pardot, marketing automation, forms, dynamic content, tracking, web tracking
-Requires at least: 4.3
-Tested up to: 4.4.2
+Requires at least: 4.5
+Tested up to: 4.6.1
 Stable tag: 1.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -103,7 +103,7 @@ Filter the entire embed code for a given form. A common usage for this is condit
 	function pardot_custom_append_querystring($body_html) {
 		return preg_replace( '/src="([^"]+)"/', 'src="$1?this=that&postID=' . get_the_ID() . '"', $body_html );
 	}
-	
+
 	add_filter( 'pardot_form_embed_code_54796', 'pardot_custom_append_querystring' );
 
 You can apply any conditional logic you want. For instance, this will append the same information, but only if you're on the "About" page:
@@ -114,7 +114,7 @@ You can apply any conditional logic you want. For instance, this will append the
 		}
 		return $body_html;
 	}
-	
+
 	add_filter( 'pardot_form_embed_code_54796', 'pardot_custom_append_querystring' );
 
 == Screenshots ==
