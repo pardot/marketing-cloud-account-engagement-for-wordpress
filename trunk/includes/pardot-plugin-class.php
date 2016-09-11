@@ -842,7 +842,6 @@ class Pardot_Plugin {
 		return apply_filters('pardot_form_embed_code_' . $args['form_id'], $body_html);
 	}
 
-
 	/**
 	 * If HTTPS is desired, override the protocol and domain
 	 *
@@ -925,6 +924,11 @@ class Pardot_Plugin {
         if ( ! empty( $args['class'] ) ) {
             $dynamicContent_html = str_replace( 'pardotdc', "pardotdc {$args['class']}", $dynamicContent_html );
         }
+
+		/**
+		 * Filter the embed code for HTTPS
+		 */
+		$dynamicContent_html = self::convert_embed_code_https($dynamicContent_html);
 
 		return $dynamicContent_html;
 
