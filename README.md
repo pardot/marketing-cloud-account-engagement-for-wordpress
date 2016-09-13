@@ -149,7 +149,8 @@ add_filter( 'pardot_https_regex', 'pardot_custom_filter_https_regex' );
 
 ### 1.4.1 ###
 
-Improve regex for HTTPS and add filtering
+1. Allow connection with API v4
+1. Improve regex for HTTPS and add filtering
 
 ### 1.4 ###
 

@@ -117,6 +117,16 @@ You can apply any conditional logic you want. For instance, this will append the
 
 	add_filter( 'pardot_form_embed_code_54796', 'pardot_custom_append_querystring' );
 
+`pardot_https_regex`
+
+Filter the regular expression used to find URLs to be converted to https://go.pardot.com. This is only used when "Use HTTPS?" is checked in the settings. You may want to filter this regex if you find it's not properly capturing and converting your URLs.
+
+	function pardot_custom_filter_https_regex() {
+		return "/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,63}(\/\S*)?/";
+	}
+
+	add_filter( 'pardot_https_regex', 'pardot_custom_filter_https_regex' );
+
 == Screenshots ==
 
 1. Settings area
@@ -248,7 +258,7 @@ Initial release.
 
 = 1.4.1 =
 
-This update improves the HTTPS functionality used to find and replace the Pardot URLs. If the HTTPS option has not been working for you, please upgrade.
+This update fixes an issue with the new Pardot API version and improves the HTTPS functionality used to find and replace the Pardot URLs.
 
 = 1.4 =
 
