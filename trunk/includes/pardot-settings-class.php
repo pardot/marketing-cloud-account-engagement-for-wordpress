@@ -872,7 +872,7 @@ HTML;
 			 */
 			$settings = array();
 
-		} else if ( isset( $settings['password'] ) ) {
+		} elseif ( isset( $settings['password'] ) ) {
 
 			/**
 			 * If there was infothere's nothing in the database make sure all
@@ -880,7 +880,7 @@ HTML;
 			 */
 			$settings['password'] = self::pardot_decrypt( $settings['password'], 'pardot_key' );
 
-		}
+        }
 
 		/**
 		 * Merge in the empty settings to make sure all expected setting keys are in returned array.
@@ -924,11 +924,6 @@ HTML;
 		 * Assign the setting for this key its value
 		 */
 		$settings[$key] = $value;
-
-		/**
-		 * Encode password for 'prying eyes' security
-		 */
-		$settings['password'] = self::pardot_encrypt( $settings['password'], 'pardot_key' );
 
 		/**
 		 * Now update all the settings as a serialized array
