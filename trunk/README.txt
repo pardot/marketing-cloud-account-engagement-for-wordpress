@@ -1,10 +1,10 @@
 === Pardot ===
-Contributors: cliffseal, NewClarity, MikeSchinkel
+Contributors: cliffseal
 Donate link: http://pardot.com
 Tags: pardot, marketing automation, forms, dynamic content, tracking, web tracking
 Requires at least: 4.5
-Tested up to: 4.6
-Stable tag: 1.4
+Tested up to: 4.6.1
+Stable tag: 1.4.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -103,7 +103,7 @@ Filter the entire embed code for a given form. A common usage for this is condit
 	function pardot_custom_append_querystring($body_html) {
 		return preg_replace( '/src="([^"]+)"/', 'src="$1?this=that&postID=' . get_the_ID() . '"', $body_html );
 	}
-	
+
 	add_filter( 'pardot_form_embed_code_54796', 'pardot_custom_append_querystring' );
 
 You can apply any conditional logic you want. For instance, this will append the same information, but only if you're on the "About" page:
@@ -114,8 +114,18 @@ You can apply any conditional logic you want. For instance, this will append the
 		}
 		return $body_html;
 	}
-	
+
 	add_filter( 'pardot_form_embed_code_54796', 'pardot_custom_append_querystring' );
+
+`pardot_https_regex`
+
+Filter the regular expression used to find URLs to be converted to https://go.pardot.com. This is only used when "Use HTTPS?" is checked in the settings. You may want to filter this regex if you find it's not properly capturing and converting your URLs.
+
+	function pardot_custom_filter_https_regex() {
+		return "/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,63}(\/\S*)?/";
+	}
+
+	add_filter( 'pardot_https_regex', 'pardot_custom_filter_https_regex' );
 
 == Screenshots ==
 
@@ -128,6 +138,11 @@ You can apply any conditional logic you want. For instance, this will append the
 1. A page can have two forms! Here, one is in the body and one in a widget.
 
 == Changelog ==
+
+= 1.4.1 =
+
+1. Allow connection with API v4
+1. Improve regex for HTTPS and add filtering
 
 = 1.4 =
 
@@ -241,13 +256,17 @@ Initial release.
 
 == Upgrade Notice ==
 
+= 1.4.1 =
+
+This update fixes an issue with the new Pardot API version and improves the HTTPS functionality used to find and replace the Pardot URLs.
+
 = 1.4 =
 
-This updates adds an option to embed HTTPS forms (activate it in Settings > Pardot), adds the "querystring" parameter to the shortcode, makes the form embed code filterable, allows custom overrides for various directory configurations, updates branding, and fixes some bugs.
+This update adds an option to embed HTTPS forms (activate it in Settings > Pardot), adds the "querystring" parameter to the shortcode, makes the form embed code filterable, allows custom overrides for various directory configurations, updates branding, and fixes some bugs.
 
 = 1.3.10 =
 
-This updates improves compatibility with WordPress 3.9 in the Visual Editor.
+This update improves compatibility with WordPress 3.9 in the Visual Editor.
 
 = 1.3.9 =
 

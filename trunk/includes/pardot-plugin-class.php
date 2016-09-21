@@ -626,21 +626,9 @@ class Pardot_Plugin {
 					$form_html = $matches[2];
 
 					/**
-					 * If HTTPS is desired, override the protocol and domain
+					 * Filter the embed code for HTTPS
 					 */
-					if ( Pardot_Settings::get_setting( 'https' ) ) {
-						/**
-						 * Look for URLs in the embed code
-						 */
-						$reg_exUrl = "/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/";
-						preg_match( $reg_exUrl, $form_html, $url );
-						/**
-						 * Replace whatever is there with the approved Pardot HTTPS URL
-						 */
-						$urlpieces = parse_url($url[0]);
-						$httpsurl = 'https://go.pardot.com' . $urlpieces['path'];
-						$form_html = preg_replace( $reg_exUrl, $httpsurl, $form_html );
-					}
+					$form_html = self::convert_embed_code_https($form_html);
 				}
 			}
 			/**
@@ -728,6 +716,10 @@ class Pardot_Plugin {
 							} else {
 								$form_html = str_replace( '<iframe', "<iframe class=\"pardotform\"", $form_html );
 							}
+							/**
+							 * Filter the embed code for HTTPS
+							 */
+							$form_html = self::convert_embed_code_https($form_html);
 						} else {
 							/**
 							 * But if it's INLINE then we need to do some work; extract URL from embed code
@@ -851,6 +843,32 @@ class Pardot_Plugin {
 	}
 
 	/**
+	 * If HTTPS is desired, override the protocol and domain
+	 *
+	 * @static
+	 * @param string $embed_code Contains HTML for embedding forms, dynamic content, etc.
+	 * @return string
+	 *
+	 * @since 1.4.1
+	 */
+	static function convert_embed_code_https( $embed_code ) {
+		if ( Pardot_Settings::get_setting( 'https' ) ) {
+			/**
+			 * Look for URLs in the embed code
+			 */
+			$reg_exUrl = apply_filters("pardot_https_regex", "/(http|https)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,63}(\/\S*)?/");
+			preg_match( $reg_exUrl, $embed_code, $url );
+			/**
+			 * Replace whatever is there with the approved Pardot HTTPS URL
+			 */
+			$urlpieces = parse_url($url[0]);
+			$httpsurl = 'https://go.pardot.com' . $urlpieces['path'];
+			$embed_code = preg_replace( $reg_exUrl, $httpsurl, $embed_code );
+		}
+		return $embed_code;
+	}
+
+	/**
 	 * Grab the HTML for the Pardot Dynamic Content to be displayed via a widget or via a shortcode.
 	 *
 	 * @static
@@ -906,6 +924,11 @@ class Pardot_Plugin {
         if ( ! empty( $args['class'] ) ) {
             $dynamicContent_html = str_replace( 'pardotdc', "pardotdc {$args['class']}", $dynamicContent_html );
         }
+
+		/**
+		 * Filter the embed code for HTTPS
+		 */
+		$dynamicContent_html = self::convert_embed_code_https($dynamicContent_html);
 
 		return $dynamicContent_html;
 

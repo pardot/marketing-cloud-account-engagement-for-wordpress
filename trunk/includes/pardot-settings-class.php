@@ -271,6 +271,7 @@ HTML;
 			'password'  => __( 'Password', 'pardot' ),
 			'user_key' 	=> __( 'User Key', 'pardot' ),
 			'campaign' 	=> __( 'Campaign (for Tracking Code)', 'pardot' ),
+			'version' 	=> __( 'API Version', 'pardot' ),
 			'https' 	=> __( 'Use HTTPS?', 'pardot' ),
 			'submit'	=> '',
 			'clearcache'=> '',
@@ -693,6 +694,29 @@ HTML;
 	}
 
 	/**
+	 * Displays the API Version drop-down field for the Settings API
+	 *
+	 * @since 1.4.1
+	 */
+	function version_field() {
+		$version = self::get_setting( 'version' );
+		$html_name = $this->_get_html_name( 'version' );
+		$html = '<div id="version-wrap"><select id="version" name="' . $html_name . '">';
+		$html .= '<option';
+		if ( $version === '3' ) {
+			$html .= ' selected="selected"';
+		}
+		$html .= ' value="3">3</option>';
+		$html .= '<option';
+		if ( $version === '4' ) {
+			$html .= ' selected="selected"';
+		}
+		$html .= ' value="4">4</option>';
+		$html .= '</select></div>';
+		echo $html;
+	}
+
+	/**
 	 * Displays the HTTPS-only checkbox for the Settings API
 	 *
 	 * @since 1.4
@@ -848,7 +872,7 @@ HTML;
 			 */
 			$settings = array();
 
-		} else if ( isset( $settings['password'] ) ) {
+		} elseif ( isset( $settings['password'] ) ) {
 
 			/**
 			 * If there was infothere's nothing in the database make sure all
@@ -856,7 +880,7 @@ HTML;
 			 */
 			$settings['password'] = self::pardot_decrypt( $settings['password'], 'pardot_key' );
 
-		}
+        }
 
 		/**
 		 * Merge in the empty settings to make sure all expected setting keys are in returned array.
@@ -900,11 +924,6 @@ HTML;
 		 * Assign the setting for this key its value
 		 */
 		$settings[$key] = $value;
-
-		/**
-		 * Encode password for 'prying eyes' security
-		 */
-		$settings['password'] = self::pardot_encrypt( $settings['password'], 'pardot_key' );
 
 		/**
 		 * Now update all the settings as a serialized array
