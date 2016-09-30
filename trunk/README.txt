@@ -4,7 +4,7 @@ Donate link: http://pardot.com
 Tags: pardot, marketing automation, forms, dynamic content, tracking, web tracking
 Requires at least: 4.5
 Tested up to: 4.6.1
-Stable tag: 1.4.1
+Stable tag: 1.4.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -139,6 +139,10 @@ Filter the regular expression used to find URLs to be converted to https://go.pa
 
 == Changelog ==
 
+= 1.4.2 =
+
+Fixes a bug that would cause the plugin to become unauthenticated
+
 = 1.4.1 =
 
 1. Allow connection with API v4
@@ -255,6 +259,10 @@ Fix bug with form order in content
 Initial release.
 
 == Upgrade Notice ==
+
+= 1.4.2 =
+
+Fixes a bug that would cause the plugin to become unauthenticated.
 
 = 1.4.1 =
 
