@@ -924,11 +924,6 @@ HTML;
 		$settings[$key] = $value;
 
 		/**
-		 * Encode password for 'prying eyes' security
-		 */
-		$settings['password'] = self::pardot_encrypt( $settings['password'], 'pardot_key' );
-
-		/**
 		 * Now update all the settings as a serialized array
 		 */
 		update_option( self::$OPTION_GROUP, (array)$settings );
