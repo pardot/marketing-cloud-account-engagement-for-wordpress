@@ -432,8 +432,8 @@ x	 */
 			$args['email'] = urlencode( $args['email'] );
 		}
 
-		if ( isset($args['password']) ) {
-			$args['password'] = base64_encode( $args['password'] );
+		if ( isset($args['password']) && self::pardot_decrypt( $args['password'], 'pardot_key' ) !== $args['password'] ) {
+			$args['password'] = Pardot_Settings::pardot_decrypt( $args['password'], 'pardot_key' );
 		}
 
 		$response = false;
