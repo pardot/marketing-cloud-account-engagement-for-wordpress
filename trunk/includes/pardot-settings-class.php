@@ -872,10 +872,12 @@ HTML;
 			 */
 			$settings = array();
 
-		} elseif ( isset( $settings['password'] ) ) {
+		} elseif ( isset( $settings['password'] ) && !empty( $settings['password'] ) ) {
 
-			if ( self::pardot_decrypt( $settings['password'], 'pardot_key' ) !== $settings['password'] ) {
-				$settings['password'] = self::pardot_decrypt( $settings['password'], 'pardot_key' );
+			$decrypted_pass = self::pardot_decrypt( $settings['password'], 'pardot_key' );
+
+			if ( $decrypted_pass !== $settings['password'] && ctype_print($decrypted_pass) ) {
+				$settings['password'] = $decrypted_pass;
 			}
 
         }
