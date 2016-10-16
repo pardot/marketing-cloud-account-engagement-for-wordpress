@@ -433,7 +433,13 @@ x	 */
 		}
 
 		if ( isset($args['password']) ) {
-			$args['password'] = base64_encode( $args['password'] );
+
+			$decrypted_pass = Pardot_Settings::pardot_decrypt( $args['password'], 'pardot_key' );
+
+			if ( $decrypted_pass !== $args['password'] && ctype_print($decrypted_pass) ) {
+				$args['password'] = $decrypted_pass;
+			}
+
 		}
 
 		$response = false;
