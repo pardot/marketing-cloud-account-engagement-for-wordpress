@@ -1,0 +1,55 @@
+/**
+ * ThickBox styles; "!important" declarations are needed to override ThickBox defaults.
+ */
+body.pardot-modal-open #TB_window {
+	width: 440px !important;
+}
+
+body.pardot-modal-open #TB_ajaxContent {
+	height: 100% !important;
+	margin: 0 auto;
+	min-width: 400px;
+	overflow: hidden;
+	padding: 0 !important;
+	position: relative;
+	width: 400px;
+}
+
+body.pardot-modal-open #TB_ajaxWindowTitle {
+	padding-left: 20px !important;
+}
+
+/**
+ * Shortcode builder form styles.
+ */
+#pardot-forms-shortcode-insert-dialog h2,
+#pardot-forms-shortcode-insert-dialog h4 {
+	color: #2B6FB6;
+}
+
+.pardot-forms-shortcode-classname-input {
+	width: 82%;
+}
+
+.pardot-forms-modal-actions {
+	clear: both;
+	float: left;
+	margin: 20px 0 0 0;
+	width: 100%;
+}
+
+#pardot-forms-modal-insert {
+	float: left;
+}
+
+#pardot-forms-modal-cancel {
+	float: right;
+}
+
+#pardot-forms-cache-notice {
+	background: #ccc;
+	float: left;
+	margin-top: 20px;
+	padding: 5px 10px !important;
+	text-indent: none !important;
+}

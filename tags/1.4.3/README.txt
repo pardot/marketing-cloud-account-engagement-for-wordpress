@@ -3,8 +3,8 @@ Contributors: cliffseal
 Donate link: http://pardot.com
 Tags: pardot, marketing automation, forms, dynamic content, tracking, web tracking
 Requires at least: 4.6
-Tested up to: 4.8.2
-Stable tag: 1.4.4
+Tested up to: 4.7
+Stable tag: 1.4.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -75,11 +75,11 @@ Since every WordPress theme is different, embedded forms won’t always automati
 1. Click the link to the layout template being used by the form.
 1. Edit the layout template and add the following to the <code><head></code> section of the template:
 
-	&lt;style type="text/css"&gt;
-		&#35;pardot-form input.text, &#35;pardot-form textarea {
+	<style type="text/css">
+		#pardot-form input.text, #pardot-form textarea {
 			width: 150px;
 		}
-	&lt;/style&gt;
+	</style>
 
 A width of 150px is just a starting point. Adjust this value until it fits on your page and add additional styles as you see fit. For styling help, reference our <a href="http://www.pardot.com/help/faqs/forms/basic-css-for-forms" target="_blank">Basic CSS for Forms</a> page.
 
@@ -139,10 +139,6 @@ Filter the regular expression used to find URLs to be converted to https://go.pa
 1. A page can have two forms! Here, one is in the body and one in a widget.
 
 == Changelog ==
-
-= 1.4.4 =
-
-* Fix - Restores functionality of the Pardot button in the visual editor [86322]
 
 = 1.4.3 =
 

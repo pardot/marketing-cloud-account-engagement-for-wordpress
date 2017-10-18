@@ -264,10 +264,11 @@ class Pardot_Plugin {
 
 	function wp_ajax_popup_reset_cache() {
 
-		delete_transient( 'pardot_forms' );
-		delete_transient( 'pardot_dynamicContent' );
+		delete_transient('pardot_forms');
+		delete_transient('pardot_dynamicContent');
 
 		die();
+
 	}
 
 	/**
@@ -317,6 +318,7 @@ class Pardot_Plugin {
 		 * Compact the array of HTML into a string of HTML and return it.
 		 */
 		return implode( '', $html );
+
 	}
 
 	/**
@@ -365,6 +367,7 @@ class Pardot_Plugin {
 		 * Compact the array of HTML into a string of HTML and return it.
 		 */
 		return implode( '', $lmth );
+
 	}
 
 	/**
@@ -428,8 +431,6 @@ class Pardot_Plugin {
 			 */
 			add_filter( "mce_external_plugins", array( $this, 'mce_external_plugins' ) );
 			add_filter( 'mce_buttons', array( $this, 'mce_buttons' ) );
-
-			new _Pardot_Forms_Shortcode_Popup();
 		}
 	}
 
@@ -461,12 +462,11 @@ class Pardot_Plugin {
 	 */
 	function plugin_row_meta( $plugin_meta, $plugin_file ) {
 		if ( false !== strpos( $plugin_file, '/pardot.php' ) ) {
-			$link_text     = __( "Visit developer's site", 'pardot' );
+			$link_text = __( "Visit developer's site", 'pardot' );
 			$plugin_meta[] = "<a href=\"http://about.me/mikeschinkel\" target=\"_blank\">{$link_text}</a>";
 		}
 		return $plugin_meta;
 	}
-
 	/**
 	 * Filter hook to add a TinyMCE plugin for Pardot Forms.
 	 *
@@ -484,7 +484,7 @@ class Pardot_Plugin {
 		 * 'pardotformsshortcodeinsert' identifies the Pardot Forms button to TinyMCE.
 		 * '.../editor_plugin.js' implements the button's functionality.
 		 */
-		$plugin_array['pardotformsshortcodeinsert'] = plugins_url( '/js/tinymce.js', PARDOT_PLUGIN_FILE );
+		$plugin_array['pardotformsshortcodeinsert'] = plugins_url( '/js/tinymce/editor_plugin.js', dirname( __FILE__ ) );
 		return $plugin_array;
 	}
 
@@ -502,7 +502,7 @@ class Pardot_Plugin {
 		/**
 		 * 'pardotformsshortcodeinsert' identifies the Pardot Forms button to TinyMCE prefixed with a separator.
 		 */
-		array_push( $buttons, 'separator', 'pardotformsshortcodeinsert' );
+		array_push( $buttons, "separator", "pardotformsshortcodeinsert" );
 		return $buttons;
 	}
 
@@ -517,7 +517,7 @@ class Pardot_Plugin {
 	 * @since 1.0.0
 	 */
 	function wp_footer() {
-		pardot_dc_async_script();
+        pardot_dc_async_script();
 		the_pardot_tracking_js();
 	}
 
@@ -548,7 +548,7 @@ class Pardot_Plugin {
 	 * @since 1.1.0
 	 */
 	function dynamic_content_shortcode( $atts ) {
-		/**
+        /**
 		 * Translate from 'id' to 'dynamicContent_id' which is what $this->get_dynamic_content_body() uses.
 		 */
 		$atts['dynamicContent_id'] = isset( $atts['id'] ) ? $atts['id'] : 0;
@@ -793,7 +793,6 @@ class Pardot_Plugin {
 					$body_html = preg_replace( '/src="([^"]+)"/', 'src="$1?' . $args['querystring'] . '"', $body_html );
 				}
 			}
-
 			if ( ! empty( $args['height'] ) ) {
 				/**
 				 * If "height" is passed via shortcode create HTML to insert in form's <div>
@@ -811,7 +810,6 @@ class Pardot_Plugin {
 					$body_html = str_replace( '<div class="pardot-inline-form">', "<div class=\"pardot-inline-form\"{$height_html}>", $body_html );
 				}
 			}
-
 			if ( ! empty( $args['width'] ) ) {
 				/**
 				 * If "width" is passed via shortcode create HTML to insert in form's <div>
@@ -829,7 +827,6 @@ class Pardot_Plugin {
 					$body_html = str_replace( '<div class="pardot-inline-form">', "<div class=\"pardot-inline-form\"{$width_html}>", $body_html );
 				}
 			}
-
 			if ( ! empty( $args['class'] ) ) {
 				/**
 				 * If "width" is passed via shortcode create HTML to insert in form's <div>
@@ -842,8 +839,7 @@ class Pardot_Plugin {
 				}
 			}
 		}
-
-		return apply_filters( 'pardot_form_embed_code_' . $args['form_id'], $body_html );
+		return apply_filters('pardot_form_embed_code_' . $args['form_id'], $body_html);
 	}
 
 	/**
@@ -865,11 +861,10 @@ class Pardot_Plugin {
 			/**
 			 * Replace whatever is there with the approved Pardot HTTPS URL
 			 */
-			$urlpieces  = parse_url($url[0]);
-			$httpsurl   = 'https://go.pardot.com' . $urlpieces['path'];
+			$urlpieces = parse_url($url[0]);
+			$httpsurl = 'https://go.pardot.com' . $urlpieces['path'];
 			$embed_code = preg_replace( $reg_exUrl, $httpsurl, $embed_code );
 		}
-
 		return $embed_code;
 	}
 
@@ -889,7 +884,7 @@ class Pardot_Plugin {
 		 */
 		$dynamicContent_id = $args['dynamicContent_id'];
 
-		if ( false === ( $dynamicContent_html = get_transient( 'pardot_dynamicContent_html_' . $dynamicContent_id ) ) ) {
+        if ( false === ( $dynamicContent_html = get_transient( 'pardot_dynamicContent_html_' . $dynamicContent_id ) ) ) {
 
 			$dynamicContents = get_pardot_dynamic_content();
 
@@ -897,46 +892,48 @@ class Pardot_Plugin {
 				/**
 				 * Use the dynamicContent_id to find the right one
 				 */
-				$dynamicContent         = $dynamicContents[ $dynamicContent_id ];
-				$dynamicContent_html    = $dynamicContent->embedCode;
-				$dynamicContent_url     = $dynamicContent->embedUrl;
+				$dynamicContent = $dynamicContents[$dynamicContent_id];
+				$dynamicContent_html = $dynamicContent->embedCode;
+                $dynamicContent_url = $dynamicContent->embedUrl;
 				$dynamicContent_default = $dynamicContent->baseContent;
 			}
 
-			if ( $dynamicContent_url ) {
-				$dynamicContent_html = "<div data-dc-url='" . $dynamicContent_url . "' style='height:auto;width:auto;' class='pardotdc'>" . $dynamicContent_default . "</div>";
-			} else {
-				$dynamicContent_html = $dynamicContent_html . "<noscript>" . $dynamicContent_default . "</noscript>";
-			}
+            if ( $dynamicContent_url ) {
+                $dynamicContent_html = "<div data-dc-url='" . $dynamicContent_url . "' style='height:auto;width:auto;' class='pardotdc'>" . $dynamicContent_default . "</div>";
+            } else {
+                $dynamicContent_html = $dynamicContent_html . "<noscript>" . $dynamicContent_default . "</noscript>";
+            }
 
 			set_transient( 'pardot_dynamicContent_html_' . $dynamicContent_id, $dynamicContent_html, self::$cache_timeout );
 
 		} else {
-			$dynamicContent_html = get_transient( 'pardot_dynamicContent_html_' . $dynamicContent_id );
-		}
 
-		if ( ! empty( $args['height'] ) ) {
-			/**
-			 * If 'inline' add to the <div> using style
-			 */
-			$dynamicContent_html = str_replace( 'height:auto', "height:{$args['height']}", $dynamicContent_html );
-		}
+            $dynamicContent_html = get_transient( 'pardot_dynamicContent_html_' . $dynamicContent_id );
 
-		if ( ! empty( $args['width'] ) ) {
-			$dynamicContent_html = str_replace( 'width:auto', "width:{$args['width']}", $dynamicContent_html );
-		}
+        }
 
-		if ( ! empty( $args['class'] ) ) {
-			$dynamicContent_html = str_replace( 'pardotdc', "pardotdc {$args['class']}", $dynamicContent_html );
-		}
+        if ( ! empty( $args['height'] ) ) {
+            /**
+             * If 'inline' add to the <div> using style
+             */
+            $dynamicContent_html = str_replace( 'height:auto', "height:{$args['height']}", $dynamicContent_html );
+        }
+        if ( ! empty( $args['width'] ) ) {
+            $dynamicContent_html = str_replace( 'width:auto', "width:{$args['width']}", $dynamicContent_html );
+        }
+        if ( ! empty( $args['class'] ) ) {
+            $dynamicContent_html = str_replace( 'pardotdc', "pardotdc {$args['class']}", $dynamicContent_html );
+        }
 
 		/**
 		 * Filter the embed code for HTTPS
 		 */
-		$dynamicContent_html = self::convert_embed_code_https( $dynamicContent_html );
+		$dynamicContent_html = self::convert_embed_code_https($dynamicContent_html);
 
 		return $dynamicContent_html;
+
 	}
+
 
 	/**
 	 * Get an instance of Pardot_API
@@ -953,7 +950,6 @@ class Pardot_Plugin {
 		if ( ! is_a( self::$api, 'Pardot_API' ) ) {
 			self::$api = Pardot_Settings::get_api( $auth );
 		}
-
 		return self::$api;
 	}
 
