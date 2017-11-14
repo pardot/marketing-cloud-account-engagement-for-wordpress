@@ -142,6 +142,8 @@ Filter the regular expression used to find URLs to be converted to https://go.pa
 
 = 1.4.5 =
 
+* Fix - Fixed some layout issues when the Pardot shortcode-builder form is viewed in smaller browser sizes or mobile devices [89563]
+
 = 1.4.4 =
 
 * Fix - Restores functionality of the Pardot button in the visual editor [86322]

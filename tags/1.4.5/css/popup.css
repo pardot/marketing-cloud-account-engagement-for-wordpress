@@ -3,10 +3,12 @@
  */
 body.pardot-modal-open #TB_window {
 	width: 440px !important;
+	overflow-x: hidden;
+	overflow-y: scroll;
 }
 
 body.pardot-modal-open #TB_ajaxContent {
-	height: 100% !important;
+	height: auto !important;
 	margin: 0 auto;
 	min-width: 400px;
 	overflow: hidden;
@@ -25,6 +27,12 @@ body.pardot-modal-open #TB_ajaxWindowTitle {
 #pardot-forms-shortcode-insert-dialog h2,
 #pardot-forms-shortcode-insert-dialog h4 {
 	color: #2B6FB6;
+}
+
+#pardot-forms-shortcode-insert-dialog form {
+	height: 100% !important;
+	overflow: hidden !important;
+	position: relative;
 }
 
 .pardot-forms-shortcode-classname-input {
@@ -52,4 +60,18 @@ body.pardot-modal-open #TB_ajaxWindowTitle {
 	margin-top: 20px;
 	padding: 5px 10px !important;
 	text-indent: none !important;
+}
+
+/**
+ * Some styling for very small browsers or mobile devices. The "!important" declarations are, again,
+ * unfortunately necessary to overwrite other styles from both ThickBox *and* some of our own code.
+ */
+@media screen and ( max-width: 480px ) {
+
+	body.pardot-modal-open #TB_window {
+		left: 0 !important;
+		margin-left: 0 !important;
+		margin-right: 0 !important;
+		width: 100% !important;
+	}
 }
