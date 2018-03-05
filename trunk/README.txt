@@ -4,7 +4,7 @@ Donate link: http://pardot.com
 Tags: pardot, marketing automation, forms, dynamic content, tracking, web tracking
 Requires at least: 4.6
 Tested up to: 4.8.2
-Stable tag: 1.4.4
+Stable tag: 1.4.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -139,6 +139,10 @@ Filter the regular expression used to find URLs to be converted to https://go.pa
 1. A page can have two forms! Here, one is in the body and one in a widget.
 
 == Changelog ==
+
+= 1.4.5 =
+
+* Fix - Fixed some layout issues when the Pardot shortcode-builder form is viewed in smaller browser sizes or mobile devices [89563]
 
 = 1.4.4 =
 
