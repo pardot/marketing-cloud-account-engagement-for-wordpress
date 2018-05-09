@@ -1116,11 +1116,11 @@ class Pardot_Plugin {
 		if ( wp_cache_set( $key, $value, 'pardot' ) ) {
 			self::save_cache_key( $key );
 		}
-
+		
 		if ( ! $set_transient ) {
 			return;
 		}
-
+		
 		if ( set_transient( "pardot_{$key}", $value, self::$cache_timeout ) ) {
 			self::save_transient_key( "pardot_{$key}" );
 		}
@@ -1214,10 +1214,8 @@ class Pardot_Plugin {
 	 * @since 1.4.6
 	 *
 	 * @return bool True if the cache was cleared, false otherwise.
-	 */
+	 */	
 	public static function clear_cache() {
-		self::legacy_clear_cache();
-
 		$transient_keys = self::get_saved_transient_keys();
 		$cache_keys     = self::get_saved_cache_keys();
 
@@ -1233,23 +1231,6 @@ class Pardot_Plugin {
 		$deleted_cache_keys = delete_option( self::$saved_cache_keys );
 
 		return $deleted_trans_keys && $deleted_cache_keys;
-	}
-
-	/**
-	 * This method helps clear transients that may have been set on a user's site before updating to
-	 * version 1.4.6 of this plugin; and while this method will not work on sites with persistent
-	 * object caching, on sites without it it may work better than clear_cache().
-	 *
-	 * @since 1.4.7
-	 */
-	public static function legacy_clear_cache() {
-		global $wpdb;
-
-		$collecttrans = $wpdb->get_col( "SELECT option_name FROM {$wpdb->options} WHERE option_name LIKE '_transient_pardot%';" );
-
-		foreach ( $collecttrans as $collecttran ) {
-			delete_transient( str_replace( '_transient_', '', $collecttran ) );
-		}
 	}
 }
 

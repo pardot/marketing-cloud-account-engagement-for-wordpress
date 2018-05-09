@@ -383,9 +383,7 @@ HTML;
 		}
 
 		if ( isset( $_POST['clear'] ) ) {
-
 			Pardot_Plugin::clear_cache();
-
 			add_settings_error( self::$OPTION_GROUP, 'reset_settings', __( 'The cache has been cleared!', 'pardot' ), 'updated' );
 		}
 
@@ -898,7 +896,7 @@ HTML;
 	 * Returns the decrypted form of the input string or if decryption fails it
 	 * will pass back the input string unmodified.
 	 *
-	 * @since 1.4.6
+	 * @since TBD
 	 * @see   self::pardot_decrypt()
 	 *
 	 * @param string $input_string
@@ -1017,7 +1015,7 @@ HTML;
 		/**
 		 * Provides an opportunity to intercept and override Pardot settings.
 		 *
-		 * @since 1.4.6
+		 * @since TBD
 		 *
 		 * @param mixed  $value
 		 * @param string $key
