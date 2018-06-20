@@ -410,6 +410,13 @@ HTML;
 
 			if ( ! self::$showed_auth_notice ) {
 				$msg = __( 'Cannot authenticate. Please check the fields below and click "Save Settings" again.', 'pardot' );
+
+				$api_error = $this->retrieve_api_error();
+
+				if ( ! empty( $api_error ) ) {
+					$msg = sprintf( esc_html_x( 'Error: %s', 'pardot' ), "<i>$api_error</i>" ) . '<br><br>' . $msg;
+				}
+
 				add_settings_error( self::$OPTION_GROUP, 'update_settings', $msg, 'error' );
 
 				self::$showed_auth_notice = true;
@@ -436,6 +443,28 @@ HTML;
 		add_filter( 'pre_update_option_pardot_settings', array( $this, 'pre_update_option_pardot_settings' ), 10, 2 );
 
 		return $clean;
+	}
+
+	/**
+	 * Returns the error message provided in the last API response or null if
+	 * an error was not supplied.
+	 *
+	 * @since 1.4.8
+	 *
+	 * @return string|null
+	 */
+	private function retrieve_api_error() {
+		$api_error = null;
+
+		if ( ! empty( self::$api->error ) ) {
+			// Get the raw error text from the (SimpleXMLElement) error object
+			$api_error = esc_html( trim( (string) self::$api->error ) );
+
+			// Convert any URLs contained within into actual links
+			$api_error = make_clickable( $api_error );
+		}
+
+		return empty( $api_error ) ? null : $api_error;
 	}
 
 	/**
