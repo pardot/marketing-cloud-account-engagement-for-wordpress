@@ -251,7 +251,8 @@ class Pardot_API {
 				$numpag = round($response->result->total_results/200)+1;
 				for( $j = 2; $j <= ($numpag); $j++ ) {
 					if ( $response = $this->get_response( 'form', $args, 'result', $j ) ) {
-						for( $i = 0; $i < ($response->result->total_results-200); $i++ ) {
+						$count = count($response->result->form);
+						for( $i = 0; $i < $count; $i++ ) {
 							$form = $response->result->form[$i];
 							$forms[(int)$form->id] = $this->SimpleXMLElement_to_stdClass( $form );
 						}
