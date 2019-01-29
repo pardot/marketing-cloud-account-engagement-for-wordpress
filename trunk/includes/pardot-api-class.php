@@ -419,8 +419,6 @@ x	 */
 
 		$args = array_merge( $args,
 			array(
-				'user_key' => $this->user_key,
-				'api_key' => $this->api_key,
 				// Here for Pardot root-level debugging only
 				//'act_as_user' => 'test@example.com',
 				'offset' => $paged > 1 ? ($paged-1)*200 : 0
@@ -437,7 +435,10 @@ x	 */
 				'compress'		=> false,
 				'decompress'	=> true,
 				'sslverify' 	=> false,
-				'body'          => $args
+				'body'          => $args,
+				'headers'       => [
+					'Authorization' => "Pardot user_key={$this->user_key},api_key={$this->api_key}"
+				],
 			), $args )
 		);
 
