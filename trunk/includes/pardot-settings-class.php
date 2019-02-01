@@ -706,7 +706,7 @@ HTML;
 	function user_key_field() {
 		$user_key = self::get_setting( 'user_key' );
 		$html_name = $this->_get_html_name( 'user_key' );
-		$msg = __( 'Find your <em>"User Key"</em> in the <em>"My User Information"</em> section of your <a href="%s" target="_blank">Pardot Account Settings</a>.', 'pardot' );
+		$msg = __( 'Find your <em>"User Key"</em> in the <em>"My Profile"</em> section of your <a href="%s" target="_blank">Pardot Account Settings</a>.', 'pardot' );
 		$msg = sprintf( $msg, self::ACCOUNT_URL );
 $html =<<<HTML
 <div id="user-key-wrap">
@@ -1077,7 +1077,7 @@ HTML;
 		/**
 		 * Now update all the settings as a serialized array
 		 */
-		update_option( self::$OPTION_GROUP, (array) $settings );
+		update_option( self::$OPTION_GROUP, (array) $settings, false );
 	}
 
 	/**

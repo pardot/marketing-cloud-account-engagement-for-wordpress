@@ -4,7 +4,7 @@ Donate link: http://pardot.com
 Tags: pardot, marketing automation, forms, dynamic content, tracking, web tracking
 Requires at least: 4.6
 Tested up to: 4.9.4
-Stable tag: 1.4.8
+Stable tag: 1.4.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -139,6 +139,14 @@ Filter the regular expression used to find URLs to be converted to https://go.pa
 1. A page can have two forms! Here, one is in the body and one in a widget.
 
 == Changelog ==
+
+= 1.4.9 =
+
+* Fix - Set autoload to false when updating options to prevent large DB value from being loaded into memory
+* Maintenance - Move authorization to headers to conform with API docs (#27) Thanks @adelawalla!
+* Fix - Ensure proper counting when looping through assets (#25) Thanks @stefanwiebe!
+* Fix - Update settings screen text for finding API key
+* Fix - Remove undefined tb_close JS function causing console error
 
 = 1.4.8 =
 

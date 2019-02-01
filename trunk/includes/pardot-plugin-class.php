@@ -1145,7 +1145,7 @@ class Pardot_Plugin {
 		// Remove possible empty values.
 		$saved_trans = array_filter( $saved_trans );
 
-		return update_option( self::$saved_transient_keys, array_values( $saved_trans ) );
+		return update_option( self::$saved_transient_keys, array_values( $saved_trans ), false );
 	}
 
 	/**
@@ -1167,7 +1167,7 @@ class Pardot_Plugin {
 		// Remove possible empty values.
 		$saved_keys = array_filter( $saved_keys );
 
-		return update_option( self::$saved_cache_keys, array_values( $saved_keys ) );
+		return update_option( self::$saved_cache_keys, array_values( $saved_keys ), false );
 	}
 
 	/**

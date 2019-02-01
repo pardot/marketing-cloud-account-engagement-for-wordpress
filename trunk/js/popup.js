@@ -63,7 +63,7 @@
 				action : 'get_pardot_dynamicContent_shortcode_select_html'
 			},
 			success: function( response ) {
-			 	$( document.getElementById( 'pardot-dc-shortcode-select' ) ).html( response ); 	
+			 	$( document.getElementById( 'pardot-dc-shortcode-select' ) ).html( response );
 			 	$( document.getElementById( 'dcshortcode' ) ).chosen({ width: '100%' });
 			}
 		});
@@ -162,7 +162,6 @@
 				window.send_to_editor( dcval );
 			}
 
-			tb_close();
 		});
 
 		/**
@@ -180,7 +179,7 @@
 		});
 
 		/**
-		 * Body class and jQuery event that let us customize the Pardot shortcode-builder without 
+		 * Body class and jQuery event that let us customize the Pardot shortcode-builder without
 		 * altering other Thickbox modals that might be on the page.
 		 *
 		 * @since 1.4.6
