@@ -428,11 +428,7 @@ x	 */
 			)
 		);
 
-		$headers = [
-			'Authorization' => 'Pardot user_key=' . $this->user_key . ',api_key=' . $this->api_key
-		];
-
-		$http_response = wp_remote_request(
+		$http_response = wp_remote_post(
 			$this->_get_url( $item_type, $args ),
 			array_merge( array(
 				'timeout' 		=> '30',
@@ -442,8 +438,7 @@ x	 */
 				'compress'		=> false,
 				'decompress'	=> true,
 				'sslverify' 	=> false,
-				'body'          => $args,
-				'headers'       => $headers
+				'body'          => $args
 			), $args )
 		);
 
