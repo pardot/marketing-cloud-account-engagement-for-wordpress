@@ -442,10 +442,6 @@ x	 */
 			), $args )
 		);
 
-		if ( isset($args['email']) ) {
-			$args['email'] = urlencode( $args['email'] );
-		}
-
 		if ( isset( $args['password'] ) ) {
 			$args['password'] = Pardot_Settings::decrypt_or_original( $args['password'], 'pardot_key' );
 		}
