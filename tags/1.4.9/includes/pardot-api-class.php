@@ -428,7 +428,11 @@ x	 */
 			)
 		);
 
-		$http_response = wp_remote_post(
+		$headers = [
+			'Authorization' => 'Pardot user_key=' . $this->user_key . ',api_key=' . $this->api_key
+		];
+
+		$http_response = wp_remote_request(
 			$this->_get_url( $item_type, $args ),
 			array_merge( array(
 				'timeout' 		=> '30',
@@ -438,9 +442,14 @@ x	 */
 				'compress'		=> false,
 				'decompress'	=> true,
 				'sslverify' 	=> false,
-				'body'          => $args
+				'body'          => $args,
+				'headers'       => $headers
 			), $args )
 		);
+
+		if ( isset($args['email']) ) {
+			$args['email'] = urlencode( $args['email'] );
+		}
 
 		if ( isset( $args['password'] ) ) {
 			$args['password'] = Pardot_Settings::decrypt_or_original( $args['password'], 'pardot_key' );
