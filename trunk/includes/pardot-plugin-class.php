@@ -1049,13 +1049,14 @@ class Pardot_Plugin {
 	 * @since 1.0.0
 	 */
 	static function call_api( $key, $args ) {
-		$value = self::get_cache( $key );
-		if ( ! $value ) {
+		//$value = self::get_cache( $key );
+		//if ( ! $value ) {
 			$auth = Pardot_Settings::extract_auth_args( $args );
 			$args['new_api_key'] = array( __CLASS__, '_new_api_key' );
 			$value = self::get_api( $auth )->{"get_{$key}"}( $args );
-			self::set_cache( $key, $value );
-		}
+			//self::set_cache( $key, $value );
+		//}
+        // Note: commenting out the above code to clearly show that the change maps to this recommendation in support: https://wordpress.org/support/topic/site-times-out-from-transient_keys-and-cache_keys/#post-11177934
 		return $value;
 	}
 

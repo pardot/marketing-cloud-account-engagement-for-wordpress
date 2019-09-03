@@ -2,9 +2,9 @@
 Contributors: cliffseal, ModernTribe
 Donate link: http://pardot.com
 Tags: pardot, marketing automation, forms, dynamic content, tracking, web tracking
-Requires at least: 4.6
-Tested up to: 4.9.4
-Stable tag: 1.4.9
+Requires at least: 4.9.10
+Tested up to: 5.2.2
+Stable tag: 1.4.10
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -139,6 +139,10 @@ Filter the regular expression used to find URLs to be converted to https://go.pa
 1. A page can have two forms! Here, one is in the body and one in a widget.
 
 == Changelog ==
+
+= 1.4.10 =
+
+* Fix - Disable recursion bug that resulted in overloaded cache and transient rows (click Empty Cache button in settings or manually delete the `_pardot_cache_keys` and `_pardot_transient_keys` rows from your options table)
 
 = 1.4.9 =
 
