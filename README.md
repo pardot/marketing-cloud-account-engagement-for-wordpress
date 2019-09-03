@@ -147,6 +147,43 @@ add_filter( 'pardot_https_regex', 'pardot_custom_filter_https_regex' );
 
 ## Changelog ##
 
+### 1.4.10 ###
+
+* Fix - Disable recursion bug that resulted in overloaded cache and transient rows (click Empty Cache button in settings or manually delete the `_pardot_cache_keys` and `_pardot_transient_keys` rows from your options table)
+
+### 1.4.9 ###
+* Fix - Set autoload to false when updating options to prevent large DB value from being loaded into memory
+* Maintenance - Move authorization to headers to conform with API docs (#27) Thanks @adelawalla!
+* Fix - Ensure proper counting when looping through assets (#25) Thanks @stefanwiebe!
+* Fix - Update settings screen text for finding API key
+* Fix - Remove undefined tb_close JS function causing console error
+
+### 1.4.8 ###
+* Fix - Show any authentication-related error messages returned by the Pardot API to the user, where possible, to aid troubleshooting [106707]
+
+### 1.4.7 ###
+* Fix - Restored some older cache-clearing code to help ensure Pardot data that preceded the 1.4.6 release is indeed cleared from the cache [104403]
+
+### 1.4.6 ###
+* Fix - Added support for OpenSSL-based protection of settings data, addressing the deprecation and removal of Mcrypt-support in PHP 7.x [90688]
+* Fix - Implemented changes to ensure the cache can successfully be cleared within environments that use persistent caching [88962]
+* Fix - Prevent PHP errors that would sometimes arise with empty campaign data, especially in PHP 7.0 and higher (props to @jimcin and @jarvizu for reporting this issue!) [102028]
+* Tweak - Resolved an issue that resulted in the display of duplicate confirmation notices when updating plugin settings [99848]
+* Tweak - "Reset All Settings" functionality altered to more reliably delete all settings [90688]
+* Tweak - Added filter hook `pardot_get_setting` [100888]
+
+### 1.4.5 ###
+* Fix - Fixed some layout issues when the Pardot shortcode-builder form is viewed in smaller browser sizes or mobile devices [89563]
+
+### 1.4.4 ###
+* Fix - Restored functionality of the Pardot button in the visual editor [86322]
+
+### 1.4.3 ###
+Fixes a more obscure bug that would cause the plugin to become unauthenticated
+
+### 1.4.2 ###
+Fixes a bug that would cause the plugin to become unauthenticated
+
 ### 1.4.1 ###
 
 1. Allow connection with API v4
