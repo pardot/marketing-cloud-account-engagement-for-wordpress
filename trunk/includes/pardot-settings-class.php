@@ -102,7 +102,7 @@ class Pardot_Settings {
 	function __construct() {
 
 		/**
-		 * This class is designed to be instansiated only once.
+		 * This class is designed to be instantiated only once.
 		 * We instantiate once at end of this class definition, throw an error if someone tries a second time.
 		 */
 		if ( isset( self::$self ) )
@@ -400,7 +400,7 @@ HTML;
 			}
 		}
 
-		$clean['password'] = self::decrypt_or_original( $clean['password'], 'pardot_key' );
+		$clean['password'] = self::decrypt_or_original( $clean['password'] );
 
 
 		/**
@@ -582,7 +582,7 @@ HTML;
 		 * Base64 won't stop a hacker if they get access to the database but will keep
 		 * endusers from being able to see a valid password.
 		 */
-		$new_options['password'] = self::pardot_encrypt( $new_options['password'], 'pardot_key', true );
+		$new_options['password'] = self::pardot_encrypt( $new_options['password'], true );
 
 		return $new_options;
 	}
@@ -860,68 +860,32 @@ HTML;
 
 	/**
 	 * Encrypts with a bit more complexity
-	 *
+	 * returns false if the string could not be encrypted (cases where encryption fails, or Sodium or OpenSSL are not present in PHP).
 	 * @since 1.1.2
 	 */
-	public static function pardot_encrypt( $input_string, $key = 'pardot_key', $set_flag = false ) {
-		// Use simple OpenSSL encryption available in PHP 7.x+
-		if ( function_exists( 'openssl_encrypt' ) ) {
-
-			// IV length for AES-256-CBC must be 16 chars.
-			$key = wp_salt( 'secure_auth' );
-			$iv  = substr( wp_salt( 'auth' ), 0, 16 );
-
-			return base64_encode( openssl_encrypt( $input_string, 'AES-256-CBC', $key, true, $iv ) );
-		}
-
-		// Otherwise fall back on mcrypt.
-		if ( function_exists( 'mcrypt_encrypt' ) ) {
-			$iv_size = mcrypt_get_iv_size( MCRYPT_RIJNDAEL_256, MCRYPT_MODE_ECB );
-			$iv      = mcrypt_create_iv( $iv_size, MCRYPT_RAND );
-			$h_key   = hash( 'sha256', $key, TRUE );
-
-			return base64_encode( mcrypt_encrypt( MCRYPT_RIJNDAEL_256, $h_key, $input_string, MCRYPT_MODE_ECB, $iv ) );
-		}
-
-		// And worst case scenario, fall back on base64_encode.
-		return base64_encode( $input_string );
+	public static function pardot_encrypt( $input_string, $set_flag = false ) {
+        $crypto = new PardotCrypto();
+        return $crypto->encrypt( $input_string );
 	}
 
-	/**
-	 * Decrypts with a bit more complexity.
-	 *
-	 * In situations where the string could not be decrypted boolean false will
-	 * be returned. This could include scenarios where the string has already
-	 * been descrypted.
-	 *
-	 * @since 1.1.2
-	 *
-	 * @return string|bool
-	 */
-	public static function pardot_decrypt( $encrypted_input_string, $key = 'pardot_key' ) {
 
-		// Use simple OpenSSL encryption available in PHP 7.x+
-		if ( function_exists( 'openssl_decrypt' ) ) {
-
-			// IV length for AES-256-CBC must be 16 chars.
-			$key = wp_salt( 'secure_auth' );
-			$iv  = substr( wp_salt( 'auth' ), 0, 16);
-
-			return openssl_decrypt( base64_decode( $encrypted_input_string ), 'AES-256-CBC', $key, true, $iv );
-		}
-
-		// Otherwise fall back on mcrypt.
-		if ( function_exists( 'mcrypt_encrypt' ) ) {
-		    $iv_size = mcrypt_get_iv_size( MCRYPT_RIJNDAEL_256, MCRYPT_MODE_ECB );
-		    $iv      = mcrypt_create_iv( $iv_size, MCRYPT_RAND );
-		    $h_key   = hash( 'sha256', $key, TRUE );
-
-		    return trim( mcrypt_decrypt( MCRYPT_RIJNDAEL_256, $h_key, base64_decode( $encrypted_input_string ), MCRYPT_MODE_ECB, $iv ) );
-	    }
-
-		// And worst case scenario, fall back on base64_encode.
-	    return base64_decode( $encrypted_input_string );
+    /**
+     * Decrypts with a bit more complexity.
+     *
+     * In situations where the string could not be decrypted boolean false will
+     * be returned. This could include scenarios where the string has already
+     * been decrypted.
+     *
+     * @return string|bool
+     * @throws Exception
+     * @since 1.1.2
+     *
+     */
+	public static function pardot_decrypt( $encrypted_input_string ) {
+	    $crypto = new PardotCrypto();
+	    return $crypto->decrypt( $encrypted_input_string );
 	}
+
 
 	/**
 	 * Returns the decrypted form of the input string or if decryption fails it
@@ -935,8 +899,8 @@ HTML;
 	 *
 	 * @return string
 	 */
-	public static function decrypt_or_original( $input_string, $key = 'pardot_key' ) {
-		$decrypted_pass = self::pardot_decrypt( $input_string, $key );
+	public static function decrypt_or_original( $input_string ) {
+		$decrypted_pass = self::pardot_decrypt( $input_string );
 
 		if (
 			! empty( $decrypted_pass )

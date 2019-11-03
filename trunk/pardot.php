@@ -54,3 +54,4 @@ require( PARDOT_PLUGIN_DIR . '/includes/pardot-plugin-class.php' );
 require( PARDOT_PLUGIN_DIR . '/includes/pardot-settings-class.php' );
 require( PARDOT_PLUGIN_DIR . '/includes/pardot-forms-widget-class.php' );
 require( PARDOT_PLUGIN_DIR . '/includes/pardot-template-tags.php' );
+require( PARDOT_PLUGIN_DIR . '/includes/pardot-crypto.php');
