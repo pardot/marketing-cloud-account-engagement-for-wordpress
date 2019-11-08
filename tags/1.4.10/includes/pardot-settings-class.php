@@ -389,13 +389,6 @@ HTML;
 			add_settings_error( self::$OPTION_GROUP, 'reset_settings', __( 'The cache has been cleared!', 'pardot' ), 'updated' );
 		}
 
-        /**
-         * Use existing password if the setting has not been changed
-         */
-        if (empty($dirty['password'])) {
-            $dirty['password'] = self::get_setting( 'password' );
-        }
-
 		/**
 		 * Sanitize each of the fields values
 		 */
@@ -696,22 +689,11 @@ HTML;
 	 * @since 1.0.0
 	 */
 	function password_field() {
-        /**
-         * Grab the length of the real password and turn it into a placeholder string that looks like it is filled
-         * in whenever a password is set.
-         */
-        $passwordLength = strlen(self::get_setting( 'password' ));
-        /**
-         * Set password length to some arbitrary amount iff there is a set password already so that it shows that the
-         * password is set already without disclosing the exact number of characters in the password
-         */
-        $passwordLength = $passwordLength > 0 ? 11 : 0;
-        $passwordPlaceholder = str_repeat("&#9679;", $passwordLength);
-
+		$password  = self::get_setting( 'password' );
 		$html_name = $this->_get_html_name( 'password' );
 $html =<<<HTML
 <div id="password-wrap">
-	<input type="password" size="30" id="password" name="{$html_name}" placeholder="{$passwordPlaceholder}" />
+	<input type="password" size="30" id="password" name="{$html_name}" value="{$password}" />
 </div>
 HTML;
 		echo $html;
