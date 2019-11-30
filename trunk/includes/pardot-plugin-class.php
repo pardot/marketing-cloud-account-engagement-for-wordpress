@@ -136,6 +136,13 @@ class Pardot_Plugin {
 		 * Listen for AJAX post back for the reload button.
 		 */
 		add_action( 'wp_ajax_popup_reset_cache',  array( $this, 'wp_ajax_popup_reset_cache' ) );
+
+
+		/**
+         * Listen for an upgrade, and if we get an upgrade then decrypt current creds, and re-encrypt them properly using our encryption
+         * library.
+         */
+		add_action( 'upgrader_process_complete', array( $this, 'upgrader_process_complete' ) );
 	}
 
 	/**
@@ -446,6 +453,29 @@ class Pardot_Plugin {
 			new _Pardot_Forms_Shortcode_Popup();
 		}
 	}
+
+
+    /**
+     * If it's an upgrade, then use the old crypto routines to retrieve the password
+     * in plaintext and then re-encrypt it using our routines instead.
+     */
+	function upgrader_process_complete() {
+
+	    /* Get the password from wp_settings and decrypt it using the _old_ method for decrypting... */
+	    $plaintext = Pardot_Settings::old_decrypt_or_original(Pardot_Settings::get_setting('password'), 'pardot_key');
+
+	    /* Re-encrypt the password properly with our new system */
+	    $ciphertext = Pardot_Settings::pardot_encrypt($plaintext);
+
+	    /* And stick it back in wp_settings */
+        Pardot_Settings::set_setting('password', $ciphertext);
+    }
+
+
+
+
+
+
 
 	/**
 	 * Filter hook to add a "Settings" link for the plugin on the plugins admin page.

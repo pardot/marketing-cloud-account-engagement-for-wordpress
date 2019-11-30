@@ -1122,6 +1122,45 @@ HTML;
 		}
 	}
 
+
+
+    /**
+     * These are the old crypto functions which are no longer supported but still need to be here for upgrade
+     * functions
+     */
+    public static function old_decrypt_or_original( $input_string, $key = 'pardot_key' ) {
+        $decrypted_pass = self::old_pardot_decrypt( $input_string, $key );
+        if (
+            ! empty( $decrypted_pass )
+            && $decrypted_pass !== $input_string
+            && ctype_print( $decrypted_pass )
+        ) {
+            return $decrypted_pass;
+        }
+        return $input_string;
+    }
+
+
+    public static function old_pardot_decrypt( $encrypted_input_string, $key = 'pardot_key' ) {
+        // Use simple OpenSSL encryption available in PHP 7.x+
+        if ( function_exists( 'openssl_decrypt' ) ) {
+            // IV length for AES-256-CBC must be 16 chars.
+            $key = wp_salt( 'secure_auth' );
+            $iv  = substr( wp_salt( 'auth' ), 0, 16);
+            return openssl_decrypt( base64_decode( $encrypted_input_string ), 'AES-256-CBC', $key, true, $iv );
+        }
+        // Otherwise fall back on mcrypt.
+        if ( function_exists( 'mcrypt_encrypt' ) ) {
+            $iv_size = mcrypt_get_iv_size( MCRYPT_RIJNDAEL_256, MCRYPT_MODE_ECB );
+            $iv      = mcrypt_create_iv( $iv_size, MCRYPT_RAND );
+            $h_key   = hash( 'sha256', $key, TRUE );
+            return trim( mcrypt_decrypt( MCRYPT_RIJNDAEL_256, $h_key, base64_decode( $encrypted_input_string ), MCRYPT_MODE_ECB, $iv ) );
+        }
+        // And worst case scenario, fall back on base64_encode.
+        return base64_decode( $encrypted_input_string );
+    }
+
+
 }
 
 /**
