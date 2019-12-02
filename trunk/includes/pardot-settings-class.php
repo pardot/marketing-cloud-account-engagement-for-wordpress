@@ -133,6 +133,33 @@ class Pardot_Settings {
 		 * Enqueue JS for Chosen on Widgets Screen
 		 */
 		add_action( 'admin_enqueue_scripts', array( $this, 'pardot_chosen_enqueue' ) );
+
+
+        /**
+         * Because a crypto key is *REQUIRED* we're going to check to see if a pardot crypto key exists
+         * in the settings table, and if it doesn't we're going to create one for use. We only ever want to do this
+         * one time so it's not going to be continuing logic and it won't be stored with other pardot settings
+         */
+        if (get_option('pardot_crypto_key', NULL) === NULL) {
+            $crypto = new PardotCrypto();
+            $crypto->set_key();
+        }
+
+
+        /**
+         * And we're going to check here to see if the setting for pardot already exists in the database for their password...
+         * if it does then we need to determine if the password setting is correctly encrypted or needs to be re-encrypted
+         */
+        $optstring = get_option('pardot_settings', NULL);
+        if ($optstring !== NULL)
+        {
+            if ((substr($optstring['password'], 0, 6) !== "NACL::") and
+                (substr($optstring['password'], 0, 6) !== "OGCM::") and
+                (substr($optstring['password'], 0, 6) !== "OETM::"))
+            {
+                self::upgrade_old_password($optstring['password']);
+            }
+        }
 	}
 
 	/**
@@ -326,8 +353,7 @@ HTML;
 		foreach( self::$FIELDS as $name => $label ) {
 			add_settings_field( $name, $label, array( $this, "{$name}_field" ), self::$PAGE, self::$OPTION_GROUP );
 		}
-
-	}
+    }
 
 	/**
 	 * Get an array with all the settings fields with all empty values.
@@ -1125,11 +1151,30 @@ HTML;
 
 
     /**
+     * If it's an upgrade, then use the old crypto routines to retrieve the password
+     * in plaintext and then re-encrypt it using our routines instead.
+     */
+    private function upgrade_old_password($pwd) {
+
+        /* Get the password from wp_settings and decrypt it using the _old_ method for decrypting... */
+        $plaintext = Pardot_Settings::old_decrypt_or_original($pwd, 'pardot_key');
+
+        /* Re-encrypt the password properly with our new system */
+        $ciphertext = Pardot_Settings::pardot_encrypt($plaintext);
+
+        /* And stick it back in wp_settings */
+        Pardot_Settings::set_setting('password', $ciphertext);
+    }
+
+
+
+    /**
      * These are the old crypto functions which are no longer supported but still need to be here for upgrade
      * functions
      */
     public static function old_decrypt_or_original( $input_string, $key = 'pardot_key' ) {
         $decrypted_pass = self::old_pardot_decrypt( $input_string, $key );
+
         if (
             ! empty( $decrypted_pass )
             && $decrypted_pass !== $input_string
@@ -1137,25 +1182,32 @@ HTML;
         ) {
             return $decrypted_pass;
         }
+
         return $input_string;
     }
 
 
     public static function old_pardot_decrypt( $encrypted_input_string, $key = 'pardot_key' ) {
+
         // Use simple OpenSSL encryption available in PHP 7.x+
         if ( function_exists( 'openssl_decrypt' ) ) {
+
             // IV length for AES-256-CBC must be 16 chars.
             $key = wp_salt( 'secure_auth' );
             $iv  = substr( wp_salt( 'auth' ), 0, 16);
+
             return openssl_decrypt( base64_decode( $encrypted_input_string ), 'AES-256-CBC', $key, true, $iv );
         }
+
         // Otherwise fall back on mcrypt.
         if ( function_exists( 'mcrypt_encrypt' ) ) {
             $iv_size = mcrypt_get_iv_size( MCRYPT_RIJNDAEL_256, MCRYPT_MODE_ECB );
             $iv      = mcrypt_create_iv( $iv_size, MCRYPT_RAND );
             $h_key   = hash( 'sha256', $key, TRUE );
+
             return trim( mcrypt_decrypt( MCRYPT_RIJNDAEL_256, $h_key, base64_decode( $encrypted_input_string ), MCRYPT_MODE_ECB, $iv ) );
         }
+
         // And worst case scenario, fall back on base64_encode.
         return base64_decode( $encrypted_input_string );
     }

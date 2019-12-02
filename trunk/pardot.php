@@ -47,11 +47,16 @@ if ( ! defined( 'PARDOT_JS_CACHE_TIMEOUT' ) ) {
 	define( 'PARDOT_JS_CACHE_TIMEOUT', MONTH_IN_SECONDS );
 }
 
+
+/* This require is needed for wp_salt() which is used in the old method of decrypting if openssl is available
+ * otherwise we'll get an undefined function error for wp_salt() during the password reencryption
+ */
+require( PARDOT_PLUGIN_DIR . '/../../../wp-includes/pluggable.php');
 require( PARDOT_PLUGIN_DIR . '/includes/pardot-api-class.php' );
 require( PARDOT_PLUGIN_DIR . '/includes/pardot-api-functions.php' );
 require( PARDOT_PLUGIN_DIR . '/includes/pardot-forms-shortcode-popup-class.php' );
 require( PARDOT_PLUGIN_DIR . '/includes/pardot-plugin-class.php' );
+require( PARDOT_PLUGIN_DIR . '/includes/pardot-crypto.php');
 require( PARDOT_PLUGIN_DIR . '/includes/pardot-settings-class.php' );
 require( PARDOT_PLUGIN_DIR . '/includes/pardot-forms-widget-class.php' );
 require( PARDOT_PLUGIN_DIR . '/includes/pardot-template-tags.php' );
-require( PARDOT_PLUGIN_DIR . '/includes/pardot-crypto.php');

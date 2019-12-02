@@ -15,7 +15,7 @@ class PardotCrypto
                 return false;
             }
 
-            $ciphertext = sodium_crypto_aead_chacha20poly1305_encrypt($plaintext, '', $nonce, self::get_sodium_key());
+            $ciphertext = sodium_crypto_aead_chacha20poly1305_encrypt($plaintext, '', $nonce, base64_decode(self::get_key()));
             if ($ciphertext === false) return false;
 
             return "NACL::" . base64_encode($nonce) . "::" . base64_encode($ciphertext);
@@ -29,12 +29,13 @@ class PardotCrypto
                 return false;
             }
 
-            $key = self::get_aes256_key();
+            $key = base64_decode(self::get_key());
             if ($key === null)
             {
                 return false;
             }
 
+            $tag = '';
             $ciphertext = openssl_encrypt($plaintext, 'aes-256-gcm', $key, OPENSSL_RAW_DATA, $iv, $tag);
             if ($ciphertext === false || $tag === false) return false;
 
@@ -51,7 +52,7 @@ class PardotCrypto
                 return false;
             }
 
-            $key = self::get_aes256_key();
+            $key = base64_decode(self::get_key());
             if ($key === null)
             {
                 return false;
@@ -92,17 +93,33 @@ class PardotCrypto
     }
 
 
+    public function set_key()
+    {
+        if (function_exists('sodium_crypto_aead_chacha20poly1305_keygen')) {
+            add_option('pardot_crypto_key', self::gen_sodium_key());
+        } else {
+            add_option('pardot_crypto_key', self::gen_aes256_key());
+        }
+    }
+
+
+    public function get_key()
+    {
+        return get_option('pardot_crypto_key');
+    }
+
+
 
     private function decrypt_sodium($nonce, $ciphertext)
     {
-        return sodium_crypto_aead_chacha20poly1305_decrypt($ciphertext, '', $nonce, self::get_sodium_key());
+        return sodium_crypto_aead_chacha20poly1305_decrypt($ciphertext, '', $nonce, base64_decode(self::get_key()));
     }
 
 
 
     private function decrypt_openssl_aes256gcm($iv, $tag, $ciphertext)
     {
-        $key = self::get_aes256_key();
+        $key = base64_decode(self::get_key());
         if ($key === null)
         {
             return false;
@@ -115,7 +132,7 @@ class PardotCrypto
 
     private function decrypt_openssl_aes256cbc_with_hmacsha256($iv, $mac, $ciphertext)
     {
-        $key = self::get_aes256_key();
+        $key = base64_decode(self::get_key());
         if ($key === null)
         {
             return false;
@@ -136,26 +153,14 @@ class PardotCrypto
     }
 
 
-    private function set_sodium_key()
+    private function gen_sodium_key()
     {
         $sodium_key = base64_encode(sodium_crypto_aead_chacha20poly1305_keygen());
-        Pardot_Settings::set_setting('sodium_key', $sodium_key);
-    }
-
-
-    private function get_sodium_key()
-    {
-        $sodium_key = Pardot_Settings::get_setting('sodium_key');
-        if ($sodium_key === false) {
-            self::set_sodium_key();
-            $sodium_key = Pardot_Settings::get_setting('sodium_key');
-        }
-
         return $sodium_key;
     }
 
 
-    private function set_aes256_key()
+    private function gen_aes256_key()
     {
         $aes256_key = null;
 
@@ -164,17 +169,6 @@ class PardotCrypto
             $aes256_key = base64_encode(random_bytes(32));
         } catch (Exception $e) {
             return;
-        }
-        Pardot_Settings::set_setting('aes256_key', $aes256_key);
-    }
-
-
-    private function get_aes256_key()
-    {
-        $aes256_key = Pardot_Settings::get_setting('aes256_key');
-        if ($aes256_key === false) {
-            self::set_aes256_key();
-            $aes256_key = Pardot_Settings::get_setting('aes256_key');
         }
 
         return $aes256_key;
