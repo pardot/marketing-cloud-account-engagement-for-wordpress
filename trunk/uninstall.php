@@ -12,3 +12,4 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) )
  * Delete Pardot Settings when plugin is uninstalled
  */
 delete_option( 'pardot_settings' );
+delete_option( 'pardot_crypto_key' );

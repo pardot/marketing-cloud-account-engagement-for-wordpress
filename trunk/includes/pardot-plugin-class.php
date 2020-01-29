@@ -136,7 +136,7 @@ class Pardot_Plugin {
 		 * Listen for AJAX post back for the reload button.
 		 */
 		add_action( 'wp_ajax_popup_reset_cache',  array( $this, 'wp_ajax_popup_reset_cache' ) );
-	}
+    }
 
 	/**
 	 * AJAX function used to return the list of Pardot forms for the current accounts selected campaign.
@@ -446,6 +446,7 @@ class Pardot_Plugin {
 			new _Pardot_Forms_Shortcode_Popup();
 		}
 	}
+
 
 	/**
 	 * Filter hook to add a "Settings" link for the plugin on the plugins admin page.
