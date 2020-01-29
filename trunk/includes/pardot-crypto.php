@@ -12,6 +12,7 @@ class PardotCrypto
             try {
                 $nonce = random_bytes(SODIUM_CRYPTO_AEAD_CHACHA20POLY1305_NPUBBYTES);
             } catch (Exception $e) {
+                $this->logError($e, __METHOD__, __LINE__);
                 return false;
             }
 
@@ -26,6 +27,7 @@ class PardotCrypto
             try {
                 $iv = random_bytes(openssl_cipher_iv_length('aes-256-gcm'));
             } catch (Exception $e) {
+                $this->logError($e, __METHOD__, __LINE__);
                 return false;
             }
 
@@ -49,6 +51,7 @@ class PardotCrypto
             try {
                 $iv = random_bytes(openssl_cipher_iv_length('aes-256-cbc'));
             } catch (Exception $e) {
+                $this->logError($e, __METHOD__, __LINE__);
                 return false;
             }
 
@@ -168,9 +171,24 @@ class PardotCrypto
         try {
             $aes256_key = base64_encode(random_bytes(32));
         } catch (Exception $e) {
+            $this->logError($e, __METHOD__, __LINE__);
             return;
         }
 
         return $aes256_key;
+    }
+
+    /**
+    * Logs an error via standard PHP logging mechanism. 
+    * @param Exception $exception
+    * @param string $method
+    * @param int $line
+    */
+    private function logError($exception, $method, $line) {
+        trigger_error(
+        'Exception caught in ' . $method . ' (' . $line . ') ' . $exception->getMessage(),
+        E_USER_ERROR
+        );
+        trigger_error($exception->getTraceAsString(), E_USER_ERROR);
     }
 }
