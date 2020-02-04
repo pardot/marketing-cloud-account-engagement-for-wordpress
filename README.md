@@ -147,6 +147,15 @@ add_filter( 'pardot_https_regex', 'pardot_custom_filter_https_regex' );
 
 ## Changelog ##
 
+### 1.4.12 ###
+
+* Fix - Show title attribute on form iframe
+* Improvement - Improve encryption of stored strings
+
+### 1.4.11 ###
+
+* Improvement - Improve password handling on settings screen
+
 ### 1.4.10 ###
 
 * Fix - Disable recursion bug that resulted in overloaded cache and transient rows (click Empty Cache button in settings or manually delete the `_pardot_cache_keys` and `_pardot_transient_keys` rows from your options table)

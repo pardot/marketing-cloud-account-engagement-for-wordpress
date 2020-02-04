@@ -142,6 +142,7 @@ Filter the regular expression used to find URLs to be converted to https://go.pa
 
 = 1.4.12 =
 
+* Fix - Show title attribute on form iframe
 * Improvement - Improve encryption of stored strings
 
 = 1.4.11 =
