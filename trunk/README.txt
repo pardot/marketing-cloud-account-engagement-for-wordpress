@@ -2,9 +2,9 @@
 Contributors: cliffseal, ModernTribe
 Donate link: http://pardot.com
 Tags: pardot, marketing automation, forms, dynamic content, tracking, web tracking
-Requires at least: 5.1
-Tested up to: 5.2.4
-Stable tag: 1.4.11
+Requires at least: 5.2
+Tested up to: 5.3.2
+Stable tag: 1.4.12
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -139,6 +139,10 @@ Filter the regular expression used to find URLs to be converted to https://go.pa
 1. A page can have two forms! Here, one is in the body and one in a widget.
 
 == Changelog ==
+
+= 1.4.12 =
+
+* Improvement - Improve encryption of stored strings
 
 = 1.4.11 =
 
