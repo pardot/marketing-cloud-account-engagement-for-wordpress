@@ -51,7 +51,7 @@ if ( ! defined( 'PARDOT_JS_CACHE_TIMEOUT' ) ) {
 /* This require is needed for wp_salt() which is used in the old method of decrypting if openssl is available
  * otherwise we'll get an undefined function error for wp_salt() during the password reencryption
  */
-if ( !function_exists('wp_salt')) {
+if ( !function_exists('wp_salt') ) {
 	require_once ( ABSPATH . WPINC . '/pluggable.php' );
 }
 require( PARDOT_PLUGIN_DIR . '/includes/pardot-api-class.php' );
