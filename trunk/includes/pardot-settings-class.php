@@ -18,7 +18,7 @@ class Pardot_Settings {
 	/**
 	 * @var string Admin page on Pardot's website linked to an authenticated user's account.
 	 */
-	const ACCOUNT_URL = 'https://pi.pardot.com/account';
+	const ACCOUNT_URL = 'https://pi.pardot.com/account/user';
 
 	/**
 	 * @var string Admin page on Pardot's website that allows authenticated users to add forms to a campaign
