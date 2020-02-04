@@ -136,7 +136,7 @@ class Pardot_Plugin {
 		 * Listen for AJAX post back for the reload button.
 		 */
 		add_action( 'wp_ajax_popup_reset_cache',  array( $this, 'wp_ajax_popup_reset_cache' ) );
-	}
+    }
 
 	/**
 	 * AJAX function used to return the list of Pardot forms for the current accounts selected campaign.
@@ -447,6 +447,7 @@ class Pardot_Plugin {
 		}
 	}
 
+
 	/**
 	 * Filter hook to add a "Settings" link for the plugin on the plugins admin page.
 	 *
@@ -730,6 +731,21 @@ class Pardot_Plugin {
 							} else {
 								$form_html = str_replace( '<iframe', "<iframe class=\"pardotform\"", $form_html );
 							}
+
+                            /**
+                             * If title is passed as a shortcode argument
+                             */
+                            if ( ! empty( $atts['title'] ) ) {
+                                /**
+                                 * If title is passed as a shortcode argument
+                                 */
+                                $title = $atts['title'];
+                                /**
+                                 * Add it.
+                                 */
+                                $form_html = str_replace( '<iframe', "<iframe title=\"{$title}\"", $form_html );
+                            }
+
 							/**
 							 * Filter the embed code for HTTPS
 							 */
@@ -846,6 +862,18 @@ class Pardot_Plugin {
 				}
 			}
 
+            if ( ! empty( $args['title'] ) ) {
+                /**
+                 * If "title" is passed via shortcode create HTML to insert in form's <div>
+                 */
+                if ( $is_iframe ) {
+                    /**
+                     * If 'iframe' add to the <iframe>
+                     */
+                    $body_html = str_replace( ' class="pardotform"', " title=\"{$args['title']}\" class=\"pardotform\"", $body_html );
+                }
+            }
+
 			if ( ! empty( $args['class'] ) ) {
 				/**
 				 * If "width" is passed via shortcode create HTML to insert in form's <div>
@@ -857,6 +885,7 @@ class Pardot_Plugin {
 					$body_html = str_replace( ' class="pardotform"', " class=\"pardotform {$args['class']}\"", $body_html );
 				}
 			}
+
 		}
 
 		return apply_filters( 'pardot_form_embed_code_' . $args['form_id'], $body_html );

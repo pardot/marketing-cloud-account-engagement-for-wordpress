@@ -443,7 +443,7 @@ x	 */
 		);
 
 		if ( isset( $args['password'] ) ) {
-			$args['password'] = Pardot_Settings::decrypt_or_original( $args['password'], 'pardot_key' );
+			$args['password'] = Pardot_Settings::decrypt_or_original( $args['password'] );
 		}
 
 		$response = false;

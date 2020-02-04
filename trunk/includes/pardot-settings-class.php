@@ -18,7 +18,7 @@ class Pardot_Settings {
 	/**
 	 * @var string Admin page on Pardot's website linked to an authenticated user's account.
 	 */
-	const ACCOUNT_URL = 'https://pi.pardot.com/account';
+	const ACCOUNT_URL = 'https://pi.pardot.com/account/user';
 
 	/**
 	 * @var string Admin page on Pardot's website that allows authenticated users to add forms to a campaign
@@ -102,7 +102,7 @@ class Pardot_Settings {
 	function __construct() {
 
 		/**
-		 * This class is designed to be instansiated only once.
+		 * This class is designed to be instantiated only once.
 		 * We instantiate once at end of this class definition, throw an error if someone tries a second time.
 		 */
 		if ( isset( self::$self ) )
@@ -133,6 +133,33 @@ class Pardot_Settings {
 		 * Enqueue JS for Chosen on Widgets Screen
 		 */
 		add_action( 'admin_enqueue_scripts', array( $this, 'pardot_chosen_enqueue' ) );
+
+
+        /**
+         * Because a crypto key is *REQUIRED* we're going to check to see if a pardot crypto key exists
+         * in the settings table, and if it doesn't we're going to create one for use. We only ever want to do this
+         * one time so it's not going to be continuing logic and it won't be stored with other pardot settings
+         */
+        if (get_option('pardot_crypto_key', NULL) === NULL) {
+            $crypto = new PardotCrypto();
+            $crypto->set_key();
+        }
+
+
+        /**
+         * And we're going to check here to see if the setting for pardot already exists in the database for their password...
+         * if it does then we need to determine if the password setting is correctly encrypted or needs to be re-encrypted
+         */
+        $optstring = get_option('pardot_settings', NULL);
+        if ($optstring !== NULL)
+        {
+            if ((substr($optstring['password'], 0, 6) !== "NACL::") and
+                (substr($optstring['password'], 0, 6) !== "OGCM::") and
+                (substr($optstring['password'], 0, 6) !== "OETM::"))
+            {
+                self::upgrade_old_password($optstring['password']);
+            }
+        }
 	}
 
 	/**
@@ -326,8 +353,7 @@ HTML;
 		foreach( self::$FIELDS as $name => $label ) {
 			add_settings_field( $name, $label, array( $this, "{$name}_field" ), self::$PAGE, self::$OPTION_GROUP );
 		}
-
-	}
+    }
 
 	/**
 	 * Get an array with all the settings fields with all empty values.
@@ -407,7 +433,7 @@ HTML;
 			}
 		}
 
-		$clean['password'] = self::decrypt_or_original( $clean['password'], 'pardot_key' );
+		$clean['password'] = self::decrypt_or_original( $clean['password'] );
 
 
 		/**
@@ -589,7 +615,7 @@ HTML;
 		 * Base64 won't stop a hacker if they get access to the database but will keep
 		 * endusers from being able to see a valid password.
 		 */
-		$new_options['password'] = self::pardot_encrypt( $new_options['password'], 'pardot_key', true );
+		$new_options['password'] = self::pardot_encrypt( $new_options['password'], true );
 
 		return $new_options;
 	}
@@ -878,68 +904,32 @@ HTML;
 
 	/**
 	 * Encrypts with a bit more complexity
-	 *
+	 * returns false if the string could not be encrypted (cases where encryption fails, or Sodium or OpenSSL are not present in PHP).
 	 * @since 1.1.2
 	 */
-	public static function pardot_encrypt( $input_string, $key = 'pardot_key', $set_flag = false ) {
-		// Use simple OpenSSL encryption available in PHP 7.x+
-		if ( function_exists( 'openssl_encrypt' ) ) {
-
-			// IV length for AES-256-CBC must be 16 chars.
-			$key = wp_salt( 'secure_auth' );
-			$iv  = substr( wp_salt( 'auth' ), 0, 16 );
-
-			return base64_encode( openssl_encrypt( $input_string, 'AES-256-CBC', $key, true, $iv ) );
-		}
-
-		// Otherwise fall back on mcrypt.
-		if ( function_exists( 'mcrypt_encrypt' ) ) {
-			$iv_size = mcrypt_get_iv_size( MCRYPT_RIJNDAEL_256, MCRYPT_MODE_ECB );
-			$iv      = mcrypt_create_iv( $iv_size, MCRYPT_RAND );
-			$h_key   = hash( 'sha256', $key, TRUE );
-
-			return base64_encode( mcrypt_encrypt( MCRYPT_RIJNDAEL_256, $h_key, $input_string, MCRYPT_MODE_ECB, $iv ) );
-		}
-
-		// And worst case scenario, fall back on base64_encode.
-		return base64_encode( $input_string );
+	public static function pardot_encrypt( $input_string, $set_flag = false ) {
+        $crypto = new PardotCrypto();
+        return $crypto->encrypt( $input_string );
 	}
 
-	/**
-	 * Decrypts with a bit more complexity.
-	 *
-	 * In situations where the string could not be decrypted boolean false will
-	 * be returned. This could include scenarios where the string has already
-	 * been descrypted.
-	 *
-	 * @since 1.1.2
-	 *
-	 * @return string|bool
-	 */
-	public static function pardot_decrypt( $encrypted_input_string, $key = 'pardot_key' ) {
 
-		// Use simple OpenSSL encryption available in PHP 7.x+
-		if ( function_exists( 'openssl_decrypt' ) ) {
-
-			// IV length for AES-256-CBC must be 16 chars.
-			$key = wp_salt( 'secure_auth' );
-			$iv  = substr( wp_salt( 'auth' ), 0, 16);
-
-			return openssl_decrypt( base64_decode( $encrypted_input_string ), 'AES-256-CBC', $key, true, $iv );
-		}
-
-		// Otherwise fall back on mcrypt.
-		if ( function_exists( 'mcrypt_encrypt' ) ) {
-		    $iv_size = mcrypt_get_iv_size( MCRYPT_RIJNDAEL_256, MCRYPT_MODE_ECB );
-		    $iv      = mcrypt_create_iv( $iv_size, MCRYPT_RAND );
-		    $h_key   = hash( 'sha256', $key, TRUE );
-
-		    return trim( mcrypt_decrypt( MCRYPT_RIJNDAEL_256, $h_key, base64_decode( $encrypted_input_string ), MCRYPT_MODE_ECB, $iv ) );
-	    }
-
-		// And worst case scenario, fall back on base64_encode.
-	    return base64_decode( $encrypted_input_string );
+    /**
+     * Decrypts with a bit more complexity.
+     *
+     * In situations where the string could not be decrypted boolean false will
+     * be returned. This could include scenarios where the string has already
+     * been decrypted.
+     *
+     * @return string|bool
+     * @throws Exception
+     * @since 1.1.2
+     *
+     */
+	public static function pardot_decrypt( $encrypted_input_string ) {
+	    $crypto = new PardotCrypto();
+	    return $crypto->decrypt( $encrypted_input_string );
 	}
+
 
 	/**
 	 * Returns the decrypted form of the input string or if decryption fails it
@@ -953,8 +943,8 @@ HTML;
 	 *
 	 * @return string
 	 */
-	public static function decrypt_or_original( $input_string, $key = 'pardot_key' ) {
-		$decrypted_pass = self::pardot_decrypt( $input_string, $key );
+	public static function decrypt_or_original( $input_string ) {
+		$decrypted_pass = self::pardot_decrypt( $input_string );
 
 		if (
 			! empty( $decrypted_pass )
@@ -1175,6 +1165,71 @@ HTML;
 			delete_option( $option_name );
 		}
 	}
+
+
+
+    /**
+     * If it's an upgrade, then use the old crypto routines to retrieve the password
+     * in plaintext and then re-encrypt it using our routines instead.
+     */
+    private function upgrade_old_password($pwd) {
+
+        /* Get the password from wp_settings and decrypt it using the _old_ method for decrypting... */
+        $plaintext = Pardot_Settings::old_decrypt_or_original($pwd, 'pardot_key');
+
+        /* Re-encrypt the password properly with our new system */
+        $ciphertext = Pardot_Settings::pardot_encrypt($plaintext);
+
+        /* And stick it back in wp_settings */
+        Pardot_Settings::set_setting('password', $ciphertext);
+    }
+
+
+
+    /**
+     * These are the old crypto functions which are no longer supported but still need to be here for upgrade
+     * functions
+     */
+    public static function old_decrypt_or_original( $input_string, $key = 'pardot_key' ) {
+        $decrypted_pass = self::old_pardot_decrypt( $input_string, $key );
+
+        if (
+            ! empty( $decrypted_pass )
+            && $decrypted_pass !== $input_string
+            && ctype_print( $decrypted_pass )
+        ) {
+            return $decrypted_pass;
+        }
+
+        return $input_string;
+    }
+
+
+    public static function old_pardot_decrypt( $encrypted_input_string, $key = 'pardot_key' ) {
+
+        // Use simple OpenSSL encryption available in PHP 7.x+
+        if ( function_exists( 'openssl_decrypt' ) ) {
+
+            // IV length for AES-256-CBC must be 16 chars.
+            $key = wp_salt( 'secure_auth' );
+            $iv  = substr( wp_salt( 'auth' ), 0, 16);
+
+            return openssl_decrypt( base64_decode( $encrypted_input_string ), 'AES-256-CBC', $key, true, $iv );
+        }
+
+        // Otherwise fall back on mcrypt.
+        if ( function_exists( 'mcrypt_encrypt' ) ) {
+            $iv_size = mcrypt_get_iv_size( MCRYPT_RIJNDAEL_256, MCRYPT_MODE_ECB );
+            $iv      = mcrypt_create_iv( $iv_size, MCRYPT_RAND );
+            $h_key   = hash( 'sha256', $key, TRUE );
+
+            return trim( mcrypt_decrypt( MCRYPT_RIJNDAEL_256, $h_key, base64_decode( $encrypted_input_string ), MCRYPT_MODE_ECB, $iv ) );
+        }
+
+        // And worst case scenario, fall back on base64_encode.
+        return base64_decode( $encrypted_input_string );
+    }
+
 
 }
 

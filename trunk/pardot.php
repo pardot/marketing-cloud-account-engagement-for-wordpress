@@ -7,7 +7,7 @@
  * Plugin URI: http://wordpress.org/extend/plugins/pardot/
  * Developer: Cliff Seal of Pardot and Mike Schinkel of NewClarity LLC
  * Developer URI: http://pardot.com
- * Version: 1.4.11
+ * Version: 1.4.12
  * License: GPLv2
  *
  * Copyright 2012 Pardot LLC
@@ -29,7 +29,7 @@
 
 define( 'PARDOT_PLUGIN_FILE', __FILE__ );
 define( 'PARDOT_PLUGIN_DIR', dirname( __FILE__ ) );
-define( 'PARDOT_PLUGIN_VER', '1.4.11' );
+define( 'PARDOT_PLUGIN_VER', '1.4.12' );
 
 if ( ! defined( 'PARDOT_FORM_INCLUDE_TYPE' ) ) {
 	define( 'PARDOT_FORM_INCLUDE_TYPE', 'iframe' );	// iframe or inline
@@ -47,10 +47,18 @@ if ( ! defined( 'PARDOT_JS_CACHE_TIMEOUT' ) ) {
 	define( 'PARDOT_JS_CACHE_TIMEOUT', MONTH_IN_SECONDS );
 }
 
+
+/* This require is needed for wp_salt() which is used in the old method of decrypting if openssl is available
+ * otherwise we'll get an undefined function error for wp_salt() during the password reencryption
+ */
+if ( !function_exists('wp_salt') && defined( 'ABSPATH' ) && defined( 'WPINC' ) ) {
+	require_once ( ABSPATH . WPINC . '/pluggable.php' );
+}
 require( PARDOT_PLUGIN_DIR . '/includes/pardot-api-class.php' );
 require( PARDOT_PLUGIN_DIR . '/includes/pardot-api-functions.php' );
 require( PARDOT_PLUGIN_DIR . '/includes/pardot-forms-shortcode-popup-class.php' );
 require( PARDOT_PLUGIN_DIR . '/includes/pardot-plugin-class.php' );
+require( PARDOT_PLUGIN_DIR . '/includes/pardot-crypto.php');
 require( PARDOT_PLUGIN_DIR . '/includes/pardot-settings-class.php' );
 require( PARDOT_PLUGIN_DIR . '/includes/pardot-forms-widget-class.php' );
 require( PARDOT_PLUGIN_DIR . '/includes/pardot-template-tags.php' );
