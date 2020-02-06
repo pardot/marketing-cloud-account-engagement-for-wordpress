@@ -464,7 +464,7 @@ x	 */
 						$this->api_key_maybe_invalidated = true;
 						$auth['new_api_key'] = $args['new_api_key'];
 					}
-					if ( $this->authenticate( $auth ) ) {
+					if ( $this->authenticate( $auth ) && 'Daily API rate limit met.' !== $response->err ) {
 						/**
 						 * Try again after a successful authentication
 						*/
