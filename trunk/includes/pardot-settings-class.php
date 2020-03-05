@@ -1207,6 +1207,13 @@ HTML;
 
     public static function old_pardot_decrypt( $encrypted_input_string, $key = 'pardot_key' ) {
 
+        /* This require is needed for wp_salt() which is used in the old method of decrypting if openssl is available
+         * otherwise we'll get an undefined function error for wp_salt() during the password reencryption
+         */
+        if ( !function_exists('wp_salt') && defined( 'ABSPATH' ) && defined( 'WPINC' ) ) {
+            require_once ( ABSPATH . WPINC . '/pluggable.php' );
+        }
+
         // Use simple OpenSSL encryption available in PHP 7.x+
         if ( function_exists( 'openssl_decrypt' ) ) {
 
