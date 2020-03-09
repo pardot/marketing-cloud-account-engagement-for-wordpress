@@ -1237,4 +1237,7 @@ HTML;
  * Instantiate this class to ensure the action and shortcode hooks are hooked.
  * This instantiation can only be done once (see it's __construct() to understand why.)
  */
-new Pardot_Settings();
+function pardot_settings_instantiate() {
+   new Pardot_Settings();
+}
+add_action( 'plugins_loaded', 'pardot_settings_instantiate' );
