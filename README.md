@@ -147,6 +147,10 @@ add_filter( 'pardot_https_regex', 'pardot_custom_filter_https_regex' );
 
 ## Changelog ##
 
+### 1.4.13 ###
+* Fix - Prevents a potential error with loading functions from pluggable.php
+* Fix - Look for specific error messages and bail on auto-retrying authentication (to prevent loops)
+
 ### 1.4.12 ###
 
 * Fix - Show title attribute on form iframe
