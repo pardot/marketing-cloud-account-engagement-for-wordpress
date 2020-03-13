@@ -448,6 +448,10 @@ x	 */
 
 		$response = false;
 		if( wp_remote_retrieve_response_code( $http_response ) == 200 ) {
+			// Add a check for disabled accounts: https://wordpress.org/support/topic/if-the-account-gets-disabled-this-plugin-throws-a-fatal-error/
+			if ( is_string( wp_remote_retrieve_body( $http_response ) ) && strpos( wp_remote_retrieve_body( $http_response ), 'Your account has been disabled' ) !== false ) {
+				$this->error = true;
+			}
 			$response = new SimpleXMLElement( wp_remote_retrieve_body( $http_response ) );
 			if ( ! empty( $response->err ) ) {
 				if ( 'Your account is unable to use version 4 of the API.' == $response->err ) {
@@ -464,7 +468,7 @@ x	 */
 						$this->api_key_maybe_invalidated = true;
 						$auth['new_api_key'] = $args['new_api_key'];
 					}
-                    if ( $this->authenticate( $auth ) && 'Daily API rate limit met.' !== $response->err && 'This API user lacks sufficient permissions for the requested operation' !== $response->err ) {
+                    			if ( $this->authenticate( $auth ) && 'Daily API rate limit met.' !== $response->err && 'This API user lacks sufficient permissions for the requested operation' !== $response->err ) {
 						/**
 						 * Try again after a successful authentication
 						*/
