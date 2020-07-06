@@ -257,9 +257,57 @@ class Pardot_Settings {
 #settings_page_pardot .success{color:green;}
 #settings_page_pardot .failure{color:red;}
 #settings_page_pardot .instructions{font-style:italic;}
+#settings_page_pardot .hidden{display: none;}
 -->
 </style>
-<script>jQuery(document).ready(function(){jQuery("#campaign").chosen();});</script>
+<script>
+jQuery(document).ready(function(){jQuery("#campaign").chosen();});
+
+jQuery(document).ready(function($){
+    $('#auth_type').change(function() {      
+        if (this.value === 'pardot') {        
+            $('#email-wrap').parents().eq(1).show();
+            $('#password-wrap').parents().eq(1).show();  
+            $('#user-key-wrap').parents().eq(1).show();
+            $('#submit').parents().eq(1).show(); 
+            $('#client-id-wrap').parents().eq(1).hide();
+            $('#client-secret-wrap').parents().eq(1).hide(); 
+            $('#business-unit-id-wrap').parents().eq(1).hide();
+            $('#sso-sign-in').parents().eq(1).hide();
+            
+        } else if (this.value === 'sso') {        
+            $('#email-wrap').parents().eq(1).hide();    
+            $('#password-wrap').parents().eq(1).hide();  
+            $('#user-key-wrap').parents().eq(1).hide();
+            $('#submit').parents().eq(1).hide();
+            $('#client-id-wrap').parents().eq(1).show();
+            $('#client-secret-wrap').parents().eq(1).show(); 
+            $('#business-unit-id-wrap').parents().eq(1).show();
+            $('#sso-sign-in').parents().eq(1).show();
+        }
+    });
+
+});
+
+function clickSubmit() {
+    let authSelect = document.getElementById("auth-type");
+    let authValue = authSelect.options[authSelect.selectedIndex].value;
+    let client_id = document.getElementById("client-id").value;
+    let sign_in_sso = document.getElementById("sso-sign-in");
+    console.log(authValue);
+    if (authValue == 'sso') {
+        if (client_id) {
+            let url = "https://login.salesforce.com/services/oauth2/authorize?client_id=" + client_id + "&redirect_uri=" + window.location.href + "&response_type=code";
+            window.open(url, "Sign In with Salesforce", "height=800, width=400, left="+sign_in_sso.getBoundingClientRect().right)
+        }
+        else {
+            alert("Please type in a valid client ID.")
+        }
+    }
+}
+
+</script>
+
 HTML;
 		echo $html;
 	}
@@ -307,6 +355,10 @@ HTML;
 			self::$showed_reset_notice = true;
 		}
 
+		if (self::get_setting('auth_type') == null) {
+            self::set_setting('auth_type', 'sso');
+        }
+
 		/**
 		 * Add CSS to the header.  Called with a priority of zero (0) this can be
 		 * overridden by other CSS.
@@ -323,13 +375,18 @@ HTML;
 		 * Define fields and their labels
 		 */
 		self::$FIELDS = array(
-			'email'     => __( 'Email', 'pardot' ),
-			'password'  => __( 'Password', 'pardot' ),
-			'user_key'  => __( 'User Key', 'pardot' ),
-			'campaign'  => __( 'Campaign (for Tracking Code)', 'pardot' ),
-			'version'   => __( 'API Version', 'pardot' ),
-			'https'     => __( 'Use HTTPS?', 'pardot' ),
-			'submit'    => '',
+            'auth'     => [__( 'Authentication Type', 'pardot' ), ''],
+			'email'     => [__( 'Email', 'pardot' ), ( self::get_setting('auth_type') === 'sso' ? array( 'class' => 'hidden' ) : array() )],
+			'password'  => [__( 'Password', 'pardot' ), ( self::get_setting('auth_type') === 'sso' ? array( 'class' => 'hidden' ) : array() )],
+			'user_key'  => [__( 'User Key', 'pardot' ), ( self::get_setting('auth_type') === 'sso' ? array( 'class' => 'hidden' ) : array() )],
+            'client_id'  => [__( 'Client ID', 'pardot' ), ( self::get_setting('auth_type') === 'pardot' ? array( 'class' => 'hidden' ) : array() )],
+            'client_secret'  => [__( 'Client Secret', 'pardot' ), ( self::get_setting('auth_type') === 'pardot' ? array( 'class' => 'hidden' ) : array() )],
+            'business_unit_id'  => [__( 'Business Unit ID', 'pardot' ), ( self::get_setting('auth_type') === 'pardot' ? array( 'class' => 'hidden' ) : array() )],
+			'campaign'  => [__( 'Campaign (for Tracking Code)', 'pardot' ), ''],
+			'version'   => [__( 'API Version', 'pardot' ), ''],
+			'https'     => [__( 'Use HTTPS?', 'pardot' ), ''],
+			'submit'    => ['', ( self::get_setting('auth_type') === 'sso' ? array( 'class' => 'hidden' ) : array() )],
+            'sso_sign_in'    => ['', ( self::get_setting('auth_type') === 'pardot' ? array( 'class' => 'hidden' ) : array() )],
 			'clearcache'=> '',
 			'reset'     => '',
 			'api_key'   => '',
@@ -350,8 +407,8 @@ HTML;
 		/**
 		 * Add the setting fields required by WordPress Settings API.
 		 */
-		foreach( self::$FIELDS as $name => $label ) {
-			add_settings_field( $name, $label, array( $this, "{$name}_field" ), self::$PAGE, self::$OPTION_GROUP );
+		foreach( self::$FIELDS as $name => $arr ) {
+			add_settings_field( $name, $arr[0], array( $this, "{$name}_field" ), self::$PAGE, self::$OPTION_GROUP , $arr[1]);
 		}
     }
 
@@ -700,7 +757,31 @@ HTML;
 		return self::$OPTION_GROUP  . "[{$field_name}]";
 	}
 
-	/**
+    /**
+     * Displays the API Version drop-down field for the Settings API
+     *
+     * @since 1.4.1
+     */
+    function auth_field() {
+        $auth_type = self::get_setting( 'auth_type' );
+        $html_name = $this->_get_html_name( 'auth_type' );
+        $html = '<div id="auth-type-wrap"><select id="auth-type" name="' . $html_name . '">';
+        $html .= '<option';
+        if ( $auth_type === 'pardot' ) {
+            $html .= ' selected="selected"';
+        }
+        $html .= ' value="pardot">Pardot</option>';
+        $html .= '<option';
+        if ( $auth_type === 'sso' ) {
+            $html .= ' selected="selected"';
+        }
+        $html .= ' value="sso">Salesforce SSO</option>';
+        $html .= '</select></div>';
+        echo $html;
+    }
+
+
+    /**
 	 * Displays the Email field for the Settings API
 	 *
 	 * @since 1.0.0
@@ -715,6 +796,54 @@ $html =<<<HTML
 HTML;
 		echo $html;
 	}
+
+    /**
+     * Displays the Client ID field for the Settings API
+     *
+     * @since 1.5.0
+     */
+    function client_id_field() {
+        $client_id = self::get_setting( 'client_id' );
+        $html_name = $this->_get_html_name( 'client_id' );
+        $html =<<<HTML
+<div id="client-id-wrap">
+	<input type="text" size="30" id="client-id" name="{$html_name}" value="{$client_id}" />
+</div>
+HTML;
+        echo $html;
+    }
+
+    /**
+     * Displays the Client Secret field for the Settings API
+     *
+     * @since 1.5.0
+     */
+    function client_secret_field() {
+        $client_secret = self::get_setting( 'client_secret' );
+        $html_name = $this->_get_html_name( 'client_secret' );
+        $html =<<<HTML
+<div id="client-secret-wrap">
+	<input type="text" size="30" id="client-secret" name="{$html_name}" value="{$client_secret}" />
+</div>
+HTML;
+        echo $html;
+    }
+
+    /**
+     * Displays the Business Unit ID Secret field for the Settings API
+     *
+     * @since 1.5.0
+     */
+    function business_unit_id_field() {
+        $business_unit_id = self::get_setting( 'business_unit_id' );
+        $html_name = $this->_get_html_name( 'business_unit_id' );
+        $html =<<<HTML
+<div id="business-unit-id-wrap">
+	<input type="text" size="30" id="business-unit-id" name="{$html_name}" value="{$business_unit_id}" />
+</div>
+HTML;
+        echo $html;
+    }
 
 	/**
 	 * Displays the Password field for the Settings API
@@ -864,14 +993,25 @@ HTML;
 	 */
 	function submit_field() {
 		$value      = __( 'Save Settings', 'pardot' );
-		$valuecache = __( 'Clear Cache', 'pardot' );
-		$valuereset = __( 'Reset All Settings', 'pardot' );
-		$msgreset   = __( 'This will remove all your Pardot account information from the database. Click OK to proceed', 'pardot' );
 		$html =<<<HTML
-<input type="submit" class="button-primary" name="save" value="{$value}" /> <input type="submit" class="button-secondary" name="clear" value="{$valuecache}" style="margin-left: 50px;" /> <input onclick="return confirm('{$msgreset}.');" type="submit" class="button-secondary" name="reset" value="{$valuereset}" />
+<input type="submit" id="submit" class="button-primary" name="save" value="{$value}"/>
 HTML;
 		echo $html;
 	}
+
+    /**
+     * Displays the Sign In with Salesforcer button for the Settings API
+     *
+     * @since 1.0.0
+     */
+    function sso_sign_in_field() {
+        $value = __( 'Sign In with Salesforce', 'pardot' );
+
+        $html =<<<HTML
+<input id="sso-sign-in" class="button-primary" name="sso-sign-in" value="{$value}" onclick="clickSubmit()"/>
+HTML;
+        echo $html;
+    }
 
 	/**
 	 * Displays the Reset button for the Settings API
@@ -896,10 +1036,12 @@ HTML;
 		$value = __( 'Clear Cache', 'pardot' );
 		$valuetwo = __( 'Reset All Settings', 'pardot' );
 		$msg = __( 'This will remove all your Pardot account information from the database. Click OK to proceed', 'pardot' );
+        $valuereset = __( 'Reset All Settings', 'pardot' );
+        $msgreset   = __( 'This will remove all your Pardot account information from the database. Click OK to proceed', 'pardot' );
 		$html =<<<HTML
-<input type="submit" class="button-secondary" name="clear" value="{$value}" /> <input onclick="return confirm('{$msg}.');" type="submit" class="button-secondary" name="reset" value="{$valuetwo}" />
+<input type="submit" class="button-secondary" name="clear" value="{$value}" /> <input onclick="return confirm('{$msg}.');" type="submit" class="button-secondary" name="reset" value="{$valuetwo}" /> 
 HTML;
-		//echo $html;
+		echo $html;
 	}
 
 	/**
