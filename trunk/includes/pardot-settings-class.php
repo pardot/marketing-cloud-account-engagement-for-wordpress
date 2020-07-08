@@ -308,7 +308,6 @@ function clickSubmit() {
     let authValue = authSelect.options[authSelect.selectedIndex].value;
     let client_id = document.getElementById("client-id").value;
     let sign_in_sso = document.getElementById("sso-sign-in");
-    console.log(authValue);
     if (authValue == 'sso') {
         if (client_id) {
             let url = "https://login.salesforce.com/services/oauth2/authorize?client_id=" + client_id + "&redirect_uri=" + window.location.href + "&response_type=code";
@@ -323,8 +322,7 @@ function clickSubmit() {
 window.loginCallback = function(urlString) {
     let url = new URL(urlString);
     url.searchParams.append('status', 'success');
-    console.log(url);
-    //window.location.replace(url);
+    window.location.replace(url);
 };
 
 const urlParams = new URLSearchParams(window.location.search);
@@ -332,6 +330,7 @@ const codeParam = urlParams.get('code');
 const statusParam = urlParams.get('status');
 
 if (codeParam && codeParam.length > 1 && !statusParam) {
+    
     window.opener.loginCallback(window.location.href);
     window.close();
 }
@@ -389,30 +388,34 @@ HTML;
             self::set_setting('auth_type', 'sso');
         }
 
-		if (isset($_GET['code']) && isset($_GET['status'])) {
+		if (isset($_GET['code']) && isset($_GET['status']) && $_GET['status'] == 'success' && ! self::get_setting('api_key')) {
             $url = 'https://login.salesforce.com/services/oauth2/token';
-            $data = array(
+            $body = array(
                 'grant_type' => 'authorization_code',
                 'code' => $_GET['code'],
                 'client_id' => self::get_setting('client_id'),
                 'client_secret' => self::get_setting('client_secret'),
                 'redirect_uri' => 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'],
             );
-            print_r($data);
 
-            // use key 'http' even if you send the request to https://...
-            $options = array(
-                'http' => array(
-                    'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
-                    'method'  => 'POST',
-                    'content' => http_build_query($data)
-                )
+            $args = array(
+                'body'        => $body,
+                'timeout'     => '5',
+                'redirection' => '5',
+                'httpversion' => '1.0',
+                'blocking'    => true,
+                'headers'     => array("Content-type: application/json"),
+                'cookies'     => array(),
             );
-            $context  = stream_context_create($options);
-            //$result = file_get_contents($url, false, $context);
-            //if ($result === FALSE) { echo "ERROR"; }
 
-            //$response = json_decode($result);
+            $response = wp_remote_post( $url, $args );
+            if ($response === FALSE) { echo "ERROR"; }
+
+            $response = json_decode(wp_remote_retrieve_body($response));
+
+            if ( isset($response->{'access_token'}) ) {
+                self::set_setting('api_key', $response->{'access_token'});
+            }
         }
 
 		/**
@@ -560,7 +563,7 @@ HTML;
 		/**
 		 * Call the Pardot API to attempt to authenticate
 		 */
-		if ( ! $this->authenticate( $clean ) ) {
+		if ( $clean['auth_type'] == 'pardot' && ! $this->authenticate( $clean ) ) {
 
 			if ( ! self::$showed_auth_notice ) {
 				$msg = __( 'Cannot authenticate. Please check the fields below and click "Save Settings" again.', 'pardot' );
@@ -575,8 +578,10 @@ HTML;
 
 				self::$showed_auth_notice = true;
 			}
-
-		} else {
+		} elseif ($clean['auth_type'] == 'sso') {
+            self::get_api( false )->set_auth( $clean );
+            self::$showed_auth_notice = true;
+        } else {
 
 			if ( ! self::$showed_auth_notice ) {
 				$msg = __( 'Authentication successful. Settings saved.', 'pardot' );
@@ -973,7 +978,15 @@ HTML;
 	 * @since 1.0.0
 	 */
 	function campaign_field() {
-		$campaigns = Pardot_Plugin::get_campaigns();
+
+	    $campaigns = null;
+
+        if ( ! self::get_setting('api_key') ) {
+            $campaigns = false;
+        }
+        else {
+            $campaigns = Pardot_Plugin::get_campaigns();
+        }
 
 		if ( ! $campaigns ) {
 			$msg = __( 'These will show up once you\'re connected.', 'pardot' );
@@ -1069,7 +1082,7 @@ HTML;
      * @since 1.0.0
      */
     function sso_sign_in_field() {
-        $value = __( 'Sign In with Salesforce', 'pardot' );
+        $value = __( 'Save Settings', 'pardot' );
 
         $html =<<<HTML
 <input id="sso-sign-in" class="button-primary" type="submit" name="sso-sign-in" value="{$value}" onclick="clickSubmit()"/>

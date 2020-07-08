@@ -469,29 +469,54 @@ x	 */
 			$this->authenticate( $args );
 		}
 
-		$args = array_merge( $args,
-			array(
-				'user_key' => $this->user_key,
-				'api_key' => $this->api_key,
-				// Here for Pardot root-level debugging only
-				//'act_as_user' => 'test@example.com',
-				'offset' => $paged > 1 ? ($paged-1)*200 : 0
-			)
-		);
+        $http_response = null;
 
-		$http_response = wp_remote_post(
-			$this->_get_url( $item_type, $args ),
-			array_merge( array(
-				'timeout' 		=> '30',
-				'redirection'   => '5',
-				'method' 		=> 'POST',
-				'blocking'		=> true,
-				'compress'		=> false,
-				'decompress'	=> true,
-				'sslverify' 	=> false,
-				'body'          => $args
-			), $args )
-		);
+		if ($this->auth_type == 'pardot') {
+		    $args = array_merge( $args,
+			    array(
+				    'user_key' => $this->user_key,
+				    'api_key' => $this->api_key,
+				    // Here for Pardot root-level debugging only
+				    //'act_as_user' => 'test@example.com',
+				    'offset' => $paged > 1 ? ($paged-1)*200 : 0
+			    )
+		    );
+
+            $http_response = wp_remote_post(
+                $this->_get_url( $item_type, $args ),
+                array_merge( array(
+                    'timeout' 		=> '30',
+                    'redirection'   => '5',
+                    'method' 		=> 'POST',
+                    'blocking'		=> true,
+                    'compress'		=> false,
+                    'decompress'	=> true,
+                    'sslverify' 	=> false,
+                    'body'          => $args
+                ), $args )
+            );
+		}
+
+        else if ($this->auth_type == 'sso') {
+            $args = array(
+                'Authorization' => 'Bearer ' . $this->api_key,
+                'Pardot-Business-Unit-Id' => $this->business_unit_id,
+                'offset' => $paged > 1 ? ($paged - 1) * 200 : 0
+            );
+
+            $http_response = wp_remote_post(
+                $this->_get_url( $item_type, $args ), array(
+                    'timeout' 		=> '30',
+                    'redirection'   => '5',
+                    'method' 		=> 'POST',
+                    'blocking'		=> true,
+                    'compress'		=> false,
+                    'decompress'	=> true,
+                    'sslverify' 	=> false,
+                    'headers'        => $args
+                )
+            );
+        }
 
 		if ( isset( $args['password'] ) ) {
 			$args['password'] = Pardot_Settings::decrypt_or_original( $args['password'] );
