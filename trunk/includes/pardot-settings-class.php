@@ -324,6 +324,7 @@ function clickSubmit() {
 window.loginCallback = function(urlString) {
     let url = new URL(urlString);
     url.searchParams.append('status', 'success');
+    setTimeout(() => {  console.log("World!"); }, 2000);
     window.location.replace(url);
 };
 
@@ -390,7 +391,7 @@ HTML;
             self::set_setting('auth_type', 'sso');
         }
 
-		if (isset($_GET['code']) && isset($_GET['status']) && $_GET['status'] == 'success' && ! self::get_setting('api_key')) {
+		if (isset($_GET['code']) && isset($_GET['status']) && $_GET['status'] == 'success' && ! self::is_authenticated()) {
             $url = 'https://login.salesforce.com/services/oauth2/token';
             $body = array(
                 'grant_type' => 'authorization_code',
@@ -411,9 +412,13 @@ HTML;
             );
 
             $response = wp_remote_post( $url, $args );
-            if ($response === FALSE) { echo "ERROR"; }
 
             $response = json_decode(wp_remote_retrieve_body($response));
+
+            if (isset($response->{'error'})) {
+                add_settings_error( self::$OPTION_GROUP, 'update_settings', 'Failed to authenticate!  Please check your credentials again. (' . $response->{'error'} . ':' . $response->{'error_description'} . ')', 'error' );
+                settings_errors('update_settings');
+            }
 
             if ( isset($response->{'access_token'}) ) {
                 self::set_setting('api_key', $response->{'access_token'});
@@ -582,7 +587,6 @@ HTML;
 			}
 		} elseif ($clean['auth_type'] == 'sso') {
             self::get_api( false )->set_auth( $clean );
-            self::$showed_auth_notice = true;
         } else {
 
 			if ( ! self::$showed_auth_notice ) {
