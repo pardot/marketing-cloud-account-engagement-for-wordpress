@@ -129,7 +129,7 @@ class Pardot_API {
 	 * If more than one value is passed for $auth it will pass to set_auth() to save the auth parameters
 	 * into the object's same named properties.
 	 *
-	 * @param array $auth Values 'email', 'password', 'user_key' and 'api_key' supported.
+	 * @param array $auth Values 'auth_type', 'email', 'password', 'user_key', 'client_id', 'client_secret', 'business_unit_id', and 'api_key' supported.
 	 *
 	 * @since 1.0.0
 	 */
@@ -144,7 +144,7 @@ class Pardot_API {
 	 * The $auth parameters passed will be used to authenticate the login request.
 	 * If successful $this->api_key will be set.
 	 *
-	 * @param array $auth Values 'email', 'password', 'user_key' and 'api_key' supported.
+	 * @param array $auth Values 'auth_type', 'email', 'password', 'user_key', 'client_id', 'client_secret', 'business_unit_id', and 'api_key' supported.
 	 * @return string|bool An $api_key on success, false on failure.
 	 *
 	 * @since 1.0.0
@@ -400,6 +400,11 @@ x	 */
             } else if ( empty( $this->password ) && defined( 'PARDOT_API_PASSWORD' )  ) {
                 $auth['password'] = PARDOT_API_PASSWORD;
             }
+            if ( ! empty( $auth['user_key'] ) ) {
+                $this->user_key = $auth['user_key'];
+            } else if ( empty( $this->user_key ) && defined( 'PARDOT_API_USER_KEY' )  ) {
+                $auth['user_key'] = PARDOT_API_USER_KEY;
+            }
         }
 		elseif ( $auth['auth_type'] == 'sso' ) {
             if ( ! empty($auth['client_id'] ) ) {
@@ -413,11 +418,6 @@ x	 */
             }
         }
 
-        if ( ! empty( $auth['user_key'] ) ) {
-            $this->user_key = $auth['user_key'];
-        } else if ( empty( $this->user_key ) && defined( 'PARDOT_API_USER_KEY' )  ) {
-            $auth['user_key'] = PARDOT_API_USER_KEY;
-        }
 		if ( ! empty( $auth['api_key'] ) ) {
 		    $this->api_key = $auth['api_key'];
 		}
@@ -430,7 +430,8 @@ x	 */
 	/**
 	 * Checks if this Pardot_API object has the necessary properties set for authentication.
 	 *
-	 * @return boolean Returns true if this object has email, password and user_key properties.
+	 * @return boolean Returns true if this object has 'client_id', 'client_secret', 'business_unit_id' when using SSO auth
+     *                 Returns true if this object has email, password and user_key properties when using Pardot auth
 	 *
 	 * @since 1.0.0
 x	 */
@@ -439,7 +440,7 @@ x	 */
             return ! empty( $this->email ) && ! empty( $this->password ) && ! empty( $this->user_key );
         }
 	    elseif ( $this->auth_type == 'sso' ) {
-            return ! empty( $this->client_id ) && ! empty( $this->client_secret ) && ! empty( $this->business_unit_id ) && ! empty( $this->user_key );
+            return ! empty( $this->client_id ) && ! empty( $this->client_secret ) && ! empty( $this->business_unit_id );
         }
 	}
 
@@ -461,7 +462,7 @@ x	 */
 	function get_response( $item_type, $args = array(), $property = 'result', $paged=1 ) {
 		$this->error = false;
 		if ( ! $this->has_auth() ) {
-			$this->error = 'Cannot authenticate. No email, password or user_key assigned.';
+			$this->error = 'Cannot authenticate. Missing credentials.';
 			return false;
 		}
 
@@ -577,7 +578,8 @@ x	 */
 	/**
 	 * Returns array of auth parameter based on the auth properties of this Pardot_API object
 	 *
-	 * @return array containing email, password and user_key elements.
+	 * @return array containing auth_type, client_id, client_secret, and business_unit_id when using SSO auth
+     *         array containing auth_type, email, password and user_key elements when using Pardot auth
 	 *
 	 * @since 1.0.0
 	 */
@@ -597,7 +599,6 @@ x	 */
                 'client_id' => $this->client_id,
                 'client_secret' => $this->client_secret,
                 'business_unit_id' => $this->business_unit_id,
-                'user_key' => $this->user_key,
             );
         }
 	}
@@ -610,7 +611,7 @@ x	 */
 	 * it to evolve as needed assume the $item_type continues to be a central concept in the Pardot API.
 	 *
 	 * @param string $item_type Item type requested; 'account', 'form', 'campaign' and (special case) 'login' tested.
-	 * @param array $args Authorization values ('email','password','user_key') for 'login', nothing for the rest.
+	 * @param array $args Authorization values ('auth_type', 'email', 'password', 'user_key', 'client_id', 'client_secret', 'business_unit_id', and 'api_key') for 'login', nothing for the rest.
 	 * @return string Url for a valid API call.
 	 *
 	 * @since 1.0.0

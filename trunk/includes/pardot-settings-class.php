@@ -284,6 +284,7 @@ jQuery(document).ready(function($){
         if (this.value === 'pardot') {        
             $('#email-wrap').parents().eq(1).show();
             $('#password-wrap').parents().eq(1).show();  
+            $('#user-key-wrap').parents().eq(1).show();
             $('#submit').parents().eq(1).show(); 
             $('#client-id-wrap').parents().eq(1).hide();
             $('#client-secret-wrap').parents().eq(1).hide(); 
@@ -292,7 +293,8 @@ jQuery(document).ready(function($){
             
         } else if (this.value === 'sso') {        
             $('#email-wrap').parents().eq(1).hide();    
-            $('#password-wrap').parents().eq(1).hide();  
+            $('#password-wrap').parents().eq(1).hide();
+            $('#user-key-wrap').parents().eq(1).hide();
             $('#submit').parents().eq(1).hide();
             $('#client-id-wrap').parents().eq(1).show();
             $('#client-secret-wrap').parents().eq(1).show(); 
@@ -314,7 +316,7 @@ function clickSubmit() {
             window.open(url, "Sign In with Salesforce", "height=800, width=400, left=" + sign_in_sso.getBoundingClientRect().right)
         }
         else {
-            alert("Please type in a valid client ID.")
+            alert("Please type in a valid Consumer Key.")
         }
     }
 }
@@ -437,9 +439,9 @@ HTML;
             'auth_type'     => [__( 'Authentication Type', 'pardot' ), ''],
 			'email'     => [__( 'Email', 'pardot' ), ( self::get_setting('auth_type') === 'sso' ? array( 'class' => 'hidden' ) : array() )],
 			'password'  => [__( 'Password', 'pardot' ), ( self::get_setting('auth_type') === 'sso' ? array( 'class' => 'hidden' ) : array() )],
-			'user_key'  => [__( 'User Key', 'pardot' ), ''],
-            'client_id'  => [__( 'Client ID', 'pardot' ), ( self::get_setting('auth_type') === 'pardot' ? array( 'class' => 'hidden' ) : array() )],
-            'client_secret'  => [__( 'Client Secret', 'pardot' ), ( self::get_setting('auth_type') === 'pardot' ? array( 'class' => 'hidden' ) : array() )],
+			'user_key'  => [__( 'User Key', 'pardot' ), ( self::get_setting('auth_type') === 'sso' ? array( 'class' => 'hidden' ) : array() )],
+            'client_id'  => [__( 'Consumer Key', 'pardot' ), ( self::get_setting('auth_type') === 'pardot' ? array( 'class' => 'hidden' ) : array() )],
+            'client_secret'  => [__( 'Consumer Secret', 'pardot' ), ( self::get_setting('auth_type') === 'pardot' ? array( 'class' => 'hidden' ) : array() )],
             'business_unit_id'  => [__( 'Business Unit ID', 'pardot' ), ( self::get_setting('auth_type') === 'pardot' ? array( 'class' => 'hidden' ) : array() )],
 			'campaign'  => [__( 'Campaign (for Tracking Code)', 'pardot' ), ''],
 			'version'   => [__( 'API Version', 'pardot' ), ''],
@@ -664,7 +666,7 @@ HTML;
 
 			/**
 			 * If $auth array contains at least one value, set auth.
-			 * If not empty, it's likely to have email and password and user_key, maybe api_key.
+			 * If not empty, it likely has credentials, maybe api_key
 			 */
 			if ( count( $auth ) )
 				self::$api->set_auth( $auth );
@@ -675,8 +677,8 @@ HTML;
 	/**
 	 * Extract the auth args from the passed array.
 	 *
-	 * @param array $auth Values 'email', 'password', 'user_key' and 'api_key' supported.
-	 * @return array Contains just 'email', 'password', 'user_key', 'api_key' if they existing as keys in $auth.
+	 * @param array $auth Values 'auth_type', 'email', 'password', 'user_key', 'client_id', 'client_secret', 'business_unit_id', and 'api_key' supported.
+	 * @return array Contains 'auth_type', 'email', 'password', 'user_key', 'client_id', 'client_secret', 'business_unit_id', and 'api_key' if they existing as keys in $auth.
 	 */
 	static function extract_auth_args( $auth = array() ) {
 		return array_intersect_key( $auth, array_flip( array( 'auth_type', 'email', 'password', 'user_key', 'api_key', 'client_id', 'client_secret', 'business_unit_id') ) );
@@ -696,7 +698,7 @@ HTML;
 	/**
 	 * Call the Pardot API to authenticate based on credentials provided by the user.
 	 *
-	 * @param array $auth Values 'email', 'password', 'user_key' and 'api_key' supported.
+	 * @param array $auth Values 'auth_type', 'email', 'password', 'user_key', 'client_id', 'client_secret', 'business_unit_id', and 'api_key' supported.
 	 * @return bool|string API Key if authenticated, false if not.
 	 *
 	 * @since 1.0.0
@@ -735,6 +737,9 @@ HTML;
 		$new_options['email']    = trim( $new_options['email'] );
 		$new_options['password'] = trim( $new_options['password'] );
 		$new_options['user_key'] = trim( $new_options['user_key'] );
+        $new_options['client_id'] = trim( $new_options['client_id'] );
+        $new_options['client_secret'] = trim( $new_options['client_secret'] );
+        $new_options['business_unit_id'] = trim( $new_options['business_unit_id'] );
 
 		/**
 		 * Add 'prying eyes' encryption for passsword.
