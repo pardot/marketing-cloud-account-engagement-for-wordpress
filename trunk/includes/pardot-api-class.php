@@ -73,10 +73,38 @@ class Pardot_API {
 	 */
 	var $user_key;
 
+    /**
+     * @var string The type of authentication, either Pardot or SSO.
+     *
+     * @since 1.5.0
+     */
+    var $auth_type;
+
+    /**
+     * @var string A user-entered client ID.
+     *
+     * @since 1.5.0
+     */
+    var $client_id;
+
+    /**
+     * @var string A user-entered client secret.
+     *
+     * @since 1.5.0
+     */
+    var $client_secret;
+
+    /**
+     * @var string A user-entered business unit ID.
+     *
+     * @since 1.5.0
+     */
+    var $business_unit_id;
+
 	/**
-	 * @var string A key returned on authentication by Pardot's API based on email, password and user_key.
+	 * @var string A key returned on authentication by Pardot or SSO
 	 *
-	 * @since 1.0.0
+	 * @since 1.5.0
 	 */
 	var $api_key = false;
 
@@ -122,8 +150,9 @@ class Pardot_API {
 	 * @since 1.0.0
 	 */
 	function authenticate( $auth = array() ) {
-		if ( count( $auth ) )
-			$this->set_auth( $auth );
+		if ( count( $auth ) ) {
+            $this->set_auth($auth);
+        }
 		$this->api_key = false;
 		if ( $response = $this->get_response( 'login', $auth, 'api_key' ) ) {
 			$this->api_key = (string)$response->api_key;
@@ -350,7 +379,7 @@ class Pardot_API {
 	 *  - PARDOT_API_PASSWORD
 	 *  - PARDOT_API_USER_KEY
 	 *
-	 * @param array $auth Values 'email', 'password', 'user_key' and 'api_key' supported.
+	 * @param array $auth Values 'auth_type', 'email', 'password', 'user_key', 'client_id', 'client_secret', 'business_unit_id', and 'api_key' supported.
 	 * @return void
 	 *
 	 * @since 1.0.0
@@ -359,25 +388,43 @@ x	 */
 		/**
 		 * First clear all the auth values.
 		 */
-		$this->email = $this->password = $this->user_key = $this->api_key = null;
-		if ( ! empty( $auth['email'] ) ) {
-			$this->email = $auth['email'];
-		} else if ( empty( $this->email ) && defined( 'PARDOT_API_EMAIL' ) ) {
-			$auth['email'] = PARDOT_API_EMAIL;
-		}
-		if ( ! empty( $auth['password'] ) ) {
-			$this->password = $auth['password'];
-		} else if ( empty( $this->password ) && defined( 'PARDOT_API_PASSWORD' )  ) {
-			$auth['password'] = PARDOT_API_PASSWORD;
-		}
-		if ( ! empty( $auth['user_key'] ) ) {
-			$this->user_key = $auth['user_key'];
-		} else if ( empty( $this->user_key ) && defined( 'PARDOT_API_USER_KEY' )  ) {
-			$auth['user_key'] = PARDOT_API_USER_KEY;
-		}
+		$this->email = $this->password = $this->user_key = $this->api_key = $this->auth_type = $this->client_id = $this->client_secret = $this->business_unit_id = null;
+		if ($auth['auth_type'] == 'pardot') {
+            if ( ! empty( $auth['email'] ) ) {
+                $this->email = $auth['email'];
+            } else if ( empty( $this->email ) && defined( 'PARDOT_API_EMAIL' ) ) {
+                $auth['email'] = PARDOT_API_EMAIL;
+            }
+            if ( ! empty( $auth['password'] ) ) {
+                $this->password = $auth['password'];
+            } else if ( empty( $this->password ) && defined( 'PARDOT_API_PASSWORD' )  ) {
+                $auth['password'] = PARDOT_API_PASSWORD;
+            }
+        }
+		elseif ( $auth['auth_type'] == 'sso' ) {
+            if ( ! empty($auth['client_id'] ) ) {
+                $this->client_id = $auth['client_id'];
+            }
+            if ( ! empty($auth['client_secret'] ) ) {
+                $this->client_secret = $auth['client_secret'];
+            }
+            if ( ! empty($auth['business_unit_id'] ) ) {
+                $this->business_unit_id = $auth['business_unit_id'];
+            }
+        }
+
+        if ( ! empty( $auth['user_key'] ) ) {
+            $this->user_key = $auth['user_key'];
+        } else if ( empty( $this->user_key ) && defined( 'PARDOT_API_USER_KEY' )  ) {
+            $auth['user_key'] = PARDOT_API_USER_KEY;
+        }
 		if ( ! empty( $auth['api_key'] ) ) {
-			$this->api_key = $auth['api_key'];
+		    $this->api_key = $auth['api_key'];
 		}
+        if ( ! empty( $auth['auth_type'] ) ) {
+            $this->auth_type = $auth['auth_type'];
+        }
+
 	}
 
 	/**
@@ -388,7 +435,12 @@ x	 */
 	 * @since 1.0.0
 x	 */
 	function has_auth() {
-		return ! empty( $this->email ) && ! empty( $this->password ) && ! empty( $this->user_key );
+	    if ( $this->auth_type == 'pardot' ) {
+            return ! empty( $this->email ) && ! empty( $this->password ) && ! empty( $this->user_key );
+        }
+	    elseif ( $this->auth_type == 'sso' ) {
+            return ! empty( $this->client_id ) && ! empty( $this->client_secret ) && ! empty( $this->business_unit_id ) && ! empty( $this->user_key );
+        }
 	}
 
 	/**
@@ -408,7 +460,6 @@ x	 */
 	 */
 	function get_response( $item_type, $args = array(), $property = 'result', $paged=1 ) {
 		$this->error = false;
-
 		if ( ! $this->has_auth() ) {
 			$this->error = 'Cannot authenticate. No email, password or user_key assigned.';
 			return false;
@@ -506,11 +557,24 @@ x	 */
 	 * @since 1.0.0
 	 */
 	function get_auth() {
+	    if ( $this->auth_type == 'pardot' )
+
 		return array(
+		    'auth_type' => $this->auth_type,
 			'email' => $this->email,
 			'password' => $this->password,
 			'user_key' => $this->user_key,
 		);
+
+	    elseif ( $this->auth_type == 'sso' ) {
+            return array(
+                'auth_type' => $this->auth_type,
+                'client_id' => $this->client_id,
+                'client_secret' => $this->client_secret,
+                'business_unit_id' => $this->business_unit_id,
+                'user_key' => $this->user_key,
+            );
+        }
 	}
 
 	/**

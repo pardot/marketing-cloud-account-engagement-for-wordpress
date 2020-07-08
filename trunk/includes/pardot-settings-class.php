@@ -51,7 +51,23 @@ class Pardot_Settings {
 	 * @var array Contain array of the fields for the Settings API.
 	 * Used as a const, defined as a var so it can be private.
 	 */
-	private static $FIELDS = array();
+	private static $FIELDS = array(
+        'auth_type'         => '',
+        'email'             => '',
+        'password'          => '',
+        'user_key'          => '',
+        'client_id'         => '',
+        'client_secret'     => '',
+        'business_unit_id'  => '',
+        'campaign'          => '',
+        'version'           => '',
+        'https'             => '',
+        'submit'            => '',
+        'sso_sign_in'       => '',
+        'clearcache'        => '',
+        'reset'             => '',
+        'api_key'           => '',
+    );
 
 	/**
 	 * @var Pardot_Plugin Capture $this so that other can remove_action() if needed.
@@ -151,7 +167,7 @@ class Pardot_Settings {
          * if it does then we need to determine if the password setting is correctly encrypted or needs to be re-encrypted
          */
         $optstring = get_option('pardot_settings', NULL);
-        if ($optstring !== NULL)
+        if ($optstring['password'] !== NULL)
         {
             if ((substr($optstring['password'], 0, 6) !== "NACL::") and
                 (substr($optstring['password'], 0, 6) !== "OGCM::") and
@@ -264,11 +280,10 @@ class Pardot_Settings {
 jQuery(document).ready(function(){jQuery("#campaign").chosen();});
 
 jQuery(document).ready(function($){
-    $('#auth_type').change(function() {      
+    $('#auth-type').change(function() {      
         if (this.value === 'pardot') {        
             $('#email-wrap').parents().eq(1).show();
             $('#password-wrap').parents().eq(1).show();  
-            $('#user-key-wrap').parents().eq(1).show();
             $('#submit').parents().eq(1).show(); 
             $('#client-id-wrap').parents().eq(1).hide();
             $('#client-secret-wrap').parents().eq(1).hide(); 
@@ -278,7 +293,6 @@ jQuery(document).ready(function($){
         } else if (this.value === 'sso') {        
             $('#email-wrap').parents().eq(1).hide();    
             $('#password-wrap').parents().eq(1).hide();  
-            $('#user-key-wrap').parents().eq(1).hide();
             $('#submit').parents().eq(1).hide();
             $('#client-id-wrap').parents().eq(1).show();
             $('#client-secret-wrap').parents().eq(1).show(); 
@@ -298,12 +312,28 @@ function clickSubmit() {
     if (authValue == 'sso') {
         if (client_id) {
             let url = "https://login.salesforce.com/services/oauth2/authorize?client_id=" + client_id + "&redirect_uri=" + window.location.href + "&response_type=code";
-            window.open(url, "Sign In with Salesforce", "height=800, width=400, left="+sign_in_sso.getBoundingClientRect().right)
+            window.open(url, "Sign In with Salesforce", "height=800, width=400, left=" + sign_in_sso.getBoundingClientRect().right)
         }
         else {
             alert("Please type in a valid client ID.")
         }
     }
+}
+
+window.loginCallback = function(urlString) {
+    let url = new URL(urlString);
+    url.searchParams.append('status', 'success');
+    console.log(url);
+    //window.location.replace(url);
+};
+
+const urlParams = new URLSearchParams(window.location.search);
+const codeParam = urlParams.get('code');
+const statusParam = urlParams.get('status');
+
+if (codeParam && codeParam.length > 1 && !statusParam) {
+    window.opener.loginCallback(window.location.href);
+    window.close();
 }
 
 </script>
@@ -359,6 +389,32 @@ HTML;
             self::set_setting('auth_type', 'sso');
         }
 
+		if (isset($_GET['code']) && isset($_GET['status'])) {
+            $url = 'https://login.salesforce.com/services/oauth2/token';
+            $data = array(
+                'grant_type' => 'authorization_code',
+                'code' => $_GET['code'],
+                'client_id' => self::get_setting('client_id'),
+                'client_secret' => self::get_setting('client_secret'),
+                'redirect_uri' => 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'],
+            );
+            print_r($data);
+
+            // use key 'http' even if you send the request to https://...
+            $options = array(
+                'http' => array(
+                    'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+                    'method'  => 'POST',
+                    'content' => http_build_query($data)
+                )
+            );
+            $context  = stream_context_create($options);
+            //$result = file_get_contents($url, false, $context);
+            //if ($result === FALSE) { echo "ERROR"; }
+
+            //$response = json_decode($result);
+        }
+
 		/**
 		 * Add CSS to the header.  Called with a priority of zero (0) this can be
 		 * overridden by other CSS.
@@ -375,10 +431,10 @@ HTML;
 		 * Define fields and their labels
 		 */
 		self::$FIELDS = array(
-            'auth'     => [__( 'Authentication Type', 'pardot' ), ''],
+            'auth_type'     => [__( 'Authentication Type', 'pardot' ), ''],
 			'email'     => [__( 'Email', 'pardot' ), ( self::get_setting('auth_type') === 'sso' ? array( 'class' => 'hidden' ) : array() )],
 			'password'  => [__( 'Password', 'pardot' ), ( self::get_setting('auth_type') === 'sso' ? array( 'class' => 'hidden' ) : array() )],
-			'user_key'  => [__( 'User Key', 'pardot' ), ( self::get_setting('auth_type') === 'sso' ? array( 'class' => 'hidden' ) : array() )],
+			'user_key'  => [__( 'User Key', 'pardot' ), ''],
             'client_id'  => [__( 'Client ID', 'pardot' ), ( self::get_setting('auth_type') === 'pardot' ? array( 'class' => 'hidden' ) : array() )],
             'client_secret'  => [__( 'Client Secret', 'pardot' ), ( self::get_setting('auth_type') === 'pardot' ? array( 'class' => 'hidden' ) : array() )],
             'business_unit_id'  => [__( 'Business Unit ID', 'pardot' ), ( self::get_setting('auth_type') === 'pardot' ? array( 'class' => 'hidden' ) : array() )],
@@ -393,7 +449,7 @@ HTML;
 		);
 
 		/**
-		 * Register the settings page  required by WordPress Settings API
+		 * Register the settings page required by WordPress Settings API
 		 *
 		 * Include the fields we'll use and the field sanitization callback function.
 		 */
@@ -408,7 +464,16 @@ HTML;
 		 * Add the setting fields required by WordPress Settings API.
 		 */
 		foreach( self::$FIELDS as $name => $arr ) {
-			add_settings_field( $name, $arr[0], array( $this, "{$name}_field" ), self::$PAGE, self::$OPTION_GROUP , $arr[1]);
+            $title = null;
+            if (isset($arr[0])) {
+                $title = $arr[0];
+            }
+		    $class = null;
+		    if (isset($arr[1])) {
+		        $class = $arr[1];
+            }
+
+			add_settings_field( $name, $title, array( $this, "{$name}_field" ), self::$PAGE, self::$OPTION_GROUP , $class);
 		}
     }
 
@@ -427,7 +492,7 @@ HTML;
 			 * First time in, create an array with all expected keys and with empty string values.
 			 */
 			$empty_settings = array_fill_keys( array_keys( self::$FIELDS ), '' );
-		}
+        }
 		return $empty_settings;
 	}
 
@@ -491,7 +556,6 @@ HTML;
 		}
 
 		$clean['password'] = self::decrypt_or_original( $clean['password'] );
-
 
 		/**
 		 * Call the Pardot API to attempt to authenticate
@@ -610,7 +674,7 @@ HTML;
 	 * @return array Contains just 'email', 'password', 'user_key', 'api_key' if they existing as keys in $auth.
 	 */
 	static function extract_auth_args( $auth = array() ) {
-		return array_intersect_key( $auth, array_flip( array( 'email', 'password', 'user_key', 'api_key' ) ) );
+		return array_intersect_key( $auth, array_flip( array( 'auth_type', 'email', 'password', 'user_key', 'api_key', 'client_id', 'client_secret', 'business_unit_id') ) );
 	}
 
 	/**
@@ -762,7 +826,7 @@ HTML;
      *
      * @since 1.4.1
      */
-    function auth_field() {
+    function auth_type_field() {
         $auth_type = self::get_setting( 'auth_type' );
         $html_name = $this->_get_html_name( 'auth_type' );
         $html = '<div id="auth-type-wrap"><select id="auth-type" name="' . $html_name . '">';
@@ -1008,7 +1072,7 @@ HTML;
         $value = __( 'Sign In with Salesforce', 'pardot' );
 
         $html =<<<HTML
-<input id="sso-sign-in" class="button-primary" name="sso-sign-in" value="{$value}" onclick="clickSubmit()"/>
+<input id="sso-sign-in" class="button-primary" type="submit" name="sso-sign-in" value="{$value}" onclick="clickSubmit()"/>
 HTML;
         echo $html;
     }
