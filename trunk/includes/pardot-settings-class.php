@@ -52,6 +52,7 @@ class Pardot_Settings {
 	 * Used as a const, defined as a var so it can be private.
 	 */
 	private static $FIELDS = array(
+        'auth_status'       => '',
         'auth_type'         => '',
         'email'             => '',
         'password'          => '',
@@ -274,6 +275,7 @@ class Pardot_Settings {
 #settings_page_pardot .failure{color:red;}
 #settings_page_pardot .instructions{font-style:italic;}
 #settings_page_pardot .hidden{display: none;}
+#settings_page_pardot #sso-sign-in{width: 200px}
 -->
 </style>
 <script>
@@ -285,7 +287,6 @@ jQuery(document).ready(function($){
             $('#email-wrap').parents().eq(1).show();
             $('#password-wrap').parents().eq(1).show();  
             $('#user-key-wrap').parents().eq(1).show();
-            $('#submit').parents().eq(1).show(); 
             $('#client-id-wrap').parents().eq(1).hide();
             $('#client-secret-wrap').parents().eq(1).hide(); 
             $('#business-unit-id-wrap').parents().eq(1).hide();
@@ -295,7 +296,6 @@ jQuery(document).ready(function($){
             $('#email-wrap').parents().eq(1).hide();    
             $('#password-wrap').parents().eq(1).hide();
             $('#user-key-wrap').parents().eq(1).hide();
-            $('#submit').parents().eq(1).hide();
             $('#client-id-wrap').parents().eq(1).show();
             $('#client-secret-wrap').parents().eq(1).show(); 
             $('#business-unit-id-wrap').parents().eq(1).show();
@@ -441,7 +441,8 @@ HTML;
 		 * Define fields and their labels
 		 */
 		self::$FIELDS = array(
-            'auth_type'     => [__( 'Authentication Type', 'pardot' ), ''],
+		    'auth_status'=> [__( 'Authentication Status', 'pardot' ), ''],
+            'auth_type' => [__( 'Authentication Type', 'pardot' ), ''],
 			'email'     => [__( 'Email', 'pardot' ), ( self::get_setting('auth_type') === 'sso' ? array( 'class' => 'hidden' ) : array() )],
 			'password'  => [__( 'Password', 'pardot' ), ( self::get_setting('auth_type') === 'sso' ? array( 'class' => 'hidden' ) : array() )],
 			'user_key'  => [__( 'User Key', 'pardot' ), ( self::get_setting('auth_type') === 'sso' ? array( 'class' => 'hidden' ) : array() )],
@@ -451,7 +452,7 @@ HTML;
 			'campaign'  => [__( 'Campaign (for Tracking Code)', 'pardot' ), ''],
 			'version'   => [__( 'API Version', 'pardot' ), ''],
 			'https'     => [__( 'Use HTTPS?', 'pardot' ), ''],
-			'submit'    => ['', ( self::get_setting('auth_type') === 'sso' ? array( 'class' => 'hidden' ) : array() )],
+			'submit'    => '',
             'sso_sign_in'    => ['', ( self::get_setting('auth_type') === 'pardot' ? array( 'class' => 'hidden' ) : array() )],
 			'clearcache'=> '',
 			'reset'     => '',
@@ -835,10 +836,29 @@ HTML;
 		return self::$OPTION_GROUP  . "[{$field_name}]";
 	}
 
+
+	function auth_status_field() {
+	    if (self::is_authenticated()) {
+            $html =<<<HTML
+<div id="auth-status-wrap" class="success">
+Authenticated
+</div>
+HTML;
+        }
+	    else {
+            $html =<<<HTML
+<div id="auth-status-wrap" class="failure">
+Not Authenticated
+</div>
+HTML;
+        }
+        echo $html;
+    }
+
     /**
      * Displays the API Version drop-down field for the Settings API
      *
-     * @since 1.4.1
+     * @since 1.5.0
      */
     function auth_type_field() {
         $auth_type = self::get_setting( 'auth_type' );
@@ -1072,63 +1092,71 @@ HTML;
 		echo $html;
 	}
 
-	/**
-	 * Displays the Submit button for the Settings API
-	 *
-	 * @since 1.0.0
-	 */
-	function submit_field() {
-		$value      = __( 'Save Settings', 'pardot' );
-		$html =<<<HTML
-<input type="submit" id="submit" class="button-primary" name="save" value="{$value}"/>
-HTML;
-		echo $html;
-	}
-
     /**
      * Displays the Sign In with Salesforcer button for the Settings API
      *
      * @since 1.0.0
      */
     function sso_sign_in_field() {
-        $value = __( 'Save Settings', 'pardot' );
+        $value = __( 'Authenticate with Salesforce', 'pardot' );
 
+        if (self::get_setting('client_id') && self::get_setting('client_secret') && self::get_setting('business_unit_id')) {
+            $html =<<<HTML
+<input id="sso-sign-in" class="button-primary" name="sso-sign-in" value="{$value}" onclick="clickSubmit()"/>
+HTML;
+        }
+        else {
+            $html =<<<HTML
+<input disabled id="sso-sign-in" class="button-primary" name="sso-sign-in" value="{$value}" onclick="clickSubmit()"/> <p>Please save your credentials first.</p>
+HTML;
+        }
+        echo $html;
+    }
+
+    /**
+     * Displays the Submit button for the Settings API
+     *
+     * @since 1.0.0
+     */
+    function submit_field() {
+        $value      = __( 'Save Settings', 'pardot' );
+        $valuecache = __( 'Clear Cache', 'pardot' );
+        $valuereset = __( 'Reset All Settings', 'pardot' );
+        $msgreset   = __( 'This will remove all your Pardot account information from the database. Click OK to proceed', 'pardot' );
         $html =<<<HTML
-<input id="sso-sign-in" class="button-primary" type="submit" name="sso-sign-in" value="{$value}" onclick="clickSubmit()"/>
+<input type="submit" class="button-primary" name="save" value="{$value}" /> <input type="submit" class="button-secondary" name="clear" value="{$valuecache}" style="margin-left: 50px;" /> <input onclick="return confirm('{$msgreset}.');" type="submit" class="button-secondary" name="reset" value="{$valuereset}" />
 HTML;
         echo $html;
     }
 
-	/**
-	 * Displays the Reset button for the Settings API
-	 *
-	 * @since 1.0.0
-	 */
-	function reset_field() {
-		$value = __( 'Reset All Settings', 'pardot' );
-		$msg = __( 'This will remove all your Pardot account information from the database. Click OK to proceed', 'pardot' );
-		$html =<<<HTML
+    /**
+     * Displays the Reset button for the Settings API
+     *
+     * @since 1.0.0
+     */
+    function reset_field() {
+        $value = __( 'Reset All Settings', 'pardot' );
+        $msg = __( 'This will remove all your Pardot account information from the database. Click OK to proceed', 'pardot' );
+        $html =<<<HTML
 <input onclick="return confirm('{$msg}.');" type="submit" class="button-secondary" name="reset" value="{$value}" />
 HTML;
-		//echo $html;
-	}
+        //echo $html;
+    }
 
-	/**
-	 * Displays the Clear Cache button for the Settings API
-	 *
-	 * @since 1.1.0
-	 */
-	function clearcache_field() {
-		$value = __( 'Clear Cache', 'pardot' );
-		$valuetwo = __( 'Reset All Settings', 'pardot' );
-		$msg = __( 'This will remove all your Pardot account information from the database. Click OK to proceed', 'pardot' );
-        $valuereset = __( 'Reset All Settings', 'pardot' );
-        $msgreset   = __( 'This will remove all your Pardot account information from the database. Click OK to proceed', 'pardot' );
-		$html =<<<HTML
-<input type="submit" class="button-secondary" name="clear" value="{$value}" /> <input onclick="return confirm('{$msg}.');" type="submit" class="button-secondary" name="reset" value="{$valuetwo}" /> 
+    /**
+     * Displays the Clear Cache button for the Settings API
+     *
+     * @since 1.1.0
+     */
+    function clearcache_field() {
+        $value = __( 'Clear Cache', 'pardot' );
+        $valuetwo = __( 'Reset All Settings', 'pardot' );
+        $msg = __( 'This will remove all your Pardot account information from the database. Click OK to proceed', 'pardot' );
+        $html =<<<HTML
+<input type="submit" class="button-secondary" name="clear" value="{$value}" /> <input onclick="return confirm('{$msg}.');" type="submit" class="button-secondary" name="reset" value="{$valuetwo}" />
 HTML;
-		echo $html;
-	}
+        //echo $html;
+    }
 
 	/**
 	 * Encrypts with a bit more complexity
