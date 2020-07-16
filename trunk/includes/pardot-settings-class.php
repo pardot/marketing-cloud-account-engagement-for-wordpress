@@ -93,12 +93,6 @@ class Pardot_Settings {
 	private static $showed_auth_notice = false;
 
 	/**
-	 * @var boolean A flag to help combat a bug where settings-page admin notices show twice per submission.
-	 * @see https://core.trac.wordpress.org/ticket/21989
-	 */
-	private static $showed_reset_notice = false;
-
-	/**
 	 * Return the singleton instance of this class.
 	 *
 	 * To be use in case someone needs to remove one of the actions or shortcodes.
@@ -367,28 +361,8 @@ HTML;
 		/**
 		 * If we are not on the admin page for this plugin, bail.
 		 */
-		if ( ! self::is_admin_page() )
-			return;
-
-		if (
-			isset( $_GET['reset_settings'] )
-			&& true == $_GET['reset_settings']
-			&& ! self::$showed_reset_notice
-		) {
-
-			$notice = sprintf(
-				__( 'Settings have been reset! Please <a href="%s">click here to refresh this page</a> so you can re-configure your Pardot settings.', 'pardot' ),
-				admin_url( 'options-general.php?page=pardot' )
-			);
-
-			add_settings_error( self::$OPTION_GROUP, 'reset_settings', $notice, 'updated' );
-
-			self::reset_settings();
-			self::$showed_reset_notice = true;
-		}
-
-		if (self::get_setting('auth_type') == null) {
-            self::set_setting('auth_type', 'sso');
+		if ( ! self::is_admin_page() ) {
+            return;
         }
 
 		if (isset($_GET['code']) && isset($_GET['status']) && $_GET['status'] == 'success' && ! self::is_authenticated()) {
@@ -431,6 +405,10 @@ HTML;
 		 */
 		add_action( 'admin_head', array( $this, 'admin_head' ), 0 );
 
+		if (self::get_setting( 'auth_type' ) != 'sso' && self::get_setting( 'auth_type' ) != 'pardot') {
+		    self:self::set_setting('auth_type', 'sso');
+        }
+
 		/**
 		 * Add Chosen to Campaign Selector
 		 */
@@ -443,12 +421,12 @@ HTML;
 		self::$FIELDS = array(
 		    'auth_status'=> [__( 'Authentication Status', 'pardot' ), ''],
             'auth_type' => [__( 'Authentication Type', 'pardot' ), ''],
-			'email'     => [__( 'Email', 'pardot' ), ( self::get_setting('auth_type') === 'sso' ? array( 'class' => 'hidden' ) : array() )],
-			'password'  => [__( 'Password', 'pardot' ), ( self::get_setting('auth_type') === 'sso' ? array( 'class' => 'hidden' ) : array() )],
-			'user_key'  => [__( 'User Key', 'pardot' ), ( self::get_setting('auth_type') === 'sso' ? array( 'class' => 'hidden' ) : array() )],
-            'client_id'  => [__( 'Consumer Key', 'pardot' ), ( self::get_setting('auth_type') === 'pardot' ? array( 'class' => 'hidden' ) : array() )],
-            'client_secret'  => [__( 'Consumer Secret', 'pardot' ), ( self::get_setting('auth_type') === 'pardot' ? array( 'class' => 'hidden' ) : array() )],
-            'business_unit_id'  => [__( 'Business Unit ID', 'pardot' ), ( self::get_setting('auth_type') === 'pardot' ? array( 'class' => 'hidden' ) : array() )],
+			'email'     => [__( 'Email', 'pardot' ), ( self::get_setting( 'auth_type' ) === 'sso' ? array( 'class' => 'hidden' ) : array() )],
+			'password'  => [__( 'Password', 'pardot' ), ( self::get_setting( 'auth_type' ) === 'sso' ? array( 'class' => 'hidden' ) : array() )],
+			'user_key'  => [__( 'User Key', 'pardot' ), ( self::get_setting( 'auth_type' ) === 'sso' ? array( 'class' => 'hidden' ) : array() )],
+            'client_id'  => [__( 'Consumer Key', 'pardot' ), ( self::get_setting( 'auth_type' ) === 'pardot' ? array( 'class' => 'hidden' ) : array() )],
+            'client_secret'  => [__( 'Consumer Secret', 'pardot' ), ( self::get_setting( 'auth_type' ) === 'pardot' ? array( 'class' => 'hidden' ) : array() )],
+            'business_unit_id'  => [__( 'Business Unit ID', 'pardot' ), ( self::get_setting( 'auth_type' ) === 'pardot' ? array( 'class' => 'hidden' ) : array() )],
 			'campaign'  => [__( 'Campaign (for Tracking Code)', 'pardot' ), ''],
 			'version'   => [__( 'API Version', 'pardot' ), ''],
 			'https'     => [__( 'Use HTTPS?', 'pardot' ), ''],
@@ -532,12 +510,8 @@ HTML;
 		$clean = self::get_empty_settings();
 
 		if ( isset( $_POST['reset'] ) ) {
-
-			$url = add_query_arg( array(
-				'reset_settings' => true
-			), admin_url( 'options-general.php?page=pardot' ) );
-
-			wp_safe_redirect( $url );
+            self::reset_settings();
+			wp_safe_redirect( admin_url( 'options-general.php?page=pardot' )  );
 			exit;
 		}
 
@@ -1122,9 +1096,23 @@ HTML;
         $value      = __( 'Save Settings', 'pardot' );
         $valuecache = __( 'Clear Cache', 'pardot' );
         $valuereset = __( 'Reset All Settings', 'pardot' );
-        $msgreset   = __( 'This will remove all your Pardot account information from the database. Click OK to proceed', 'pardot' );
+        $msgResetConfirm = __( 'This will remove all your Pardot account information from the database. Click OK to proceed.', 'pardot' );
+        $msgResetTrue    = __( 'Your Pardot settings have been reset.', 'pardot' );
         $html =<<<HTML
-<input type="submit" class="button-primary" name="save" value="{$value}" /> <input type="submit" class="button-secondary" name="clear" value="{$valuecache}" style="margin-left: 50px;" /> <input onclick="return confirm('{$msgreset}.');" type="submit" class="button-secondary" name="reset" value="{$valuereset}" />
+<script>
+function resetSettingsClick() {
+    if (confirm('{$msgResetConfirm}')) {
+        alert("{$msgResetTrue}");
+        return true;
+    }
+    return false;
+}
+</script>
+
+
+<input type="submit" class="button-primary" name="save" value="{$value}" /> 
+<input type="submit" class="button-secondary" name="clear" value="{$valuecache}" style="margin-left: 50px;" /> 
+<input onclick="resetSettingsClick()" type="submit" class="button-secondary" name="reset" value="{$valuereset}" />
 HTML;
         echo $html;
     }
