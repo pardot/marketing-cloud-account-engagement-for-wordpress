@@ -4,7 +4,7 @@ Donate link: http://pardot.com
 Tags: pardot, marketing automation, forms, dynamic content, tracking, web tracking
 Requires at least: 5.2
 Tested up to: 5.3.2
-Stable tag: 1.4.13
+Stable tag: 1.5.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -139,6 +139,13 @@ Filter the regular expression used to find URLs to be converted to https://go.pa
 1. A page can have two forms! Here, one is in the body and one in a widget.
 
 == Changelog ==
+
+= 1.5.0 =
+* Improvement - Added authentication status indicator to settings page
+* Maintenance - Added Salesforce SSO authentication in preparation of Pardot authentication being discontinued with the Spring '21 release
+* Fix - Admin notices no longer overlap the Pardot logo on the settings page
+* Improvement - Users no longer need to refresh the settings page after resetting settings
+
 
 = 1.4.13 =
 
