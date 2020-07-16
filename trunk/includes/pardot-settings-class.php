@@ -263,7 +263,7 @@ class Pardot_Settings {
 		$html =<<<HTML
 <style type="text/css">
 <!--
-#settings_page_pardot h2.pardot-title{padding:40px 10px;}
+#settings_page_pardot h2.pardot-title{padding:40px 10px; margin-bottom: 10px}
 #settings_page_pardot h2.pardot-title img{margin:-20px 10px 0 0;}
 #settings_page_pardot .success{color:green;}
 #settings_page_pardot .failure{color:red;}
@@ -561,7 +561,21 @@ HTML;
 				self::$showed_auth_notice = true;
 			}
 		} elseif ($clean['auth_type'] == 'sso') {
-            self::get_api( false )->set_auth( $clean );
+		    if (!$clean['client_id']) {
+                $msg = __( 'Please check the Consumer Key field below and click "Save Settings" again.', 'pardot' );
+                add_settings_error( self::$OPTION_GROUP, 'update_settings', $msg, 'error' );
+            }
+		    else if (!$clean['client_secret']) {
+                $msg = __( 'Please check the Consumer Secret field below and click "Save Settings" again.', 'pardot' );
+                add_settings_error( self::$OPTION_GROUP, 'update_settings', $msg, 'error' );
+            }
+		    else if (!$clean['business_unit_id']) {
+                $msg = __( 'Please check the Business Unit ID field below and click "Save Settings" again.', 'pardot' );
+                add_settings_error( self::$OPTION_GROUP, 'update_settings', $msg, 'error' );
+            }
+
+		    self::get_api( false )->set_auth( $clean );
+
         } else {
 
 			if ( ! self::$showed_auth_notice ) {
