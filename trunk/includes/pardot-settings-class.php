@@ -357,7 +357,7 @@ HTML;
 	 * @since 1.0.0
 	 */
 	static function is_authenticated( $auth = array() ) {
-		return self::get_api( $auth )->is_authenticated();
+		return self::get_api( $auth )->is_authenticated() && is_object(self::get_api( $auth )->get_account());
 	}
 
 
@@ -834,7 +834,11 @@ HTML;
 		return self::$OPTION_GROUP  . "[{$field_name}]";
 	}
 
-
+    /**
+     * Displays authentication status
+     *
+     * @since 1.5.0
+     */
 	function auth_status_field() {
 	    if (self::is_authenticated()) {
             $html =<<<HTML

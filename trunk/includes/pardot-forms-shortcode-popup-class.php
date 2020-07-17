@@ -60,7 +60,7 @@ class _Pardot_Forms_Shortcode_Popup {
 
 		$html = '<div id="pardot-forms-shortcode-popup" style="display:none;">';
 
-		if ( get_pardot_api_key() ) {
+		if ( get_pardot_api_key() && is_object(get_pardot_account()) ) {
 
 			$html .= $this->get_dialog_html();
 
