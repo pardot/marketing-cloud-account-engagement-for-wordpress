@@ -7,9 +7,9 @@ Say hello to marketing automation simplicity! With a single login, your self-hos
 
 ## Installation ##
 
-1. Upload `pardot-for-wordpress` to your `/wp-content/plugins/` directory or go to Plugins > Add New in your WordPress Admin area and search for Pardot.
+1. Upload `pardot-for-wordpress/trunk` to your `/wp-content/plugins/` directory or go to Plugins > Add New in your WordPress Admin area and search for Pardot.
 1. Activate the plugin through the 'Plugins' menu in WordPress.
-1. Go to Settings > Pardot Settings to put in your email, password, and user key.
+1. Go to Settings > Pardot Settings and authenticate with either Pardot or Salesforce SSO.
 1. Select your campaign (for tracking code usage).
 
 ## Frequently Asked Questions ##
@@ -147,7 +147,7 @@ add_filter( 'pardot_https_regex', 'pardot_custom_filter_https_regex' );
 
 ## Changelog ##
 
-### 1.5.0. ###
+### 1.5.0 ###
 * Improvement - Added authentication status indicator to settings page
 * Maintenance - Added Salesforce SSO authentication in preparation of Pardot authentication being discontinued with the Spring '21 release
 * Fix - Admin notices no longer overlap the Pardot logo on the settings page
