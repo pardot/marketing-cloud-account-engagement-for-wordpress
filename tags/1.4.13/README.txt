@@ -4,7 +4,7 @@ Donate link: http://pardot.com
 Tags: pardot, marketing automation, forms, dynamic content, tracking, web tracking
 Requires at least: 5.2
 Tested up to: 5.3.2
-Stable tag: 1.5.0
+Stable tag: 1.4.13
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -140,13 +140,6 @@ Filter the regular expression used to find URLs to be converted to https://go.pa
 
 == Changelog ==
 
-= 1.5.0 =
-
-* Improvement - Added authentication status indicator to settings page
-* Maintenance - Added Salesforce SSO authentication in preparation of Pardot authentication being discontinued with the Spring '21 release
-* Fix - Admin notices no longer overlap the Pardot logo on the settings page
-* Improvement - Users no longer need to refresh the settings page after resetting settings
-
 = 1.4.13 =
 
 * Fix - Prevents a potential error with loading functions from pluggable.php
@@ -200,130 +193,126 @@ Filter the regular expression used to find URLs to be converted to https://go.pa
 
 = 1.4.3 =
 
-* Fixes a more obscure bug that would cause the plugin to become unauthenticated
+Fixes a more obscure bug that would cause the plugin to become unauthenticated
 
 = 1.4.2 =
 
-* Fixes a bug that would cause the plugin to become unauthenticated
+Fixes a bug that would cause the plugin to become unauthenticated
 
 = 1.4.1 =
 
-* Allow connection with API v4
-* Improve regex for HTTPS and add filtering
+1. Allow connection with API v4
+1. Improve regex for HTTPS and add filtering
 
 = 1.4 =
 
-* Add HTTPS option
-* Add "querystring" parameter in shortcode
-* Allow embed code to be filtered
-* Change "Pardot Settings" link to "Pardot"
-* Update branding
-* Allow override for wp-load.php in various installation configurations
-* Fixes errant notice on 404 pages
+1. Add HTTPS option
+1. Add "querystring" parameter in shortcode
+1. Allow embed code to be filtered
+1. Change "Pardot Settings" link to "Pardot"
+1. Update branding
+1. Allow override for wp-load.php in various installation configurations
+1. Fixes errant notice on 404 pages
 
 = 1.3.10 =
 
-* Improve WordPress 3.9 compatibility (Tiny popup titles; update Chosen)
+Improve WordPress 3.9 compatibility (Tiny popup titles; update Chosen)
 
 = 1.3.9 =
 
-* Fixes a small bug with a JS library being called in the wrong place
+Fixes a small bug with a JS library being called in the wrong place
 
 = 1.3.8 =
 
-* Add Chosen selector to forms and dynamic content
-* Fix async DC bug
-* Enchance password authentication encoding
+1. Add Chosen selector to forms and dynamic content
+2. Fix async DC bug
+3. Enchance password authentication encoding
 
 = 1.3.7 =
 
-* Add Chosen selector to campaign settings
-* Fix authentication issue
+1. Add Chosen selector to campaign settings
+1. Fix authentication issue
 
 = 1.3.6 =
 
-* Adds support for 400+ campaigns, form, and dynamic content blocks
-* Updates branding
+1. Adds support for 400+ campaigns, form, and dynamic content blocks
+1. Updates branding
 
 = 1.3.5 =
 
-* Fixed a bug where pardotform class might be applied to closing iframe tag (thanks palpatine1976!)
-* Optimize code to remove some debug messages
-* Improve campaign retrieval for over 200 campaigns
+1. Fixed a bug where pardotform class might be applied to closing iframe tag (thanks palpatine1976!)
+1. Optimize code to remove some debug messages
+1. Improve campaign retrieval for over 200 campaigns
 
 = 1.3.4 =
 
-* Fixed a bug where tracking code might show the wrong ID.
+Fixed a bug where tracking code might show the wrong ID.
 
 = 1.3.3 =
 
-* Accounts for a minor API change in the tracking code
-* Adds support for 200+ campaigns
+1. Accounts for a minor API change in the tracking code
+1. Adds support for 200+ campaigns
 
 = 1.3.1 =
 
-* Fixed a bug with `shortcode_exists` fatal error
+Fixed a bug with `shortcode_exists` fatal error
 
 = 1.3.1 =
 
-* Fixed a bug with `has_shortcode` fatal error
+Fixed a bug with `has_shortcode` fatal error
 
 = 1.3 =
 
-* Use new asynchronous loading for Dynamic Content
+Use new asynchronous loading for Dynamic Content
 
 = 1.2 =
 
-* Added ability to specify height, width, and class on the form
-* Added class 'pardotform' to every iframe for easier styling
+1. Added ability to specify height, width, and class on the form
+1. Added class 'pardotform' to every iframe for easier styling
 
 = 1.1.5 =
 
-* Add some helpful links to the Reset Cache button
-* Minor UI tweaks
-* Updated the Pardot logos
-* Updated screenshots for 3.5
+1. Add some helpful links to the Reset Cache button
+2. Minor UI tweaks
+3. Updated the Pardot logos
+4. Updated screenshots for 3.5
 
 = 1.1.4 =
 
-* Fix TinyMCE modal bug when no forms or dynamic content is present
-* Support for 200+ forms and dynamic content items
-* Other minor checks
+1. Fix TinyMCE modal bug when no forms or dynamic content is present
+1. Support for 200+ forms and dynamic content items
+1. Other minor checks
 
 = 1.1.3 =
 
-* Checks for mcrypt and falls back safely if not (fixes blank admin screen bug)
+Checks for mcrypt and falls back safely if not (fixes blank admin screen bug)
 
 = 1.1.2 =
 
-* Clear cache when resetting all settings
-* Be more forgiving with login whitespace
-* Make some security improvements
+1. Clear cache when resetting all settings
+1. Be more forgiving with login whitespace
+1. Make some security improvements
 
 = 1.1.1 =
-
-* Make `<noscript>` default to Default Pardot Content
+Make `<noscript>` default to Default Pardot Content
 
 = 1.1.0 =
-
-* Added dynamic content shortcodes
-* Added title field to form widget
-* Added 'Reset Cache' option
+1. Added dynamic content shortcodes
+1. Added title field to form widget
+1. Added 'Reset Cache' option
 
 = 1.0.3 =
-
-* Added form caching for faster rendering and less requests
+Added form caching for faster rendering and less requests
 
 = 1.0.2 =
-* Fix a caching issue that was causing the most recently-used form to render on all posts/pages
-* Extended API cache timeout
+1. Fix a caching issue that was causing the most recently-used form to render on all posts/pages
+1. Extended API cache timeout
 
 = 1.0.1 =
-* Fix bug with form order in content
+Fix bug with form order in content
 
 = 1.0 =
-
-* Initial release.
+Initial release.
 
 == Upgrade Notice ==
 
@@ -393,23 +382,23 @@ Fixes blank admin screen bug (by checking for mcrypt and falling back safely if 
 
 = 1.1.2 =
 
-* Clear cache when resetting all settings
-* Be more forgiving with login whitespace
+1. Clear cache when resetting all settings
+1. Be more forgiving with login whitespace
 
 = 1.1.1 =
 Make `<noscript>` default to Default Pardot Content
 
 = 1.1.0 =
-* Added dynamic content shortcodes
-* Added title field to form widget
-* Added 'Reset Cache' option
+1. Added dynamic content shortcodes
+1. Added title field to form widget
+1. Added 'Reset Cache' option
 
 = 1.0.3 =
 Added form caching for faster rendering and less requests
 
 = 1.0.2 =
-* Fix a caching issue that was causing the most recently-used form to render on all posts/pages
-* Extended API cache timeout
+1. Fix a caching issue that was causing the most recently-used form to render on all posts/pages
+1. Extended API cache timeout
 
 = 1.0.1 =
 Fix bug with form order in content
