@@ -3,6 +3,7 @@
  */
 body.pardot-modal-open #TB_window {
 	width: 440px !important;
+	height: auto !important;
 	overflow-x: hidden;
 	overflow-y: scroll;
 }
@@ -12,7 +13,6 @@ body.pardot-modal-open #TB_ajaxContent {
 	margin: 0 auto;
 	min-width: 400px;
 	overflow: hidden;
-	padding: 0 !important;
 	position: relative;
 	width: 400px;
 }

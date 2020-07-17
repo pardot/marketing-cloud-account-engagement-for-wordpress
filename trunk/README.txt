@@ -146,6 +146,7 @@ Filter the regular expression used to find URLs to be converted to https://go.pa
 * Maintenance - Added Salesforce SSO authentication in preparation of Pardot authentication being discontinued with the Spring '21 release
 * Fix - Admin notices no longer overlap the Pardot logo on the settings page
 * Improvement - Users no longer need to refresh the settings page after resetting settings
+* Fix - "#cancel" button on popup when not authenticated now closes popup (also changed name to more descriptive "Close")
 
 = 1.4.13 =
 
