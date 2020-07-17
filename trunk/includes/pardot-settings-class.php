@@ -20,6 +20,16 @@ class Pardot_Settings {
 	 */
 	const ACCOUNT_URL = 'https://pi.pardot.com/account/user';
 
+    /**
+     * @var string Link to App Manager on Ligntning where users can create their connected app
+     */
+    const APP_MANAGER_URL = 'https://login.salesforce.com/lightning/setup/NavigationMenus/home';
+
+    /**
+     * @var string Link to the settings page on Lightning where users can find their business unit id
+     */
+    const BUSINESS_UNIT_ID_URL = 'https://login.salesforce.com/lightning/setup/PardotAccountSetup/home';
+
 	/**
 	 * @var string Admin page on Pardot's website that allows authenticated users to add forms to a campaign
 	 */
@@ -891,9 +901,13 @@ HTML;
     function client_id_field() {
         $client_id = self::get_setting( 'client_id' );
         $html_name = $this->_get_html_name( 'client_id' );
+        $msg = __( 'Consumer Key and Consumer Secret are obtained after creating a connected app in <a href="%s" target="_blank">App Manager</a>.', 'pardot' );
+        $msg = sprintf( $msg, self::APP_MANAGER_URL );
+
         $html =<<<HTML
 <div id="client-id-wrap">
 	<input type="text" size="30" id="client-id" name="{$html_name}" value="{$client_id}" />
+	<p>{$msg}</p>
 </div>
 HTML;
         echo $html;
@@ -923,9 +937,13 @@ HTML;
     function business_unit_id_field() {
         $business_unit_id = self::get_setting( 'business_unit_id' );
         $html_name = $this->_get_html_name( 'business_unit_id' );
+        $msg = __( 'Find your Pardot Business Unit ID in <a href="%s" target="_blank">Pardot Account Setup</a>.', 'pardot' );
+		$msg = sprintf( $msg, self::BUSINESS_UNIT_ID_URL );
+
         $html =<<<HTML
 <div id="business-unit-id-wrap">
 	<input type="text" size="30" id="business-unit-id" name="{$html_name}" value="{$business_unit_id}" />
+	<p>{$msg}</p>
 </div>
 HTML;
         echo $html;
