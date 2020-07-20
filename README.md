@@ -12,6 +12,18 @@ Say hello to marketing automation simplicity! With a single login, your self-hos
 1. Go to Settings > Pardot Settings and authenticate with either Pardot or Salesforce SSO.
 1. Select your campaign (for tracking code usage).
 
+## Authenticating with Salesforce SSO ##
+In order to use Salesforce SSO authentication, you **must** create a connected appliation for the plugin in your Salesforce org.  
+
+1. Navigate to App Manager [here](https://login.salesforce.com/lightning/setup/NavigationMenus/home).  
+2. One the top right, click the "New Connected App" button.  
+3. The connected app name, API name, and contact email can be anything you want. Click the "Enable OAuth Settings" toggle.  The Callback URL is the link to your Pardot WordPress settings page (.../wp-admin/options-general.php?page=pardot).  Also, be sure to add "Access Pardot Services (pardot_api)" to your selected OAuth scopes. 
+4. Save your connected application.
+5. A new page will appear with the "Consumer Key" and "Consumer Secret."  Copy those values and paste them into Pardot WordPress settings.
+6. Navigate to Pardot Account Setup using the link [here](https://login.salesforce.com/lightning/setup/PardotAccountSetup/home).  There, you can see the Business Unit IDs associated your organization.  Select which one you would like to use, and copy the ID into the Pardot WordPress settings.
+7. You should be be able to "Save Settings" in Pardot WordPress settings, then "Authenticate with Salesforce".  A popup will appear where you type in your Salesforce credentials.
+8. If all things went according to plan, you should see "Authentication Status" change from "Not Authenticated" to "Authenticated".
+
 ## Frequently Asked Questions ##
 
 ### How do I add the tracking code? ###
@@ -152,6 +164,7 @@ add_filter( 'pardot_https_regex', 'pardot_custom_filter_https_regex' );
 * Maintenance - Added Salesforce SSO authentication in preparation of Pardot authentication being discontinued with the Spring '21 release
 * Fix - Admin notices no longer overlap the Pardot logo on the settings page
 * Improvement - Users no longer need to refresh the settings page after resetting settings
+* Fix - "#cancel" button on popup when not authenticated now closes popup (also changed name to more descriptive "Close")
 
 ### 1.4.13 ###
 * Fix - Prevents a potential error with loading functions from pluggable.php

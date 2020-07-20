@@ -172,6 +172,7 @@ class Pardot_API {
 	function is_authenticated() {
 		return ! empty( $this->api_key );
 	}
+
 	/**
 	 * Returns an array of campaign objects from Pardot's API
 	 *
@@ -545,7 +546,7 @@ x	 */
 						$this->api_key_maybe_invalidated = true;
 						$auth['new_api_key'] = $args['new_api_key'];
 					}
-                    			if ( $this->authenticate( $auth ) && 'Daily API rate limit met.' !== $response->err && 'This API user lacks sufficient permissions for the requested operation' !== $response->err ) {
+					if ( $this->authenticate( $auth ) && 'Daily API rate limit met.' !== $response->err && 'This API user lacks sufficient permissions for the requested operation' !== $response->err ) {
 						/**
 						 * Try again after a successful authentication
 						*/
