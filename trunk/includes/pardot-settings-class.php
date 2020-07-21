@@ -78,6 +78,7 @@ class Pardot_Settings {
         'clearcache'        => '',
         'reset'             => '',
         'api_key'           => '',
+        'refresh_token'     => '',
     );
 
 	/**
@@ -172,7 +173,7 @@ class Pardot_Settings {
          * if it does then we need to determine if the password setting is correctly encrypted or needs to be re-encrypted
          */
         $optstring = get_option('pardot_settings', NULL);
-        if ($optstring['password'] !== NULL)
+        if ($optstring['password'] != NULL)
         {
             if ((substr($optstring['password'], 0, 6) !== "NACL::") and
                 (substr($optstring['password'], 0, 6) !== "OGCM::") and
@@ -400,13 +401,31 @@ HTML;
             $response = json_decode(wp_remote_retrieve_body($response));
 
             if (isset($response->{'error'})) {
-                add_settings_error( self::$OPTION_GROUP, 'update_settings', 'Failed to authenticate!  Please check your credentials again. (' . $response->{'error'} . ':' . $response->{'error_description'} . ')', 'error' );
-                settings_errors('update_settings');
+                if ($response = self::authenticate()) {
+                    self::set_setting('api_key', $response);
+                }
+                if (isset($response->{'error'})) {
+                    add_settings_error(self::$OPTION_GROUP, 'update_settings', 'Failed to authenticate!  Please check your credentials again. (' . $response->{'error'} . ':' . $response->{'error_description'} . ')', 'error');
+                    settings_errors('update_settings');
+                }
             }
 
             if ( isset($response->{'access_token'}) ) {
                 self::set_setting('api_key', $response->{'access_token'});
             }
+
+            if ( isset($response->{'refresh_token'}) ) {
+                $refresh_token = $response->{'refresh_token'};
+                $refresh_token = self::pardot_encrypt( $refresh_token, true );
+                self::set_setting('refresh_token', $refresh_token);
+            }
+
+            // Error message to remind user that they should have enabled refresh_token scope for auto-reauth
+            else if ( $body['grant_type'] != 'refresh_token' && !isset($response->{'error'}) && !isset($response->{'refresh_token'}) ) {
+                add_settings_error( self::$OPTION_GROUP, 'update_settings', 'Make sure you enable the refresh_token scope if you want to be want to be reauthenticated automatically.', 'error' );
+                settings_errors('update_settings');
+            }
+
         }
 
 		/**
@@ -445,6 +464,7 @@ HTML;
 			'clearcache'=> '',
 			'reset'     => '',
 			'api_key'   => '',
+            'refresh_token' => '',
 		);
 
 		/**
@@ -504,8 +524,7 @@ HTML;
 	 * @since 1.0.0
 	 */
 	function sanitize_fields( $dirty ) {
-
-		/**
+        /**
 		 * Nothing passed? Then nothing to sanitize.
 		 */
 		if ( empty( $dirty ) )  {
@@ -747,10 +766,14 @@ HTML;
 		/**
 		 * Add 'prying eyes' encryption for passsword.
 		 * Base64 won't stop a hacker if they get access to the database but will keep
-		 * endusers from being able to see a valid password.
+		 * end users from being able to see a valid password.
 		 */
-		$new_options['password'] = self::pardot_encrypt( $new_options['password'], true );
-
+		if ($new_options['password'] != NULL) {
+            $new_options['password'] = self::pardot_encrypt($new_options['password'], true);
+        }
+		if ($new_options['refresh_token'] != NULL) {
+            $new_options['refresh_token'] = self::pardot_encrypt($new_options['refresh_token'], true);
+        }
 		return $new_options;
 	}
 
@@ -964,6 +987,7 @@ HTML;
          * in whenever a password is set.
          */
         $passwordLength = strlen(self::get_setting( 'password' ));
+
         /**
          * Set password length to some arbitrary amount iff there is a set password already so that it shows that the
          * password is set already without disclosing the exact number of characters in the password
@@ -997,6 +1021,7 @@ $html =<<<HTML
 HTML;
 		echo $html;
 	}
+
 	/**
 	 * Displays the hidden API Key field for the Settings API
 	 *
@@ -1010,6 +1035,20 @@ $html =<<<HTML
 HTML;
 		echo $html;
 	}
+
+    /**
+     * Displays the hidden API Key field for the Settings API
+     *
+     * @since 1.5.0
+     */
+    function refresh_token_field() {
+        $refresh_token = self::get_setting( 'refresh_token' );
+        $html_name = $this->_get_html_name( 'refresh_token' );
+        $html =<<<HTML
+<input type="hidden" id="refresh_token" name="{$html_name}" value="{$refresh_token}" />
+HTML;
+        echo $html;
+    }
 
 	/**
 	 * Displays the Campaign drop-down field for the Settings API
@@ -1305,7 +1344,15 @@ HTML;
 			if ( $decrypted_pass !== $settings['password'] && ctype_print($decrypted_pass) ) {
 				$settings['password'] = $decrypted_pass;
 			}
+        }
 
+        if ( isset( $settings['refresh_token'] ) && ! empty( $settings['refresh_token'] ) ) {
+
+            $decrypted_token= self::pardot_decrypt( $settings['refresh_token'], 'pardot_key' );
+
+            if ( $decrypted_token !== $settings['refresh_token'] && ctype_print($decrypted_token) ) {
+                $settings['refresh_token'] = $decrypted_token;
+            }
         }
 
 		/**

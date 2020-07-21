@@ -108,6 +108,13 @@ class Pardot_API {
 	 */
 	var $api_key = false;
 
+    /**
+     * @var string A refresh token returned on authentication by SSO; used to get new api_key
+     *
+     * @since 1.5.0
+     */
+    var $refresh_token = false;
+
 	/**
 	 * @var boolean Used to flag the API for retry in case the api_key has expired.
 	 *
@@ -154,11 +161,49 @@ class Pardot_API {
             $this->set_auth($auth);
         }
 		$this->api_key = false;
-		if ( $response = $this->get_response( 'login', $auth, 'api_key' ) ) {
+		if ($this->api_key_maybe_invalidated && $this->auth_type == 'sso' && !empty($this->refresh_token)) {
+            $this->api_key = $this->refresh_API_key($auth);
+        }
+		else if ( $response = $this->get_response( 'login', $auth, 'api_key' ) ) {
 			$this->api_key = (string)$response->api_key;
 		};
 		return $this->api_key;
 	}
+
+    /**
+     * Calls Salesforce OAuth API to get a new API token from the refresh token
+     *
+     * @return string|bool And $api_key on success, false on failure
+     * @since 1.5.0
+     */
+    function refresh_API_key( $auth = array() ) {
+        $url = 'https://login.salesforce.com/services/oauth2/token';
+        $body = array(
+            'grant_type' => 'refresh_token',
+            'client_id' => $auth->client_id,
+            'client_secret' => $auth->client_secret,
+            'refresh_token' => $auth->refresh_token,
+        );
+
+        $args = array(
+            'body'        => $body,
+            'timeout'     => '5',
+            'redirection' => '5',
+            'httpversion' => '1.0',
+            'blocking'    => true,
+            'headers'     => array("Content-type: application/json"),
+            'cookies'     => array(),
+        );
+
+        $response = wp_remote_post( $url, $args );
+
+        $response = json_decode(wp_remote_retrieve_body($response));
+
+        if ($response->{'access_token'}) {
+            return $response->{'access_token'};
+        }
+        return false;
+    }
 
 	/**
 	 * Determine is the API has authenticated.
@@ -389,7 +434,7 @@ x	 */
 		/**
 		 * First clear all the auth values.
 		 */
-		$this->email = $this->password = $this->user_key = $this->api_key = $this->auth_type = $this->client_id = $this->client_secret = $this->business_unit_id = null;
+        $this->email = $this->password = $this->user_key = $this->api_key = $this->auth_type = $this->client_id = $this->client_secret = $this->business_unit_id = $this->refresh_token = null;
 		if ($auth['auth_type'] == 'pardot') {
             if ( ! empty( $auth['email'] ) ) {
                 $this->email = $auth['email'];
@@ -474,7 +519,11 @@ x	 */
         $http_response = null;
 
 		if ($this->auth_type == 'pardot') {
-		    $args = array_merge( $args,
+            if ( isset( $args['password'] ) ) {
+                $args['password'] = Pardot_Settings::decrypt_or_original( $args['password'] );
+            }
+
+		    $body = array_merge( $args,
 			    array(
 				    'user_key' => $this->user_key,
 				    'api_key' => $this->api_key,
@@ -494,13 +543,13 @@ x	 */
                     'compress'		=> false,
                     'decompress'	=> true,
                     'sslverify' 	=> false,
-                    'body'          => $args
-                ), $args )
+                    'body'          => $body
+                ), $body )
             );
 		}
 
         else if ($this->auth_type == 'sso') {
-            $args = array(
+            $headers = array(
                 'Authorization' => 'Bearer ' . $this->api_key,
                 'Pardot-Business-Unit-Id' => $this->business_unit_id,
                 'offset' => $paged > 1 ? ($paged - 1) * 200 : 0
@@ -515,14 +564,10 @@ x	 */
                     'compress'		=> false,
                     'decompress'	=> true,
                     'sslverify' 	=> false,
-                    'headers'        => $args
+                    'headers'       => $headers
                 )
             );
         }
-
-		if ( isset( $args['password'] ) ) {
-			$args['password'] = Pardot_Settings::decrypt_or_original( $args['password'] );
-		}
 
 		$response = false;
 		if( wp_remote_retrieve_response_code( $http_response ) == 200 ) {
