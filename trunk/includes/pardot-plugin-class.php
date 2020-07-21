@@ -108,12 +108,12 @@ class Pardot_Plugin {
 		add_action( 'wp_footer', array( $this, 'wp_footer' ) );
 
 		/**
-		 * 	Create the shortcode [pardot-form]
+		 * Create the shortcode [pardot-form]
 		 */
 		add_shortcode( 'pardot-form', array( $this, 'form_shortcode' ) );
 
 		/**
-		 * 	Create the shortcode [pardot-dynamic-content]
+		 * Create the shortcode [pardot-dynamic-content]
 		 */
 		add_shortcode( 'pardot-dynamic-content', array( $this, 'dynamic_content_shortcode' ) );
 

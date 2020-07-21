@@ -329,7 +329,6 @@ function clickSubmit() {
 window.loginCallback = function(urlString) {
     let url = new URL(urlString);
     url.searchParams.append('status', 'success');
-    setTimeout(() => {  console.log("World!"); }, 2000);
     window.location.replace(url);
 };
 
@@ -358,7 +357,7 @@ HTML;
 	 * @since 1.0.0
 	 */
 	static function is_authenticated( $auth = array() ) {
-		return self::get_api( $auth )->is_authenticated() && is_object(self::get_api( $auth )->get_account());
+		return self::get_api( $auth )->is_authenticated();
 	}
 
 
@@ -401,13 +400,8 @@ HTML;
             $response = json_decode(wp_remote_retrieve_body($response));
 
             if (isset($response->{'error'})) {
-                if ($response = self::authenticate()) {
-                    self::set_setting('api_key', $response);
-                }
-                if (isset($response->{'error'})) {
-                    add_settings_error(self::$OPTION_GROUP, 'update_settings', 'Failed to authenticate!  Please check your credentials again. (' . $response->{'error'} . ':' . $response->{'error_description'} . ')', 'error');
-                    settings_errors('update_settings');
-                }
+                add_settings_error(self::$OPTION_GROUP, 'update_settings', 'Failed to authenticate!  Please check your credentials again. (' . $response->{'error'} . ':' . $response->{'error_description'} . ')', 'error');
+                settings_errors('update_settings');
             }
 
             if ( isset($response->{'access_token'}) ) {
@@ -699,11 +693,11 @@ HTML;
 	/**
 	 * Extract the auth args from the passed array.
 	 *
-	 * @param array $auth Values 'auth_type', 'email', 'password', 'user_key', 'client_id', 'client_secret', 'business_unit_id', and 'api_key' supported.
-	 * @return array Contains 'auth_type', 'email', 'password', 'user_key', 'client_id', 'client_secret', 'business_unit_id', and 'api_key' if they existing as keys in $auth.
+	 * @param array $auth Values 'auth_type', 'email', 'password', 'user_key', 'client_id', 'client_secret', 'business_unit_id', 'refresh_token', and 'api_key' supported.
+	 * @return array Contains 'auth_type', 'email', 'password', 'user_key', 'client_id', 'client_secret', 'business_unit_id','refresh_token' and 'api_key' if they existing as keys in $auth.
 	 */
 	static function extract_auth_args( $auth = array() ) {
-		return array_intersect_key( $auth, array_flip( array( 'auth_type', 'email', 'password', 'user_key', 'api_key', 'client_id', 'client_secret', 'business_unit_id') ) );
+		return array_intersect_key( $auth, array_flip( array( 'auth_type', 'email', 'password', 'user_key', 'api_key', 'client_id', 'client_secret', 'business_unit_id', 'refresh_token') ) );
 	}
 
 	/**
@@ -720,7 +714,7 @@ HTML;
 	/**
 	 * Call the Pardot API to authenticate based on credentials provided by the user.
 	 *
-	 * @param array $auth Values 'auth_type', 'email', 'password', 'user_key', 'client_id', 'client_secret', 'business_unit_id', and 'api_key' supported.
+	 * @param array $auth Values 'auth_type', 'email', 'password', 'user_key', 'client_id', 'client_secret', 'business_unit_id', 'refresh_token', and 'api_key' supported.
 	 * @return bool|string API Key if authenticated, false if not.
 	 *
 	 * @since 1.0.0
@@ -771,9 +765,7 @@ HTML;
 		if ($new_options['password'] != NULL) {
             $new_options['password'] = self::pardot_encrypt($new_options['password'], true);
         }
-		if ($new_options['refresh_token'] != NULL) {
-            $new_options['refresh_token'] = self::pardot_encrypt($new_options['refresh_token'], true);
-        }
+
 		return $new_options;
 	}
 

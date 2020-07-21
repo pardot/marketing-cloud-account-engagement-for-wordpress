@@ -161,7 +161,7 @@ class Pardot_API {
             $this->set_auth($auth);
         }
 		$this->api_key = false;
-		if ($this->api_key_maybe_invalidated && $this->auth_type == 'sso' && !empty($this->refresh_token)) {
+		if ( $this->auth_type == 'sso' && !$this->api_key && $this->refresh_token ) {
             $this->api_key = $this->refresh_API_key($auth);
         }
 		else if ( $response = $this->get_response( 'login', $auth, 'api_key' ) ) {
@@ -180,9 +180,9 @@ class Pardot_API {
         $url = 'https://login.salesforce.com/services/oauth2/token';
         $body = array(
             'grant_type' => 'refresh_token',
-            'client_id' => $auth->client_id,
-            'client_secret' => $auth->client_secret,
-            'refresh_token' => $auth->refresh_token,
+            'client_id' => $this->client_id,
+            'client_secret' => $this->client_secret,
+            'refresh_token' => $this->refresh_token,
         );
 
         $args = array(
@@ -470,6 +470,9 @@ x	 */
         if ( ! empty( $auth['auth_type'] ) ) {
             $this->auth_type = $auth['auth_type'];
         }
+        if ( ! empty( $auth['refresh_token'] ) ) {
+            $this->refresh_token = $auth['refresh_token'];
+        }
 
 	}
 
@@ -617,14 +620,22 @@ x	 */
 				}
 			}
 
-		}
-	  return $response;
+		} elseif (wp_remote_retrieve_response_code( $http_response ) == 400 ){
+            $response = new SimpleXMLElement( wp_remote_retrieve_body( $http_response ) );
+            if ( $response->err == 'access_token is invalid, unknown, or malformed' ) {
+                $this->api_key = '';
+                $response = $this->get_response( $item_type, array(), $property, true );
+                call_user_func( $args['new_api_key'], $this->api_key );
+            }
+        }
+
+		return $response;
 	}
 
 	/**
 	 * Returns array of auth parameter based on the auth properties of this Pardot_API object
 	 *
-	 * @return array containing auth_type, client_id, client_secret, and business_unit_id when using SSO auth
+	 * @return array containing auth_type, client_id, client_secret, business_unit_id, and refresh_token when using SSO auth
      *         array containing auth_type, email, password and user_key elements when using Pardot auth
 	 *
 	 * @since 1.0.0
@@ -645,6 +656,7 @@ x	 */
                 'client_id' => $this->client_id,
                 'client_secret' => $this->client_secret,
                 'business_unit_id' => $this->business_unit_id,
+                'refresh_token' => $this->refresh_token
             );
         }
 	}
