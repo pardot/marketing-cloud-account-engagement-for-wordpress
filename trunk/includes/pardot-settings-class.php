@@ -310,14 +310,22 @@ jQuery(document).ready(function($){
 
 });
 
+let nonce = false;
+
 function clickSubmit() {
+    const validChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let array = new Uint8Array(40);
+    window.crypto.getRandomValues(array);
+    array = array.map(x => validChars.charCodeAt(x % validChars.length));
+    nonce = String.fromCharCode.apply(null, array);
+    
     let authSelect = document.getElementById("auth-type");
     let authValue = authSelect.options[authSelect.selectedIndex].value;
     let client_id = document.getElementById("client-id").value;
     let sign_in_sso = document.getElementById("sso-sign-in");
     if (authValue == 'sso') {
         if (client_id) {
-            let url = "https://login.salesforce.com/services/oauth2/authorize?client_id=" + client_id + "&redirect_uri=" + window.location.href + "&response_type=code";
+            let url = "https://login.salesforce.com/services/oauth2/authorize?client_id=" + client_id + "&redirect_uri=" + window.location.href + "&response_type=code" + "&display=popup" + "&scope=refresh_token%20pardot_api" + "&state=" + nonce;
             window.open(url, "Sign In with Salesforce", "height=800, width=400, left=" + sign_in_sso.getBoundingClientRect().right)
         }
         else {
@@ -328,8 +336,16 @@ function clickSubmit() {
 
 window.loginCallback = function(urlString) {
     let url = new URL(urlString);
-    url.searchParams.append('status', 'success');
-    window.location.replace(url);
+    let returnedState = url.searchParams.get('state')
+    console.log(returnedState);
+    console.log(nonce)
+    if (returnedState === nonce) {
+        url.searchParams.append('status', 'success');
+        window.location.replace(url);
+    }
+    else {
+        alert("Invalid state parameter returned.")
+    }
 };
 
 const urlParams = new URLSearchParams(window.location.search);
@@ -419,7 +435,6 @@ HTML;
                 add_settings_error( self::$OPTION_GROUP, 'update_settings', 'Make sure you enable the refresh_token scope if you want to be want to be reauthenticated automatically.', 'error' );
                 settings_errors('update_settings');
             }
-
         }
 
 		/**
