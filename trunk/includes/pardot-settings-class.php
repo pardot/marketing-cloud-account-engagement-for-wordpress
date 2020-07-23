@@ -398,6 +398,8 @@ HTML;
      * Encodes plain text into base64 for URLs
      * @param $plainText
      * @return string
+     *
+     * @since 1.5.0
      */
     function base64url_encode($plainText)
     {
@@ -405,6 +407,17 @@ HTML;
         $base64 = trim($base64, "=");
         $base64url = strtr($base64, '+/', '-_');
         return ($base64url);
+    }
+
+    /**
+     * Saves a new code_verifier to WP Options
+     *
+     * @since 1.5.0
+     */
+    function create_code_verifier() {
+        $random = bin2hex(openssl_random_pseudo_bytes(32));
+        $verifier = self::base64url_encode(pack('H*', $random));
+        update_option(self::$CODE_VERIFIER, $verifier);
     }
 
 	/**
@@ -422,9 +435,7 @@ HTML;
         }
 
 		if (!get_option(self::$CODE_VERIFIER)) {
-            $random = bin2hex(openssl_random_pseudo_bytes(32));
-            $verifier = self::base64url_encode(pack('H*', $random));
-            update_option(self::$CODE_VERIFIER, $verifier);
+            $this->create_code_verifier();
         }
 
 		if (isset($_GET['code']) && isset($_GET['status']) && $_GET['status'] == 'success' && ! self::is_authenticated()) {
@@ -472,6 +483,9 @@ HTML;
                 add_settings_error( self::$OPTION_GROUP, 'update_settings', 'Make sure you enable the refresh_token scope if you want to be want to be reauthenticated automatically.', 'error' );
                 settings_errors('update_settings');
             }
+
+            // After using the code_verifier, we create a new one
+            $this->create_code_verifier();
         }
 
 		/**
