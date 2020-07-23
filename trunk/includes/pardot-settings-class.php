@@ -51,6 +51,8 @@ class Pardot_Settings {
 	 */
 	private static $OPTION_GROUP = 'pardot_settings';
 
+	private static $CODE_VERIFIER = 'pardot-code-verifier';
+
 	/**
 	 * @var string Key for the Options Page and for the Settings API page.
 	 * Used as a const, defined as a var so it can be private.
@@ -271,7 +273,9 @@ class Pardot_Settings {
 	 * @since 1.0.0
 	 */
 	function admin_head() {
-		$html =<<<HTML
+        $code_challenge = self::base64url_encode(pack('H*', hash('sha256', get_option(self::$CODE_VERIFIER))));
+
+        $html =<<<HTML
 <style type="text/css">
 <!--
 #settings_page_pardot h2.pardot-title{padding:40px 10px; margin-bottom: 10px}
@@ -310,14 +314,26 @@ jQuery(document).ready(function($){
 
 });
 
+// Source: https://stackoverflow.com/a/27747377
+// dec2hex :: Integer -> String
+// i.e. 0-255 -> '00'-'ff'
+function dec2hex (dec) {
+  return dec < 10
+    ? '0' + String(dec)
+    : dec.toString(16)
+}
+
+// generateId :: Integer -> String
+function generateId (len) {
+  let arr = new Uint8Array((len || 40) / 2)
+  window.crypto.getRandomValues(arr)
+  return Array.from(arr, dec2hex).join('')
+}
+
 let nonce = false;
 
 function clickSubmit() {
-    const validChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    let array = new Uint8Array(40);
-    window.crypto.getRandomValues(array);
-    array = array.map(x => validChars.charCodeAt(x % validChars.length));
-    nonce = String.fromCharCode.apply(null, array);
+    nonce = generateId();
     
     let authSelect = document.getElementById("auth-type");
     let authValue = authSelect.options[authSelect.selectedIndex].value;
@@ -325,7 +341,9 @@ function clickSubmit() {
     let sign_in_sso = document.getElementById("sso-sign-in");
     if (authValue == 'sso') {
         if (client_id) {
-            let url = "https://login.salesforce.com/services/oauth2/authorize?client_id=" + client_id + "&redirect_uri=" + window.location.href + "&response_type=code" + "&display=popup" + "&scope=refresh_token%20pardot_api" + "&state=" + nonce;
+            let url = "https://login.salesforce.com/services/oauth2/authorize?client_id=" + client_id + "&redirect_uri=" +
+                window.location.href + "&response_type=code" + "&display=popup" + "&scope=refresh_token%20pardot_api" + 
+                "&state=" + nonce + "&code_challenge=" + '{$code_challenge}';
             window.open(url, "Sign In with Salesforce", "height=800, width=400, left=" + sign_in_sso.getBoundingClientRect().right)
         }
         else {
@@ -376,6 +394,18 @@ HTML;
 		return self::get_api( $auth )->is_authenticated();
 	}
 
+    /**
+     * Encodes plain text into base64 for URLs
+     * @param $plainText
+     * @return string
+     */
+    function base64url_encode($plainText)
+    {
+        $base64 = base64_encode($plainText);
+        $base64 = trim($base64, "=");
+        $base64url = strtr($base64, '+/', '-_');
+        return ($base64url);
+    }
 
 	/**
 	 * Configure the settings page for the Pardot Plugin if we are currently on the settings page.
@@ -391,6 +421,12 @@ HTML;
             return;
         }
 
+		if (!get_option(self::$CODE_VERIFIER)) {
+            $random = bin2hex(openssl_random_pseudo_bytes(32));
+            $verifier = self::base64url_encode(pack('H*', $random));
+            update_option(self::$CODE_VERIFIER, $verifier);
+        }
+
 		if (isset($_GET['code']) && isset($_GET['status']) && $_GET['status'] == 'success' && ! self::is_authenticated()) {
             $url = 'https://login.salesforce.com/services/oauth2/token';
             $body = array(
@@ -399,6 +435,7 @@ HTML;
                 'client_id' => self::get_setting('client_id'),
                 'client_secret' => self::get_setting('client_secret'),
                 'redirect_uri' => 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'],
+                'code_verifier' => get_option(self::$CODE_VERIFIER),
             );
 
             $args = array(
@@ -1478,6 +1515,7 @@ HTML;
 
 		$main_options = array(
 			self::$OPTION_GROUP,
+			self::$CODE_VERIFIER,
 			'_pardot_cache_keys',
 			'_pardot_transient_keys',
 			'widget_pardot-dynamic-content',
