@@ -320,14 +320,14 @@ jQuery(document).ready(function($){
 function dec2hex (dec) {
   return dec < 10
     ? '0' + String(dec)
-    : dec.toString(16)
+    : dec.toString(16);
 }
 
 // generateId :: Integer -> String
 function generateId (len) {
-  let arr = new Uint8Array((len || 40) / 2)
-  window.crypto.getRandomValues(arr)
-  return Array.from(arr, dec2hex).join('')
+  let arr = new Uint8Array((len || 40) / 2);
+  window.crypto.getRandomValues(arr);
+  return Array.from(arr, dec2hex).join('');
 }
 
 let nonce = false;
@@ -344,25 +344,23 @@ function clickSubmit() {
             let url = "https://login.salesforce.com/services/oauth2/authorize?client_id=" + client_id + "&redirect_uri=" +
                 window.location.href + "&response_type=code" + "&display=popup" + "&scope=refresh_token%20pardot_api" + 
                 "&state=" + nonce + "&code_challenge=" + '{$code_challenge}';
-            window.open(url, "Sign In with Salesforce", "height=800, width=400, left=" + sign_in_sso.getBoundingClientRect().right)
+            window.open(url, "Sign In with Salesforce", "height=800, width=400, left=" + sign_in_sso.getBoundingClientRect().right);
         }
         else {
-            alert("Please type in a valid Consumer Key.")
+            alert("Please type in a valid Consumer Key.");
         }
     }
 }
 
 window.loginCallback = function(urlString) {
     let url = new URL(urlString);
-    let returnedState = url.searchParams.get('state')
-    console.log(returnedState);
-    console.log(nonce)
+    let returnedState = url.searchParams.get('state');
     if (returnedState === nonce) {
         url.searchParams.append('status', 'success');
         window.location.replace(url);
     }
     else {
-        alert("Invalid state parameter returned.")
+        alert("Invalid state parameter returned.");
     }
 };
 
