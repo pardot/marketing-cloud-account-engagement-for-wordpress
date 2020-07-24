@@ -1,8 +1,8 @@
 {
 	"name": "pardot",
-	"version": "0.1.0",
-	"description": "Example block written with ESNext standard and JSX support – build step required.",
-	"author": "The WordPress Contributors",
+	"version": "2.0.0",
+	"description": "Connect your WordPress to Pardot with shortcode and widgets for campaign tracking, quick form access, and dynamic content.",
+	"author": "Cliff Seal of Pardot and Mike Schinkel of NewClarity LLC",
 	"license": "GPL-2.0-or-later",
 	"main": "build/index.js",
 	"scripts": {
@@ -18,6 +18,8 @@
 	},
 	"dependencies": {
 		"@wordpress/blocks": "^6.20.1",
-		"@wordpress/element": "^2.16.0"
+		"@wordpress/element": "^2.16.0",
+		"@wordpress/server-side-render": "^1.16.2",
+		"npm": "^6.14.7"
 	}
 }

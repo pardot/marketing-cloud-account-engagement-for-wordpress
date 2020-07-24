@@ -95,9 +95,32 @@ function pardot_init() {
     wp_localize_script( 'build/index.js', 'ajaxurl', admin_url( 'includes/admin-ajax.php' ));
 
     register_block_type( 'pardot/form', array(
-        'editor_script' => 'pardot-editor',
-        'editor_style'  => 'pardot-editor',
-        'style'         => 'pardot',
+        'editor_script'   => 'pardot-editor',
+        'editor_style'    => 'pardot-editor',
+        'style'           => 'pardot',
+        'render_callback' => 'pardot_form_block_callback',
+        'attributes'  => array(
+            'form_id'  => array(
+                'type'  => 'string',
+                'default' => '',
+            ),
+            'height'    => array(
+                'type'  => 'string',
+                'default'   => '',
+            ),
+            'width'    => array(
+                'type'  => 'string',
+                'default'   => '',
+            ),
+            'className'    => array(
+                'type'  => 'string',
+                'default'   => '',
+            ),
+            'title'    => array(
+                'type'  => 'string',
+                'default'   => '',
+            ),
+        ),
     ) );
 
     register_block_type( 'pardot/dynamic-content', array(
@@ -107,3 +130,12 @@ function pardot_init() {
     ) );
 }
 add_action( 'init', 'pardot_init' );
+
+function pardot_form_block_callback($attributes) {
+    if (isset($attributes['form_id'])) {
+        $attributes['class'] = $attributes['className'];
+        unset($attributes['className']);
+        return Pardot_Plugin::get_form_body($attributes);
+    }
+    return '';
+}

@@ -27,7 +27,6 @@ import './style.scss';
  * Internal dependencies
  */
 import edit from './edit';
-import save from './save';
 
 /**
  * Block Icon
@@ -53,7 +52,7 @@ registerBlockType('pardot/form', {
 	 * It will be shown in the Block Tab in the Settings Sidebar.
 	 */
 	description: __(
-		'Example block written with ESNext standard and JSX support – build step required.',
+		'Collect information about people visiting your site or landing page and help you turn anonymous visitors into identified prospects.',
 		'pardot'
 	),
 
@@ -61,7 +60,7 @@ registerBlockType('pardot/form', {
 	 * Blocks are grouped into categories to help users browse and discover them.
 	 * The categories provided by core are `common`, `embed`, `formatting`, `layout` and `widgets`.
 	 */
-	category: 'widgets',
+	category: 'embed',
 
 	/**
 	 * An icon property should be specified to make it easier to identify a block.
@@ -77,15 +76,37 @@ registerBlockType('pardot/form', {
 		html: false,
 	},
 
+	attributes: {
+		form_id: {
+			type: 'string',
+			default: '',
+		},
+		height: {
+			type: 'string',
+			default: '',
+		},
+		width:{
+			type: 'string',
+			default: '',
+		},
+		className:{
+			type: 'string',
+			default: '',
+		},
+		title:{
+			type: 'string',
+			default: '',
+		},
+	},
+
 	/**
 	 * @see ./edit.js
 	 */
 	edit: edit,
 
-	/**
-	 * @see ./save.js
-	 */
-	save,
+	save: function(props) {
+		return null;
+	}
 });
 
 /**
@@ -113,7 +134,7 @@ registerBlockType('pardot/dynamic-content', {
 	 * Blocks are grouped into categories to help users browse and discover them.
 	 * The categories provided by core are `common`, `embed`, `formatting`, `layout` and `widgets`.
 	 */
-	category: 'widgets',
+	category: 'embed',
 
 	/**
 	 * An icon property should be specified to make it easier to identify a block.
@@ -134,9 +155,8 @@ registerBlockType('pardot/dynamic-content', {
 	 */
 	edit: edit,
 
-	/**
-	 * @see ./save.js
-	 */
-	save,
+	save: function(props) {
+		return null;
+	}
 });
 

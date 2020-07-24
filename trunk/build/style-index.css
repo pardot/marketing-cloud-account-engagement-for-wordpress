@@ -12,12 +12,6 @@
 .block {
   background: rgba(139, 139, 150, 0.1);
   padding: 1em; }
-  .block label {
-    width: 500px;
-    clear: both; }
-  .block input {
-    width: 100%;
-    clear: both; }
 
 
 /*# sourceMappingURL=style-index.css.map*/
