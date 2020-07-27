@@ -124,11 +124,36 @@ function pardot_init() {
     ) );
 
     register_block_type( 'pardot/dynamic-content', array(
-        'editor_script' => 'pardot-editor',
-        'editor_style'  => 'pardot-editor',
-        'style'         => 'pardot',
+        'editor_script'   => 'pardot-editor',
+        'editor_style'    => 'pardot-editor',
+        'style'           => 'pardot',
+        'render_callback' => 'pardot_dynamic_content_block_callback',
+        'attributes'  => array(
+            'dynamicContent_id'  => array(
+                'type'  => 'string',
+                'default' => '',
+            ),
+            'height'    => array(
+                'type'  => 'string',
+                'default'   => '',
+            ),
+            'width'    => array(
+                'type'  => 'string',
+                'default'   => '',
+            ),
+            'className'    => array(
+                'type'  => 'string',
+                'default'   => '',
+            ),
+            'title'    => array(
+                'type'  => 'string',
+                'default'   => '',
+            ),
+        ),
     ) );
 }
+
+
 add_action( 'init', 'pardot_init' );
 
 function pardot_form_block_callback($attributes) {
@@ -136,6 +161,15 @@ function pardot_form_block_callback($attributes) {
         $attributes['class'] = $attributes['className'];
         unset($attributes['className']);
         return Pardot_Plugin::get_form_body($attributes);
+    }
+    return '';
+}
+
+function pardot_dynamic_content_block_callback($attributes) {
+    if (isset($attributes['dynamicContent_id'])) {
+        $attributes['class'] = $attributes['className'];
+        unset($attributes['className']);
+        return Pardot_Plugin::get_dynamic_content_body($attributes);
     }
     return '';
 }

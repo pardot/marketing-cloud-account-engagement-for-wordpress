@@ -488,10 +488,226 @@ module.exports = _unsupportedIterableToArray;
 
 /***/ }),
 
-/***/ "./src/edit.js":
-/*!*********************!*\
-  !*** ./src/edit.js ***!
-  \*********************/
+/***/ "./src/dyn-con-edit.js":
+/*!*****************************!*\
+  !*** ./src/dyn-con-edit.js ***!
+  \*****************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "./node_modules/@babel/runtime/helpers/defineProperty.js");
+/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/toConsumableArray */ "./node_modules/@babel/runtime/helpers/toConsumableArray.js");
+/* harmony import */ var _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "./node_modules/@babel/runtime/helpers/classCallCheck.js");
+/* harmony import */ var _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @babel/runtime/helpers/createClass */ "./node_modules/@babel/runtime/helpers/createClass.js");
+/* harmony import */ var _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @babel/runtime/helpers/assertThisInitialized */ "./node_modules/@babel/runtime/helpers/assertThisInitialized.js");
+/* harmony import */ var _babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @babel/runtime/helpers/inherits */ "./node_modules/@babel/runtime/helpers/inherits.js");
+/* harmony import */ var _babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "./node_modules/@babel/runtime/helpers/possibleConstructorReturn.js");
+/* harmony import */ var _babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "./node_modules/@babel/runtime/helpers/getPrototypeOf.js");
+/* harmony import */ var _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_9__);
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_10__);
+/* harmony import */ var _wordpress_server_side_render__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @wordpress/server-side-render */ "@wordpress/server-side-render");
+/* harmony import */ var _wordpress_server_side_render__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(_wordpress_server_side_render__WEBPACK_IMPORTED_MODULE_11__);
+/* harmony import */ var _editor_scss__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./editor.scss */ "./src/editor.scss");
+/* harmony import */ var _editor_scss__WEBPACK_IMPORTED_MODULE_12___default = /*#__PURE__*/__webpack_require__.n(_editor_scss__WEBPACK_IMPORTED_MODULE_12__);
+
+
+
+
+
+
+
+
+
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_7___default()(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_7___default()(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_6___default()(this, result); }; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+
+
+
+
+
+
+var DynamicContentEdit = /*#__PURE__*/function (_Component) {
+  _babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_5___default()(DynamicContentEdit, _Component);
+
+  var _super = _createSuper(DynamicContentEdit);
+
+  function DynamicContentEdit() {
+    var _this;
+
+    _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_2___default()(this, DynamicContentEdit);
+
+    _this = _super.apply(this, arguments);
+    _this.state = {
+      dropdownItems: [],
+      showDropdown: false,
+      interactive: false
+    }; // This binding is necessary to make `this` work in the functions
+
+    _this.render = _this.render.bind(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4___default()(_this));
+    _this.hideOverlay = _this.hideOverlay.bind(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4___default()(_this));
+    return _this;
+  }
+
+  _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_3___default()(DynamicContentEdit, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      var _this2 = this;
+
+      // We are using the pre-existing PHP Ajax function to allow us to obtain the user's dynamic content.
+      // We need to parse the return value, as the response comes backs as HTML (<select><option>...).
+      var xhr = new XMLHttpRequest();
+      xhr.addEventListener('load', function () {
+        var shortcodes = _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_1___default()(xhr.responseText.matchAll(/\[.*?id=&quot;(.*?)&quot;.*?]">(.*?)</g));
+
+        var dropdownItems = [];
+
+        for (var i = 0; i < shortcodes.length; i++) {
+          dropdownItems.push({
+            dynamicContent_id: shortcodes[i][1],
+            title: shortcodes[i][2]
+          });
+        }
+
+        if (shortcodes.length > 0) {
+          _this2.setState({
+            dropdownItems: dropdownItems,
+            showDropdown: true
+          });
+        }
+      });
+      xhr.open('POST', ajaxurl);
+      var formData = new FormData();
+      formData.append("action", "get_pardot_dynamicContent_shortcode_select_html");
+      xhr.send(formData);
+    } // We need getDerivedStateFromProps() and hideOverlay() to allow the user to click anywhere on the block to select it.
+    // I believe the iframe causes issues with the way the Block Editor interacts with user clicks.
+    // We essentially need to create an overlay to capture the first click, then switch to interactive mode,
+    // which allows the user to interact with the iframe.
+    // Source: https://github.com/WordPress/gutenberg/blob/master/packages/block-library/src/embed/embed-preview.js#L34
+
+  }, {
+    key: "hideOverlay",
+    value: function hideOverlay() {
+      this.setState({
+        interactive: true
+      });
+    }
+  }, {
+    key: "handleValueOnChange",
+    value: function handleValueOnChange(e) {
+      this.props.setAttributes(_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()({}, e.target.id, e.target.value));
+    }
+  }, {
+    key: "handleDropdownChange",
+    value: function handleDropdownChange(e) {
+      var index = e.target.selectedIndex;
+      var title = e.target[index].text;
+      this.props.setAttributes({
+        dynamicContent_id: e.target.value,
+        title: title
+      });
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this3 = this;
+
+      return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_8__["createElement"])(_wordpress_element__WEBPACK_IMPORTED_MODULE_8__["Fragment"], null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_8__["createElement"])(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_10__["InspectorControls"], null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_8__["createElement"])("div", {
+        className: "sidebar"
+      }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_8__["createElement"])("h2", null, Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_9__["__"])('Dynamic Content')), this.state.showDropdown ? Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_8__["createElement"])("select", {
+        name: "dynamicContentSelect",
+        value: this.props.attributes.dynamicContent_id,
+        onChange: function onChange(e) {
+          return _this3.handleDropdownChange(e);
+        }
+      }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_8__["createElement"])("option", {
+        value: -1,
+        key: -1,
+        label: "Select"
+      }, "Select"), this.state.dropdownItems.map(function (n) {
+        return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_8__["createElement"])("option", {
+          label: n.title,
+          value: n.dynamicContent_id,
+          key: n.dynamicContent_id
+        }, n.title);
+      })) : Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_8__["createElement"])("p", null, "It doesn't appear that you have any dynamic content."), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_8__["createElement"])("h2", null, Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_9__["__"])('Width')), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_8__["createElement"])("input", {
+        type: "text",
+        className: "textEntry",
+        id: "width",
+        value: this.props.attributes.width,
+        onChange: function onChange(e) {
+          return _this3.handleValueOnChange(e);
+        },
+        placeholder: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_9__["__"])('Must be an integer (e.g. 250)')
+      }), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_8__["createElement"])("h2", null, Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_9__["__"])('Height')), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_8__["createElement"])("input", {
+        type: "text",
+        className: "textEntry",
+        id: "height",
+        value: this.props.attributes.height,
+        onChange: function onChange(e) {
+          return _this3.handleValueOnChange(e);
+        },
+        placeholder: Object(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_9__["__"])('Must be an integer (e.g. 250)')
+      }))), this.props.attributes.dynamicContent_id ? Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_8__["createElement"])(_wordpress_server_side_render__WEBPACK_IMPORTED_MODULE_11___default.a, {
+        block: "pardot/dynamic-content",
+        attributes: this.props.attributes
+      }) : Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_8__["createElement"])("h5", null, "Select dynamic content in the block settings sidebar."), !this.state.interactive && Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_8__["createElement"])("div", {
+        className: "overlay",
+        onMouseUp: this.hideOverlay
+      }));
+    }
+  }], [{
+    key: "getDerivedStateFromProps",
+    value: function getDerivedStateFromProps(nextProps, state) {
+      if (!nextProps.isSelected && state.interactive) {
+        return {
+          interactive: false
+        };
+      }
+
+      return null;
+    }
+  }]);
+
+  return DynamicContentEdit;
+}(_wordpress_element__WEBPACK_IMPORTED_MODULE_8__["Component"]);
+
+/* harmony default export */ __webpack_exports__["default"] = (DynamicContentEdit);
+
+/***/ }),
+
+/***/ "./src/editor.scss":
+/*!*************************!*\
+  !*** ./src/editor.scss ***!
+  \*************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+// extracted by mini-css-extract-plugin
+
+/***/ }),
+
+/***/ "./src/form-edit.js":
+/*!**************************!*\
+  !*** ./src/form-edit.js ***!
+  \**************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -615,7 +831,6 @@ var FormEdit = /*#__PURE__*/function (_Component) {
     key: "handleValueOnChange",
     value: function handleValueOnChange(e) {
       this.props.setAttributes(_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()({}, e.target.id, e.target.value));
-      console.log(this.props.attributes);
     }
   }, {
     key: "handleDropdownChange",
@@ -696,17 +911,6 @@ var FormEdit = /*#__PURE__*/function (_Component) {
 
 /***/ }),
 
-/***/ "./src/editor.scss":
-/*!*************************!*\
-  !*** ./src/editor.scss ***!
-  \*************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-// extracted by mini-css-extract-plugin
-
-/***/ }),
-
 /***/ "./src/index.js":
 /*!**********************!*\
   !*** ./src/index.js ***!
@@ -724,7 +928,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _style_scss__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./style.scss */ "./src/style.scss");
 /* harmony import */ var _style_scss__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_style_scss__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _edit__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./edit */ "./src/edit.js");
+/* harmony import */ var _form_edit__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./form-edit */ "./src/form-edit.js");
+/* harmony import */ var _dyn_con_edit__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./dyn-con-edit */ "./src/dyn-con-edit.js");
 /**
  * Registers a new block provided a unique name and an object defining its behavior.
  *
@@ -751,6 +956,7 @@ __webpack_require__.r(__webpack_exports__);
 /**
  * Internal dependencies
  */
+
 
 
 /**
@@ -829,7 +1035,7 @@ Object(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__["registerBlockType"])('par
   /**
    * @see ./edit.js
    */
-  edit: _edit__WEBPACK_IMPORTED_MODULE_4__["default"],
+  edit: _form_edit__WEBPACK_IMPORTED_MODULE_4__["default"],
   save: function save(props) {
     return null;
   }
@@ -872,11 +1078,33 @@ Object(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__["registerBlockType"])('par
     // Removes support for an HTML mode.
     html: false
   },
+  attributes: {
+    dynamicContent_id: {
+      type: 'string',
+      default: ''
+    },
+    height: {
+      type: 'string',
+      default: ''
+    },
+    width: {
+      type: 'string',
+      default: ''
+    },
+    className: {
+      type: 'string',
+      default: ''
+    },
+    title: {
+      type: 'string',
+      default: ''
+    }
+  },
 
   /**
    * @see ./edit.js
    */
-  edit: _edit__WEBPACK_IMPORTED_MODULE_4__["default"],
+  edit: _dyn_con_edit__WEBPACK_IMPORTED_MODULE_5__["default"],
   save: function save(props) {
     return null;
   }

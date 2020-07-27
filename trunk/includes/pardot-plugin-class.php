@@ -939,24 +939,24 @@ class Pardot_Plugin {
 			$dynamicContents = get_pardot_dynamic_content();
 
 			if ( isset( $dynamicContents[$dynamicContent_id] ) ) {
-				/**
-				 * Use the dynamicContent_id to find the right one
-				 */
-				$dynamicContent         = $dynamicContents[ $dynamicContent_id ];
-				$dynamicContent_html    = $dynamicContent->embedCode;
-				$dynamicContent_url     = $dynamicContent->embedUrl;
-				$dynamicContent_default = $dynamicContent->baseContent;
-			}
+                /**
+                 * Use the dynamicContent_id to find the right one
+                 */
+                $dynamicContent = $dynamicContents[$dynamicContent_id];
+                $dynamicContent_html = $dynamicContent->embedCode;
+                $dynamicContent_url = $dynamicContent->embedUrl;
+                $dynamicContent_default = $dynamicContent->baseContent;
 
-			if ( $dynamicContent_url ) {
-				$dynamicContent_html = "<div data-dc-url='" . $dynamicContent_url . "' style='height:auto;width:auto;' class='pardotdc'>" . $dynamicContent_default . "</div>";
-			} else {
-				$dynamicContent_html = $dynamicContent_html . "<noscript>" . $dynamicContent_default . "</noscript>";
-			}
+                if ($dynamicContent_url) {
+                    $dynamicContent_html = "<div data-dc-url='" . $dynamicContent_url . "' style='height:auto;width:auto;' class='pardotdc'>" . $dynamicContent_default . "</div>";
+                } else {
+                    $dynamicContent_html = $dynamicContent_html . "<noscript>" . $dynamicContent_default . "</noscript>";
+                }
 
-			if ( set_transient( 'pardot_dynamicContent_html_' . $dynamicContent_id, $dynamicContent_html, self::$cache_timeout ) ) {
-				self::save_transient_key( 'pardot_dynamicContent_html_' . $dynamicContent_id );
-			}
+                if (set_transient('pardot_dynamicContent_html_' . $dynamicContent_id, $dynamicContent_html, self::$cache_timeout)) {
+                    self::save_transient_key('pardot_dynamicContent_html_' . $dynamicContent_id);
+                }
+            }
 
 		} else {
 			$dynamicContent_html = get_transient( 'pardot_dynamicContent_html_' . $dynamicContent_id );

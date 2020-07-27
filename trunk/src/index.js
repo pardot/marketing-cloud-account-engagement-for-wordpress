@@ -26,7 +26,8 @@ import './style.scss';
 /**
  * Internal dependencies
  */
-import edit from './edit';
+import form_edit from './form-edit';
+import dyn_con_edit from './dyn-con-edit';
 
 /**
  * Block Icon
@@ -102,7 +103,7 @@ registerBlockType('pardot/form', {
 	/**
 	 * @see ./edit.js
 	 */
-	edit: edit,
+	edit: form_edit,
 
 	save: function(props) {
 		return null;
@@ -150,10 +151,33 @@ registerBlockType('pardot/dynamic-content', {
 		html: false,
 	},
 
+	attributes: {
+		dynamicContent_id: {
+			type: 'string',
+			default: '',
+		},
+		height: {
+			type: 'string',
+			default: '',
+		},
+		width:{
+			type: 'string',
+			default: '',
+		},
+		className:{
+			type: 'string',
+			default: '',
+		},
+		title:{
+			type: 'string',
+			default: '',
+		},
+	},
+
 	/**
 	 * @see ./edit.js
 	 */
-	edit: edit,
+	edit: dyn_con_edit,
 
 	save: function(props) {
 		return null;

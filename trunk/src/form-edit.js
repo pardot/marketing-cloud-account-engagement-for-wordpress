@@ -71,7 +71,6 @@ class FormEdit extends Component {
         this.props.setAttributes({
             [e.target.id]: e.target.value
         });
-        console.log(this.props.attributes);
     }
 
     handleDropdownChange(e) {
