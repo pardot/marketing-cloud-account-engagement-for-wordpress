@@ -24,6 +24,13 @@ class Pardot_API {
 	 */
 	const ROOT_URL = 'https://pi.pardot.com/api';
 
+    /**
+     * @const string The URL used to refresh the Salesforce OAUTH token
+     *
+     * @since 1.5.0
+     */
+	const OAUTH_URL = 'https://login.salesforce.com/services/oauth2/token';
+
 	/**
 	 * @const string The supported version of the Pardot API, this value is embedded into the API's URLs
 	 *
@@ -177,7 +184,7 @@ class Pardot_API {
      * @since 1.5.0
      */
     function refresh_API_key( $auth = array() ) {
-        $url = 'https://login.salesforce.com/services/oauth2/token';
+        $url = self::OAUTH_URL;
         $body = array(
             'grant_type' => 'refresh_token',
             'client_id' => $this->client_id,
@@ -620,12 +627,14 @@ x	 */
 				}
 			}
 
-		} elseif (wp_remote_retrieve_response_code( $http_response ) == 400 ){
+		} elseif ( wp_remote_retrieve_response_code( $http_response ) == 400 ){
             $response = new SimpleXMLElement( wp_remote_retrieve_body( $http_response ) );
             if ( $response->err == 'access_token is invalid, unknown, or malformed' ) {
                 $this->api_key = '';
                 $response = $this->get_response( $item_type, array(), $property, true );
-                call_user_func( $args['new_api_key'], $this->api_key );
+                if ( isset( $args['new_api_key'] ) && is_callable( $args['new_api_key'] ) ) {
+                    call_user_func($args['new_api_key'], $this->api_key);
+                }
             }
         }
 
