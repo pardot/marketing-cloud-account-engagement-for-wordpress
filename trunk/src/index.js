@@ -127,7 +127,7 @@ registerBlockType('pardot/dynamic-content', {
 	 * It will be shown in the Block Tab in the Settings Sidebar.
 	 */
 	description: __(
-		'Web content that can be tailored to a specific viewer based on data gathered about that viewer.',
+		'Delivers targeted messaging to prospects. Content is displayed according to rules defined in Pardot based on the prospect’s data or attributes.',
 		'pardot'
 	),
 
