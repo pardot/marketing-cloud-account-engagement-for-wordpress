@@ -499,7 +499,7 @@ HTML;
 		add_action( 'admin_head', array( $this, 'admin_head' ), 0 );
 
 		if (self::get_setting( 'auth_type' ) != 'sso' && self::get_setting( 'auth_type' ) != 'pardot') {
-		    self:self::set_setting('auth_type', 'sso');
+		    self:self::set_setting('auth_type', 'pardot');
         }
 
 		/**
