@@ -3,7 +3,6 @@ import {Component} from '@wordpress/element';
 import {InspectorControls} from '@wordpress/block-editor';
 import ServerSideRender from '@wordpress/server-side-render';
 
-
 import './editor.scss';
 
 class DynamicContentEdit extends Component {
@@ -12,6 +11,7 @@ class DynamicContentEdit extends Component {
         super(...arguments);
         this.state = {
             dropdownItems: [],
+            dcItems: [],
             showDropdown: false,
             interactive: false,
         };
@@ -28,16 +28,19 @@ class DynamicContentEdit extends Component {
         let xhr = new XMLHttpRequest()
 
         xhr.addEventListener('load', () => {
-            let shortcodes = [...xhr.responseText.matchAll(/\[.*?id=&quot;(.*?)&quot;.*?]">(.*?)</g)]
+            let shortcodes = [...xhr.responseText.matchAll(/\[.*?id=&quot;(.*?)&quot; default=&quot;(.*?)&quot;]">(.*?)</g)]
             let dropdownItems = [];
+            let dcItems = []
             for (let i = 0; i < shortcodes.length; i++) {
-                dropdownItems.push({dynamicContent_id: shortcodes[i][1], title: shortcodes[i][2]})
+                dropdownItems.push({dynamicContent_id: shortcodes[i][1], title: shortcodes[i][3]})
+                dcItems[shortcodes[i][1]] = shortcodes[i][2];
             }
 
             if (shortcodes.length > 0) {
                 this.setState({
                     dropdownItems: dropdownItems,
                     showDropdown: true,
+                    dcItems: dcItems,
                 });
             }
 
@@ -73,9 +76,8 @@ class DynamicContentEdit extends Component {
     }
 
     handleDropdownChange(e) {
-        let index = e.target.selectedIndex;
-        let title = e.target[index].text
-        this.props.setAttributes({dynamicContent_id: e.target.value, title: title});
+        let dynamicContent_default = this.state.dcItems[e.target.value];
+        this.props.setAttributes({dynamicContent_id: e.target.value, dynamicContent_default: dynamicContent_default});
     };
 
 

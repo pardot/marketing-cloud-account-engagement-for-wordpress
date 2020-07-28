@@ -47,7 +47,6 @@ if ( ! defined( 'PARDOT_JS_CACHE_TIMEOUT' ) ) {
 	define( 'PARDOT_JS_CACHE_TIMEOUT', MONTH_IN_SECONDS );
 }
 
-
 require( PARDOT_PLUGIN_DIR . '/includes/pardot-api-class.php' );
 require( PARDOT_PLUGIN_DIR . '/includes/pardot-api-functions.php' );
 require( PARDOT_PLUGIN_DIR . '/includes/pardot-forms-shortcode-popup-class.php' );
@@ -128,26 +127,26 @@ function pardot_init() {
         'editor_style'    => 'pardot-editor',
         'style'           => 'pardot',
         'render_callback' => 'pardot_dynamic_content_block_callback',
-        'attributes'  => array(
-            'dynamicContent_id'  => array(
+        'attributes' => array(
+            'dynamicContent_id' => array(
+                'type' => 'string',
+                'default' => '',
+            ),
+            'dynamicContent_default' => array(
+                'type' => 'string',
+                'default' => '',
+            ),
+            'height' => array(
                 'type'  => 'string',
                 'default' => '',
             ),
-            'height'    => array(
+            'width' => array(
                 'type'  => 'string',
-                'default'   => '',
+                'default' => '',
             ),
-            'width'    => array(
+            'className' => array(
                 'type'  => 'string',
-                'default'   => '',
-            ),
-            'className'    => array(
-                'type'  => 'string',
-                'default'   => '',
-            ),
-            'title'    => array(
-                'type'  => 'string',
-                'default'   => '',
+                'default' => '',
             ),
         ),
     ) );

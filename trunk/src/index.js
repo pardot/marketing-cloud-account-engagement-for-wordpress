@@ -156,6 +156,10 @@ registerBlockType('pardot/dynamic-content', {
 			type: 'string',
 			default: '',
 		},
+		dynamicContent_default: {
+			type: 'string',
+			default: '',
+		},
 		height: {
 			type: 'string',
 			default: '',
@@ -165,10 +169,6 @@ registerBlockType('pardot/dynamic-content', {
 			default: '',
 		},
 		className:{
-			type: 'string',
-			default: '',
-		},
-		title:{
 			type: 'string',
 			default: '',
 		},

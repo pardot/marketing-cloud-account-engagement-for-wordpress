@@ -556,6 +556,7 @@ var DynamicContentEdit = /*#__PURE__*/function (_Component) {
     _this = _super.apply(this, arguments);
     _this.state = {
       dropdownItems: [],
+      dcItems: [],
       showDropdown: false,
       interactive: false
     }; // This binding is necessary to make `this` work in the functions
@@ -574,21 +575,24 @@ var DynamicContentEdit = /*#__PURE__*/function (_Component) {
       // We need to parse the return value, as the response comes backs as HTML (<select><option>...).
       var xhr = new XMLHttpRequest();
       xhr.addEventListener('load', function () {
-        var shortcodes = _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_1___default()(xhr.responseText.matchAll(/\[.*?id=&quot;(.*?)&quot;.*?]">(.*?)</g));
+        var shortcodes = _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_1___default()(xhr.responseText.matchAll(/\[.*?id=&quot;(.*?)&quot; default=&quot;(.*?)&quot;]">(.*?)</g));
 
         var dropdownItems = [];
+        var dcItems = [];
 
         for (var i = 0; i < shortcodes.length; i++) {
           dropdownItems.push({
             dynamicContent_id: shortcodes[i][1],
-            title: shortcodes[i][2]
+            title: shortcodes[i][3]
           });
+          dcItems[shortcodes[i][1]] = shortcodes[i][2];
         }
 
         if (shortcodes.length > 0) {
           _this2.setState({
             dropdownItems: dropdownItems,
-            showDropdown: true
+            showDropdown: true,
+            dcItems: dcItems
           });
         }
       });
@@ -617,11 +621,10 @@ var DynamicContentEdit = /*#__PURE__*/function (_Component) {
   }, {
     key: "handleDropdownChange",
     value: function handleDropdownChange(e) {
-      var index = e.target.selectedIndex;
-      var title = e.target[index].text;
+      var dynamicContent_default = this.state.dcItems[e.target.value];
       this.props.setAttributes({
         dynamicContent_id: e.target.value,
-        title: title
+        dynamicContent_default: dynamicContent_default
       });
     }
   }, {
@@ -1083,6 +1086,10 @@ Object(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__["registerBlockType"])('par
       type: 'string',
       default: ''
     },
+    dynamicContent_default: {
+      type: 'string',
+      default: ''
+    },
     height: {
       type: 'string',
       default: ''
@@ -1092,10 +1099,6 @@ Object(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__["registerBlockType"])('par
       default: ''
     },
     className: {
-      type: 'string',
-      default: ''
-    },
-    title: {
       type: 'string',
       default: ''
     }

@@ -50,7 +50,7 @@ function the_pardot_tracking_js() {
 
 function pardot_dc_async_script() {
     static $done = false;
-    if ( ! $done && get_post() && has_shortcode(get_the_content(get_the_ID()),'pardot-dynamic-content') ) {
+    if ( ! $done && get_post() ) {
         wp_register_script( 'pddc', plugins_url( 'js/asyncdc.min.js' , dirname(__FILE__) ), array('jquery'), false, true);
         wp_enqueue_script( 'pddc' );
     }
