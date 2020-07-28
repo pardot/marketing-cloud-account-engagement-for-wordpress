@@ -238,6 +238,12 @@ class Pardot_Settings {
 			return;
 		}
 
+		if (self::is_authenticated() && self::get_setting('auth_type') == 'pardot') {
+            $msg = __( 'Pardot authentication is being discontinued in February 2021.  Be sure to switch to Salesforce SSO authentication in %s.', 'pardot' );
+            $msg = sprintf( $msg, self::get_admin_page_link( array( 'link_text' => __( 'Pardot Settings', 'pardot' ) ) ) );
+            echo "<div class=\"updated\" style=\"border-left-color: #ffb900\"><p>{$msg}</p></div>";
+        }
+
 		if ( self::is_admin_page() ) {
 			/**
 			 * No need to ask them to visit the settings page if they are already here
