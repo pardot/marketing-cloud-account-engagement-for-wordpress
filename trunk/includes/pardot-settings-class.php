@@ -919,7 +919,7 @@ HTML;
      * @since 1.5.0
      */
 	function auth_status_field() {
-	    if (self::is_authenticated()) {
+	    if (self::is_authenticated() && self::get_api(array())->get_account()) {
             $html =<<<HTML
 <div id="auth-status-wrap" class="success">
 Authenticated
