@@ -127,7 +127,7 @@ registerBlockType('pardot/dynamic-content', {
 	 * It will be shown in the Block Tab in the Settings Sidebar.
 	 */
 	description: __(
-		'Example block written with ESNext standard and JSX support – build step required.',
+		'Web content that can be tailored to a specific viewer based on data gathered about that viewer.',
 		'pardot'
 	),
 
