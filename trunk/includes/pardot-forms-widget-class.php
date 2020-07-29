@@ -401,23 +401,6 @@ HTML;
 			 */
 			$prompt = __( 'Select Form:', 'pardot' );
 
-			/**
-			 * Create link text for the help link
-			 */
-			$help_link_text = __( 'helpful Knowledge Base article', 'pardot' );
-
-			/**
-			 * Merge the link and help text link into a help link.
-			 */
-			$help_link = sprintf( '<a href="%s" target="_blank">%s</a>', Pardot_Settings::HELP_URL, $help_link_text );
-
-			/**
-			 * Create a variable for help text to be used in the HEREDOC
-			 * Add the link into the help text.
-			 */
-			$help_text = __( 'If some of your form is cut off or the styling isn\'t quite right, please read our %s.', 'pardot' );
-			$help_text = sprintf( $help_text, $help_link );
-
             /**
              * Create a variable for parameters helper text.
              */
@@ -476,7 +459,6 @@ HTML;
 		
 		
 		$html .= <<<HTML
-<p><small>{$help_text}</small></p>
 <p><small>{$cache_text}</small></p>
 HTML;
 		

@@ -11,11 +11,6 @@
  */
 class Pardot_Settings {
 	/**
-	 * @var string Help page on Pardot's website discussing this plugin.
-	 */
-	const HELP_URL = 'http://www.pardot.com/help/faqs/add-ons/wordpress-plugin';
-
-	/**
 	 * @var string Admin page on Pardot's website linked to an authenticated user's account.
 	 */
 	const ACCOUNT_URL = 'https://pi.pardot.com/account/user';
