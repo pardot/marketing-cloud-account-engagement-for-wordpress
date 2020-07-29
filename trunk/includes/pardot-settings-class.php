@@ -497,8 +497,19 @@ HTML;
 		 */
 		add_action( 'admin_head', array( $this, 'admin_head' ), 0 );
 
+        /**
+         * If the user is already authenticated with an an email (a.k.a. Pardot auth), set auth_type to pardot
+         * If user doesn't have any credentials save, default auth_type to sso
+         * This ensures seamless compatibility with upgrading users while encouraging new users to use sso
+         */
 		if (self::get_setting( 'auth_type' ) != 'sso' && self::get_setting( 'auth_type' ) != 'pardot') {
-		    self:self::set_setting('auth_type', 'pardot');
+		    if (self::get_setting('email')) {
+                self::set_setting('auth_type', 'pardot');
+            }
+		    else {
+                self::set_setting('auth_type', 'sso');
+            }
+
         }
 
 		/**
