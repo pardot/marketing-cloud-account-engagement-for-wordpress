@@ -230,7 +230,10 @@ CSS;
 		/**
 		 * Grab form_id from the instance that we set in $this->update() and use it to grab the HTML for this Pardot Form.
 		 */
-		$body_html = Pardot_Plugin::get_form_body( $instance );
+		$body_html = '<h4>Please select a Pardot form.</h4>';
+		if ( isset($instance['form_id']) ) {
+            $body_html = Pardot_Plugin::get_form_body( $instance );
+        }
 
 		/**
 		 * After all that if the $body_html is not empty, we can use it as a form.
@@ -614,7 +617,10 @@ class Pardot_Dynamic_Content_Widget extends WP_Widget {
 		/**
 		 * Grab form_id from the instance that we set in $this->update() and use it to grab the HTML for this Pardot Form.
 		 */
-		$body_html = Pardot_Plugin::get_dynamic_content_body( $instance );
+		$body_html = '<h4>Please select Pardot dynamic content.</h4>';
+		if ( isset($instance['dynamicContent_id']) ) {
+            $body_html = Pardot_Plugin::get_dynamic_content_body( $instance );
+        }
 
         wp_register_script( 'pddc', plugins_url( 'js/asyncdc.min.js' , dirname(__FILE__) ), array('jquery'), false, true);
         wp_enqueue_script( 'pddc' );

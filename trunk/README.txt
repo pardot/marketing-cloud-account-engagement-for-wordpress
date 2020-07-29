@@ -16,10 +16,10 @@ Say hello to marketing automation simplicity! With a single login, your self-hos
 
 == Installation ==
 
-1. Upload `pardot-for-wordpress` to your `/wp-content/plugins/` directory or go to Plugins > Add New in your WordPress Admin area and search for Pardot.
-1. Activate the plugin through the 'Plugins' menu in WordPress.
-1. Go to Settings > Pardot Settings to put in your email, password, and user key.
-1. Select your campaign (for tracking code usage).
+1. Upload `pardot-for-wordpress/trunk` to your `/wp-content/plugins/` directory or go to Plugins > Add New in your WordPress Admin area and search for Pardot.
+2. Activate the plugin through the 'Plugins' menu in WordPress.
+3. Go to Settings > Pardot Settings and authenticate with either Pardot or Salesforce SSO.
+4. Select your campaign (for tracking code usage).
 
 == Authenticating with Salesforce SSO ==
 In order to use Salesforce SSO authentication, you **must** create a connected appliation for the plugin in your Salesforce org.  
@@ -142,8 +142,8 @@ Filter the regular expression used to find URLs to be converted to https://go.pa
 
 == Screenshots ==
 
-1. Settings area
-1. Pardot button in the Visual Editor toolbar
+1. Settings page
+1. Pardot button in the Classic Editor toolbar
 1. Choose from any form or Dynamic Content
 1. Use forms in a widget
 1. Use dynamic content in a widget
