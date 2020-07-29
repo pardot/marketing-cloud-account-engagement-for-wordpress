@@ -992,7 +992,7 @@ HTML;
 	}
 
     /**
-     * Displays the Client ID field for the Settings API
+     * Displays the Consumer Key field for the Settings API
      *
      * @since 1.5.0
      */
@@ -1012,7 +1012,7 @@ HTML;
     }
 
     /**
-     * Displays the Client Secret field for the Settings API
+     * Displays the Consumer Secret field for the Settings API
      *
      * @since 1.5.0
      */
