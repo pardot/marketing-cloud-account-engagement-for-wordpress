@@ -143,12 +143,15 @@ Filter the regular expression used to find URLs to be converted to https://go.pa
 == Screenshots ==
 
 1. Settings page
-1. Pardot button in the Classic Editor toolbar
-1. Choose from any form or Dynamic Content
-1. Use forms in a widget
-1. Use dynamic content in a widget
-1. A form widget (with corrected styling)
-1. A page can have two forms! Here, one is in the body and one in a widget.
+2. Pardot button in the Classic Editor toolbar
+3. Choose from any form or Dynamic Content
+4. Use forms in a widget
+5. Use dynamic content in a widget
+6. A form block in action
+7. A page can have two forms! Here, one is in the body and one in a widget.
+8. Pardot blocks are added the embedded category in the Block Editor.
+9. Form block in the editor
+10. Dynamic content block being edited
 
 == Changelog ==
 
