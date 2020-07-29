@@ -1,10 +1,11 @@
 === Pardot ===
 Contributors: cliffseal, ModernTribe
 Donate link: http://pardot.com
-Tags: pardot, marketing automation, forms, dynamic content, tracking, web tracking
+Tags: pardot, salesforce, marketing automation, forms, dynamic content, tracking, web tracking
 Requires at least: 5.2
 Tested up to: 5.4.2
 Stable tag: 1.5.0
+Requires PHP: 7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -18,30 +19,31 @@ Say hello to marketing automation simplicity! With a single login, your self-hos
 
 1. Upload `pardot-for-wordpress/trunk` to your `/wp-content/plugins/` directory or go to Plugins > Add New in your WordPress Admin area and search for Pardot.
 2. Activate the plugin through the 'Plugins' menu in WordPress.
-3. Go to Settings > Pardot Settings and authenticate with either Pardot or Salesforce SSO.
+3. Go to Settings > Pardot Settings and authenticate with either Pardot or Salesforce SSO (see FAQ on how to create a connected app for Salesforce SSO).
 4. Select your campaign (for tracking code usage).
 
-== Authenticating with Salesforce SSO ==
-In order to use Salesforce SSO authentication, you **must** create a connected appliation for the plugin in your Salesforce org.  
+== Frequently Asked Questions ==
 
-1. Navigate to App Manager [here](https://login.salesforce.com/lightning/setup/NavigationMenus/home).  
-2. One the top right, click the "New Connected App" button.  
-3. The connected app name, API name, and contact email can be anything you want. Click the "Enable OAuth Settings" toggle.  The Callback URL is the link to your Pardot WordPress settings page (.../wp-admin/options-general.php?page=pardot).  Also, be sure to add "Access Pardot Services (pardot_api)" to your selected OAuth scopes. 
+= Authenticating with Salesforce SSO =
+In order to use Salesforce SSO authentication, you **must** create a connected appliation for the plugin in your Salesforce org.
+
+1. Navigate to App Manager [here](https://login.salesforce.com/lightning/setup/NavigationMenus/home).
+2. One the top right, click the "New Connected App" button.
+3. The connected app name, API name, and contact email can be anything you want. Click the "Enable OAuth Settings" toggle.  The Callback URL is the link to your Pardot WordPress settings page (.../wp-admin/options-general.php?page=pardot).  Also, be sure to add "Access Pardot Services (pardot_api)" to your selected OAuth scopes.
 4. Save your connected application.
 5. A new page will appear with the "Consumer Key" and "Consumer Secret."  Copy those values and paste them into Pardot WordPress settings.
 6. Navigate to Pardot Account Setup using the link [here](https://login.salesforce.com/lightning/setup/PardotAccountSetup/home).  There, you can see the Business Unit IDs associated your organization.  Select which one you would like to use, and copy the ID into the Pardot WordPress settings.
 7. You should be be able to "Save Settings" in Pardot WordPress settings, then "Authenticate with Salesforce".  A popup will appear where you type in your Salesforce credentials.
 8. If all things went according to plan, you should see "Authentication Status" change from "Not Authenticated" to "Authenticated".
 
-== Frequently Asked Questions ==
 
 = How can I use the shortcodes without the Visual Editor? =
 
 Two simple shortcodes are available for use.
 
-= Form Shortcode =
+**Form Shortcode**
 
-	[pardot-form id="{Form ID}" title="{Form Name}" class="" width="100%" height="500" querystring=""]
+	`[pardot-form id="{Form ID}" title="{Form Name}" class="" width="100%" height="500" querystring=""]`
 
 Use `[pardot-form]` with at least the `id` parameter. For instance, `[pardot-form id="1" title="Title"]` renders my Pardot form with an ID of 1.
 
@@ -57,15 +59,15 @@ The `height` parameter will set the height of the iframe in pixels only. For exa
 
 The `querystring` parameter appends an arbitrary string to the end of the form's iframe source. This is helpful for passing data directly into the form. You can also do this with filters (see below).
 
-= Dynamic Content Shortcode =
+**Dynamic Content Shortcode**
 
-	[pardot-dynamic-content id="{Dynamic Content ID}" default="{Non-JavaScript Content}"]
+	`[pardot-dynamic-content id="{Dynamic Content ID}" default="{Non-JavaScript Content}"]`
 
 Use `[pardot-dynamic-content]` with at least the `id` parameter.
 
 The `default` parameter is used for accessibility. Whatever is placed here is wrapped in `<noscript>` tags and is shown only to users who have JavaScript disabled. By default, it will automatically be your "Default Content" as designated in Pardot. So,
 
-	[pardot-dynamic-content id="1" default="My default content."]
+	`[pardot-dynamic-content id="1" default="My default content."]`
 
 would render something like:
 
