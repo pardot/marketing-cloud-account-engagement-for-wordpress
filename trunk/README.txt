@@ -19,10 +19,8 @@ Say hello to marketing automation simplicity! With a single login, your self-hos
 
 1. Upload `pardot-for-wordpress/trunk` to your `/wp-content/plugins/` directory or go to Plugins > Add New in your WordPress Admin area and search for Pardot.
 2. Activate the plugin through the 'Plugins' menu in WordPress.
-3. Go to Settings > Pardot Settings and authenticate with either Pardot or Salesforce SSO (see FAQ on how to create a connected app for Salesforce SSO).
+3. Go to Settings > Pardot Settings and authenticate with either Pardot or Salesforce SSO.
 4. Select your campaign (for tracking code usage).
-
-== Frequently Asked Questions ==
 
 = Authenticating with Salesforce SSO =
 In order to use Salesforce SSO authentication, you **must** create a connected appliation for the plugin in your Salesforce org.
@@ -36,6 +34,8 @@ In order to use Salesforce SSO authentication, you **must** create a connected a
 7. You should be be able to "Save Settings" in Pardot WordPress settings, then "Authenticate with Salesforce".  A popup will appear where you type in your Salesforce credentials.
 8. If all things went according to plan, you should see "Authentication Status" change from "Not Authenticated" to "Authenticated".
 
+
+== Frequently Asked Questions ==
 
 = How can I use the shortcodes without the Visual Editor? =
 
