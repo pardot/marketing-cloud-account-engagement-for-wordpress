@@ -1,6 +1,6 @@
 {
 	"name": "pardot",
-	"version": "2.0.0",
+	"version": "1.5.0",
 	"description": "Connect your WordPress to Pardot with shortcode and widgets for campaign tracking, quick form access, and dynamic content.",
 	"author": "Cliff Seal of Pardot and Mike Schinkel of NewClarity LLC",
 	"license": "GPL-2.0-or-later",
