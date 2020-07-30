@@ -335,10 +335,12 @@ Filter the regular expression used to find URLs to be converted to https://go.pa
 * Added form caching for faster rendering and less requests
 
 = 1.0.2 =
+
 * Fix a caching issue that was causing the most recently-used form to render on all posts/pages
 * Extended API cache timeout
 
 = 1.0.1 =
+
 * Fix bug with form order in content
 
 = 1.0 =
@@ -346,6 +348,11 @@ Filter the regular expression used to find URLs to be converted to https://go.pa
 * Initial release.
 
 == Upgrade Notice ==
+
+= 1.5.0 =
+
+* This release adds Salesforce SSO as an authentication option.  Pardot authentication is being discontinued in February 2021.  Please reauthenticate with Salesforce SSO before then.
+* Block Editor support has also been added.
 
 = 1.4.3 =
 
@@ -417,25 +424,32 @@ Fixes blank admin screen bug (by checking for mcrypt and falling back safely if 
 * Be more forgiving with login whitespace
 
 = 1.1.1 =
+
 Make `<noscript>` default to Default Pardot Content
 
 = 1.1.0 =
+
 * Added dynamic content shortcodes
 * Added title field to form widget
 * Added 'Reset Cache' option
 
 = 1.0.3 =
+
 Added form caching for faster rendering and less requests
 
 = 1.0.2 =
+
 * Fix a caching issue that was causing the most recently-used form to render on all posts/pages
 * Extended API cache timeout
 
 = 1.0.1 =
+
 Fix bug with form order in content
 
 = 1.0 =
+
 Initial release.der in content
 
 = 1.0 =
+
 Initial release.
