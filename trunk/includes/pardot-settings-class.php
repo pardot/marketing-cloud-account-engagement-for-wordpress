@@ -73,8 +73,6 @@ class Pardot_Settings {
         'sso_sign_in'       => '',
         'clearcache'        => '',
         'reset'             => '',
-        'api_key'           => '',
-        'refresh_token'     => '',
     );
 
 	/**
@@ -317,14 +315,14 @@ jQuery(document).ready(function($){
 // Source: https://stackoverflow.com/a/27747377
 // dec2hex :: Integer -> String
 // i.e. 0-255 -> '00'-'ff'
-function dec2hex (dec) {
+function dec2hex(dec) {
   return dec < 10
     ? '0' + String(dec)
     : dec.toString(16);
 }
 
 // generateId :: Integer -> String
-function generateId (len) {
+function generateNonce(len) {
   let arr = new Uint8Array((len || 40) / 2);
   window.crypto.getRandomValues(arr);
   return Array.from(arr, dec2hex).join('');
@@ -333,7 +331,7 @@ function generateId (len) {
 let nonce = false;
 
 function clickSubmit() {
-    nonce = generateId();
+    nonce = generateNonce();
     
     let authSelect = document.getElementById("auth-type");
     let authValue = authSelect.options[authSelect.selectedIndex].value;
@@ -342,7 +340,7 @@ function clickSubmit() {
     if (authValue == 'sso') {
         if (client_id) {
             let url = "https://login.salesforce.com/services/oauth2/authorize?client_id=" + client_id + "&redirect_uri=" +
-                window.location.href + "&response_type=code" + "&display=popup" + "&scope=refresh_token%20pardot_api" + 
+                window.location.href.split('?')[0] + '?page=pardot' + "&response_type=code" + "&display=popup" + "&scope=refresh_token%20pardot_api" + 
                 "&state=" + nonce + "&code_challenge=" + '{$code_challenge}';
             window.open(url, "Sign In with Salesforce", "height=800, width=400, left=" + sign_in_sso.getBoundingClientRect().right);
         }
@@ -531,8 +529,6 @@ HTML;
             'sso_sign_in'    => ['', ( self::get_setting('auth_type') === 'pardot' ? array( 'class' => 'hidden' ) : array() )],
 			'clearcache'=> '',
 			'reset'     => '',
-			'api_key'   => '',
-            'refresh_token' => '',
 		);
 
 		/**
@@ -638,6 +634,8 @@ HTML;
 		}
 
 		$clean['password'] = self::decrypt_or_original( $clean['password'] );
+        $clean['api_key'] = self::get_setting('api_key');
+        $clean['refresh_token'] = self::get_setting('refresh_token');
 
 		/**
 		 * Call the Pardot API to attempt to authenticate
@@ -840,6 +838,10 @@ HTML;
             $new_options['password'] = self::pardot_encrypt($new_options['password'], true);
         }
 
+        if ($new_options['refresh_token'] != NULL) {
+            $new_options['refresh_token'] = self::pardot_encrypt($new_options['refresh_token'], true);
+        }
+
 		return $new_options;
 	}
 
@@ -1016,7 +1018,7 @@ HTML;
         $html_name = $this->_get_html_name( 'client_secret' );
         $html =<<<HTML
 <div id="client-secret-wrap">
-	<input type="text" size="30" id="client-secret" name="{$html_name}" value="{$client_secret}" />
+	<input type="password" size="30" id="client-secret" name="{$html_name}" value="{$client_secret}" />
 </div>
 HTML;
         echo $html;
@@ -1087,34 +1089,6 @@ $html =<<<HTML
 HTML;
 		echo $html;
 	}
-
-	/**
-	 * Displays the hidden API Key field for the Settings API
-	 *
-	 * @since 1.0.0
-	 */
-	function api_key_field() {
-		$api_key = self::get_setting( 'api_key' );
-		$html_name = $this->_get_html_name( 'api_key' );
-$html =<<<HTML
-<input type="hidden" id="api-key" name="{$html_name}" value="{$api_key}" />
-HTML;
-		echo $html;
-	}
-
-    /**
-     * Displays the hidden API Key field for the Settings API
-     *
-     * @since 1.5.0
-     */
-    function refresh_token_field() {
-        $refresh_token = self::get_setting( 'refresh_token' );
-        $html_name = $this->_get_html_name( 'refresh_token' );
-        $html =<<<HTML
-<input type="hidden" id="refresh_token" name="{$html_name}" value="{$refresh_token}" />
-HTML;
-        echo $html;
-    }
 
 	/**
 	 * Displays the Campaign drop-down field for the Settings API
