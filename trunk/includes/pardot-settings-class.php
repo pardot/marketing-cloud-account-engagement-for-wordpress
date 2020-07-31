@@ -439,7 +439,7 @@ HTML;
                 'grant_type' => 'authorization_code',
                 'code' => $_GET['code'],
                 'client_id' => self::get_setting('client_id'),
-                'client_secret' => self::get_setting('client_secret'),
+                'client_secret' => self::decrypt_or_original(self::get_setting('client_secret')),
                 'redirect_uri' => 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'],
                 'code_verifier' => get_option(self::$CODE_VERIFIER),
             );
@@ -618,6 +618,13 @@ HTML;
          */
         if (empty($dirty['password'])) {
             $dirty['password'] = self::get_setting( 'password' );
+        }
+
+        /**
+         * Use existing client_secret if the setting has not been changed
+         */
+        if (empty($dirty['client_secret'])) {
+            $dirty['client_secret'] = self::get_setting( 'client_secret' );
         }
 
 		/**
@@ -836,6 +843,10 @@ HTML;
             $new_options['password'] = self::pardot_encrypt($new_options['password'], true);
         }
 
+        if ($new_options['client_secret'] != NULL) {
+            $new_options['client_secret'] = self::pardot_encrypt($new_options['client_secret'], true);
+        }
+
         if ($new_options['refresh_token'] != NULL) {
             $new_options['refresh_token'] = self::pardot_encrypt($new_options['refresh_token'], true);
         }
@@ -1036,11 +1047,23 @@ HTML;
      * @since 1.5.0
      */
     function client_secret_field() {
-        $client_secret = self::get_setting( 'client_secret' );
+        /**
+         * Grab the length of the real password and turn it into a placeholder string that looks like it is filled
+         * in whenever a password is set.
+         */
+        $secretLength = strlen(self::get_setting( 'client_secret' ));
+
+        /**
+         * Set password length to some arbitrary amount iff there is a set password already so that it shows that the
+         * password is set already without disclosing the exact number of characters in the password
+         */
+        $secretLength = $secretLength > 0 ? 11 : 0;
+        $secretPlaceholder = str_repeat("&#8226;", $secretLength);
+
         $html_name = $this->_get_html_name( 'client_secret' );
         $html =<<<HTML
 <div id="client-secret-wrap">
-	<input type="password" size="30" id="client-secret" name="{$html_name}" value="{$client_secret}" />
+	<input type="password" size="30" id="client-secret" name="{$html_name}" placeholder="{$secretPlaceholder}" />
 </div>
 HTML;
         echo $html;
@@ -1083,7 +1106,7 @@ HTML;
          * password is set already without disclosing the exact number of characters in the password
          */
         $passwordLength = $passwordLength > 0 ? 11 : 0;
-        $passwordPlaceholder = str_repeat("&#9679;", $passwordLength);
+        $passwordPlaceholder = str_repeat("&#8226;", $passwordLength);
 
 		$html_name = $this->_get_html_name( 'password' );
 $html =<<<HTML

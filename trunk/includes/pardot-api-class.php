@@ -188,7 +188,7 @@ class Pardot_API {
         $body = array(
             'grant_type' => 'refresh_token',
             'client_id' => $this->client_id,
-            'client_secret' => $this->client_secret,
+            'client_secret' => Pardot_Settings::decrypt_or_original($this->client_secret),
             'refresh_token' => $this->refresh_token,
         );
 
