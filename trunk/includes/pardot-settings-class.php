@@ -70,7 +70,6 @@ class Pardot_Settings {
         'campaign'          => '',
         'https'             => '',
         'submit'            => '',
-        'sso_sign_in'       => '',
         'clearcache'        => '',
         'reset'             => '',
     );
@@ -282,7 +281,7 @@ class Pardot_Settings {
 #settings_page_pardot .failure{color:red;}
 #settings_page_pardot .instructions{font-style:italic;}
 #settings_page_pardot .hidden{display: none;}
-#settings_page_pardot #sso-sign-in{width: 200px}
+#settings_page_pardot #sso-sign-in{width: 200px; margin-left: 20px}
 -->
 </style>
 <script>
@@ -297,7 +296,7 @@ jQuery(document).ready(function($){
             $('#client-id-wrap').parents().eq(1).hide();
             $('#client-secret-wrap').parents().eq(1).hide(); 
             $('#business-unit-id-wrap').parents().eq(1).hide();
-            $('#sso-sign-in').parents().eq(1).hide();
+            $('#sso-sign-in').hide();
             
         } else if (this.value === 'sso') {        
             $('#email-wrap').parents().eq(1).hide();    
@@ -306,7 +305,7 @@ jQuery(document).ready(function($){
             $('#client-id-wrap').parents().eq(1).show();
             $('#client-secret-wrap').parents().eq(1).show(); 
             $('#business-unit-id-wrap').parents().eq(1).show();
-            $('#sso-sign-in').parents().eq(1).show();
+            $('#sso-sign-in').show();
         }
     });
 
@@ -526,7 +525,6 @@ HTML;
 			'campaign'  => [__( 'Campaign (for Tracking Code)', 'pardot' ), ''],
 			'https'     => [__( 'Use HTTPS?', 'pardot' ), ''],
 			'submit'    => '',
-            'sso_sign_in'    => ['', ( self::get_setting('auth_type') === 'pardot' ? array( 'class' => 'hidden' ) : array() )],
 			'clearcache'=> '',
 			'reset'     => '',
 		);
@@ -932,18 +930,42 @@ HTML;
      */
 	function auth_status_field() {
 	    if (self::is_authenticated() && self::get_api(array())->get_account()) {
-            $html =<<<HTML
+	        if ( self::get_setting('auth_type') == 'sso' ) {
+                $message = __('Authenticated with Salesforce SSO', 'pardot');
+                $buttonValue = __( 'Re-authenticate with Salesforce', 'pardot' );
+                $html =<<<HTML
 <div id="auth-status-wrap" class="success">
-Authenticated
+{$message}
+<input id="sso-sign-in" class="button-primary" name="sso-sign-in" style="width: 217px" value="{$buttonValue}" onclick="clickSubmit()"/>
 </div>
 HTML;
+            }
+	        else {
+                $message = __('Authenticated with Pardot', 'pardot');
+                $html =<<<HTML
+<div id="auth-status-wrap" class="success">
+{$message}
+</div>
+HTML;
+            }
         }
 	    else {
-            $html =<<<HTML
+            $message = __('Not Authenticated', 'pardot');
+            if ( self::get_setting('auth_type') == 'sso' && self::get_setting('client_id')
+                    && self::get_setting('client_secret') && self::get_setting('business_unit_id' )) {
+                $buttonValue = __( 'Authenticate with Salesforce', 'pardot' );
+                $html =<<<HTML
 <div id="auth-status-wrap" class="failure">
-Not Authenticated
+{$message}
+<input id="sso-sign-in" class="button-primary" name="sso-sign-in" value="{$buttonValue}" onclick="clickSubmit()"/>
 </div>
 HTML;
+            }
+            else {
+                $html =<<<HTML
+<div id="auth-status-wrap" class="failure">{$message}</div>
+HTML;
+            }
         }
         echo $html;
     }
@@ -1157,27 +1179,6 @@ HTML;
 HTML;
 		echo $html;
 	}
-
-    /**
-     * Displays the Sign In with Salesforcer button for the Settings API
-     *
-     * @since 1.0.0
-     */
-    function sso_sign_in_field() {
-        $value = __( 'Authenticate with Salesforce', 'pardot' );
-
-        if (self::get_setting('client_id') && self::get_setting('client_secret') && self::get_setting('business_unit_id')) {
-            $html =<<<HTML
-<input id="sso-sign-in" class="button-primary" name="sso-sign-in" value="{$value}" onclick="clickSubmit()"/>
-HTML;
-        }
-        else {
-            $html =<<<HTML
-<input disabled id="sso-sign-in" class="button-primary" name="sso-sign-in" value="{$value}" onclick="clickSubmit()"/> <p>Please save your credentials first.</p>
-HTML;
-        }
-        echo $html;
-    }
 
     /**
      * Displays the Submit button for the Settings API
