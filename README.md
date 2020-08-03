@@ -159,6 +159,10 @@ add_filter( 'pardot_https_regex', 'pardot_custom_filter_https_regex' );
 
 ## Changelog
 
+### 1.6.0
+
+* Feature - Added support for the WordPress Block Editor
+
 ### 1.5.0
 * Maintenance - Added Salesforce SSO authentication in preparation of Pardot authentication being discontinued in February 2021
 * Improvement - Added authentication status indicator to settings page

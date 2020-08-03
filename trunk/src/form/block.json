@@ -1,0 +1,13 @@
+{
+	"name": "pardot/form",
+	"title": "Pardot Form",
+	"category": "embed",
+	"description": "Collect information about people visiting your site or landing page and help you turn anonymous visitors into identified prospects.",
+	"textdomain": "pardot",
+	"supports": {
+		"html": false
+	},
+	"editorScript": "file:./build/index.js",
+	"editorStyle": "file:./build/index.css",
+	"style": "file:./build/style-index.css"
+}

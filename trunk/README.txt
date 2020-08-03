@@ -149,10 +149,17 @@ Filter the regular expression used to find URLs to be converted to https://go.pa
 1. Choose from any form or Dynamic Content
 1. Use forms in a widget
 1. Use dynamic content in a widget
-1. A form widget on a page
+1. A form block in action
 1. A page can have two forms! Here, one is in the body and one in a widget.
+1. Pardot blocks are added the embedded category in the Block Editor.
+1. Form block in the editor
+1. Dynamic content block being edited
 
 == Changelog ==
+
+= 1.6.0 =
+
+* Feature - Added support for the WordPress Block Editor
 
 = 1.5.0 =
 
