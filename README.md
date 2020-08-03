@@ -24,6 +24,36 @@ In order to use Salesforce SSO authentication, you **must** create a connected a
 7. You should be be able to "Save Settings" in Pardot WordPress settings, then "Authenticate with Salesforce".  A popup will appear where you type in your Salesforce credentials.
 8. If all things went according to plan, you should see "Authentication Status" change from "Not Authenticated" to "Authenticated".
 
+## Contributor Information
+If you wish to contribute to this plugin, here are a few tips to keep in mind.
+
+### Creating a Local WordPress Site for Testing
+In order to test your changes to the plugin in a quick and easy manner, it is extremely useful to have a locally hosted WordPress website for testing.  We have found that [Local](https://localwp.com/) is a great application for quickly creating WP instances.
+
+### Symbolically Link the Trunk Folder to the Plugin Folder
+Since the trunk directory is likely where most of your development will be taking place, you might find it useful to create a symbolic link to trunk in the `wp-content/plugins` folder of your testing website.  This will allow you to maintain version control of the plugin repository while still being able to test your changes instantly.  
+
+### WordPress Debugging
+WordPress has an [article](https://wordpress.org/support/article/debugging-in-wordpress/) dedicated to the debug constants that can be added to `wp-config.php`.  These constants make it significantly easier to debug plugin issues.  
+
+Alternatively, the plugin [WP Debugging](https://wordpress.org/plugins/wp-debugging/) makes it incredibly easy to enable/disable those constants without having to edit `wp-config.php`.
+
+### npm Commands
+npm is used to manage the packages for Block Editor support.  There are a few commands that you should be aware of:
+
+| Command | Purpose |
+| ------- | ------- |
+| `$ npm start` | Starts the Live Reload server for development |
+| `$ npm run build` | Creates production build |
+| `$ npm run format:js` | Formats JavaScript files |
+| `$ npm run lint:css` | Lints CSS files |
+| `$ npm run lint:js` | Lints JavaScript files|
+| `$ npm run packages-update`| Updates WordPress packages |
+
+It is important to note that changes in the `src` folder will not be shown until `npm start` or `npm run build` are ran.  
+
+More information about these scripts can be found [here](https://github.com/WordPress/gutenberg/tree/master/packages/scripts#lint-style).
+
 ## Frequently Asked Questions
 
 ### How do I add the tracking code?
