@@ -24,13 +24,6 @@ class Pardot_API {
 	 */
 	const ROOT_URL = 'https://pi.pardot.com/api';
 
-    /**
-     * @const string The URL used to refresh the Salesforce OAUTH token
-     *
-     * @since 1.5.0
-     */
-	const OAUTH_URL = 'https://login.salesforce.com/services/oauth2/token';
-
 	/**
 	 * @const string The supported version of the Pardot API, this value is embedded into the API's URLs
 	 *
@@ -80,47 +73,12 @@ class Pardot_API {
 	 */
 	var $user_key;
 
-    /**
-     * @var string The type of authentication, either Pardot or SSO.
-     *
-     * @since 1.5.0
-     */
-    var $auth_type;
-
-    /**
-     * @var string A user-entered client ID.
-     *
-     * @since 1.5.0
-     */
-    var $client_id;
-
-    /**
-     * @var string A user-entered client secret.
-     *
-     * @since 1.5.0
-     */
-    var $client_secret;
-
-    /**
-     * @var string A user-entered business unit ID.
-     *
-     * @since 1.5.0
-     */
-    var $business_unit_id;
-
 	/**
-	 * @var string A key returned on authentication by Pardot or SSO
+	 * @var string A key returned on authentication by Pardot's API based on email, password and user_key.
 	 *
-	 * @since 1.5.0
+	 * @since 1.0.0
 	 */
 	var $api_key = false;
-
-    /**
-     * @var string A refresh token returned on authentication by SSO; used to get new api_key
-     *
-     * @since 1.5.0
-     */
-    var $refresh_token = false;
 
 	/**
 	 * @var boolean Used to flag the API for retry in case the api_key has expired.
@@ -143,7 +101,7 @@ class Pardot_API {
 	 * If more than one value is passed for $auth it will pass to set_auth() to save the auth parameters
 	 * into the object's same named properties.
 	 *
-	 * @param array $auth Values 'auth_type', 'email', 'password', 'user_key', 'client_id', 'client_secret', 'business_unit_id', and 'api_key' supported.
+	 * @param array $auth Values 'email', 'password', 'user_key' and 'api_key' supported.
 	 *
 	 * @since 1.0.0
 	 */
@@ -158,59 +116,20 @@ class Pardot_API {
 	 * The $auth parameters passed will be used to authenticate the login request.
 	 * If successful $this->api_key will be set.
 	 *
-	 * @param array $auth Values 'auth_type', 'email', 'password', 'user_key', 'client_id', 'client_secret', 'business_unit_id', and 'api_key' supported.
+	 * @param array $auth Values 'email', 'password', 'user_key' and 'api_key' supported.
 	 * @return string|bool An $api_key on success, false on failure.
 	 *
 	 * @since 1.0.0
 	 */
 	function authenticate( $auth = array() ) {
-		if ( count( $auth ) ) {
-            $this->set_auth($auth);
-        }
+		if ( count( $auth ) )
+			$this->set_auth( $auth );
 		$this->api_key = false;
-		if ( $this->auth_type == 'sso' && !$this->api_key && $this->refresh_token ) {
-            $this->api_key = $this->refresh_API_key($auth);
-        }
-		else if ( $response = $this->get_response( 'login', $auth, 'api_key' ) ) {
+		if ( $response = $this->get_response( 'login', $auth, 'api_key' ) ) {
 			$this->api_key = (string)$response->api_key;
 		};
 		return $this->api_key;
 	}
-
-    /**
-     * Calls Salesforce OAuth API to get a new API token from the refresh token
-     *
-     * @return string|bool And $api_key on success, false on failure
-     * @since 1.5.0
-     */
-    function refresh_API_key( $auth = array() ) {
-        $url = self::OAUTH_URL;
-        $body = array(
-            'grant_type' => 'refresh_token',
-            'client_id' => $this->client_id,
-            'client_secret' => Pardot_Settings::decrypt_or_original($this->client_secret),
-            'refresh_token' => $this->refresh_token,
-        );
-
-        $args = array(
-            'body'        => $body,
-            'timeout'     => '5',
-            'redirection' => '5',
-            'httpversion' => '1.0',
-            'blocking'    => true,
-            'headers'     => array("Content-type: application/json"),
-            'cookies'     => array(),
-        );
-
-        $response = wp_remote_post( $url, $args );
-
-        $response = json_decode(wp_remote_retrieve_body($response));
-
-        if ($response->{'access_token'}) {
-            return $response->{'access_token'};
-        }
-        return false;
-    }
 
 	/**
 	 * Determine is the API has authenticated.
@@ -224,7 +143,6 @@ class Pardot_API {
 	function is_authenticated() {
 		return ! empty( $this->api_key );
 	}
-
 	/**
 	 * Returns an array of campaign objects from Pardot's API
 	 *
@@ -432,7 +350,7 @@ class Pardot_API {
 	 *  - PARDOT_API_PASSWORD
 	 *  - PARDOT_API_USER_KEY
 	 *
-	 * @param array $auth Values 'auth_type', 'email', 'password', 'user_key', 'client_id', 'client_secret', 'business_unit_id', and 'api_key' supported.
+	 * @param array $auth Values 'email', 'password', 'user_key' and 'api_key' supported.
 	 * @return void
 	 *
 	 * @since 1.0.0
@@ -441,63 +359,36 @@ x	 */
 		/**
 		 * First clear all the auth values.
 		 */
-        $this->email = $this->password = $this->user_key = $this->api_key = $this->auth_type = $this->client_id = $this->client_secret = $this->business_unit_id = $this->refresh_token = null;
-		if ($auth['auth_type'] == 'pardot') {
-            if ( ! empty( $auth['email'] ) ) {
-                $this->email = $auth['email'];
-            } else if ( empty( $this->email ) && defined( 'PARDOT_API_EMAIL' ) ) {
-                $auth['email'] = PARDOT_API_EMAIL;
-            }
-            if ( ! empty( $auth['password'] ) ) {
-                $this->password = $auth['password'];
-            } else if ( empty( $this->password ) && defined( 'PARDOT_API_PASSWORD' )  ) {
-                $auth['password'] = PARDOT_API_PASSWORD;
-            }
-            if ( ! empty( $auth['user_key'] ) ) {
-                $this->user_key = $auth['user_key'];
-            } else if ( empty( $this->user_key ) && defined( 'PARDOT_API_USER_KEY' )  ) {
-                $auth['user_key'] = PARDOT_API_USER_KEY;
-            }
-        }
-		elseif ( $auth['auth_type'] == 'sso' ) {
-            if ( ! empty($auth['client_id'] ) ) {
-                $this->client_id = $auth['client_id'];
-            }
-            if ( ! empty($auth['client_secret'] ) ) {
-                $this->client_secret = $auth['client_secret'];
-            }
-            if ( ! empty($auth['business_unit_id'] ) ) {
-                $this->business_unit_id = $auth['business_unit_id'];
-            }
-        }
-
-		if ( ! empty( $auth['api_key'] ) ) {
-		    $this->api_key = $auth['api_key'];
+		$this->email = $this->password = $this->user_key = $this->api_key = null;
+		if ( ! empty( $auth['email'] ) ) {
+			$this->email = $auth['email'];
+		} else if ( empty( $this->email ) && defined( 'PARDOT_API_EMAIL' ) ) {
+			$auth['email'] = PARDOT_API_EMAIL;
 		}
-        if ( ! empty( $auth['auth_type'] ) ) {
-            $this->auth_type = $auth['auth_type'];
-        }
-        if ( ! empty( $auth['refresh_token'] ) ) {
-            $this->refresh_token = $auth['refresh_token'];
-        }
-
+		if ( ! empty( $auth['password'] ) ) {
+			$this->password = $auth['password'];
+		} else if ( empty( $this->password ) && defined( 'PARDOT_API_PASSWORD' )  ) {
+			$auth['password'] = PARDOT_API_PASSWORD;
+		}
+		if ( ! empty( $auth['user_key'] ) ) {
+			$this->user_key = $auth['user_key'];
+		} else if ( empty( $this->user_key ) && defined( 'PARDOT_API_USER_KEY' )  ) {
+			$auth['user_key'] = PARDOT_API_USER_KEY;
+		}
+		if ( ! empty( $auth['api_key'] ) ) {
+			$this->api_key = $auth['api_key'];
+		}
 	}
 
 	/**
 	 * Checks if this Pardot_API object has the necessary properties set for authentication.
 	 *
-	 * @return boolean Returns true if this object has 'client_id', 'client_secret', 'business_unit_id' when using SSO auth
-     *                 Returns true if this object has email, password and user_key properties when using Pardot auth
+	 * @return boolean Returns true if this object has email, password and user_key properties.
 	 *
 	 * @since 1.0.0
 x	 */
 	function has_auth() {
-	    if ( $this->auth_type == 'pardot' ) {
-            return ! empty( $this->email ) && ! empty( $this->password ) && ! empty( $this->user_key );
-        }
-	    elseif ( $this->auth_type == 'sso' ) {
-            return ! empty( $this->client_id ) && ! empty( $this->client_secret ) && ! empty( $this->business_unit_id );
-        }
+		return ! empty( $this->email ) && ! empty( $this->password ) && ! empty( $this->user_key );
 	}
 
 	/**
@@ -517,8 +408,9 @@ x	 */
 	 */
 	function get_response( $item_type, $args = array(), $property = 'result', $paged=1 ) {
 		$this->error = false;
+
 		if ( ! $this->has_auth() ) {
-			$this->error = 'Cannot authenticate. Missing credentials.';
+			$this->error = 'Cannot authenticate. No email, password or user_key assigned.';
 			return false;
 		}
 
@@ -526,58 +418,33 @@ x	 */
 			$this->authenticate( $args );
 		}
 
-        $http_response = null;
+		$args = array_merge( $args,
+			array(
+				'user_key' => $this->user_key,
+				'api_key' => $this->api_key,
+				// Here for Pardot root-level debugging only
+				//'act_as_user' => 'test@example.com',
+				'offset' => $paged > 1 ? ($paged-1)*200 : 0
+			)
+		);
 
-		if ($this->auth_type == 'pardot') {
-            if ( isset( $args['password'] ) ) {
-                $args['password'] = Pardot_Settings::decrypt_or_original( $args['password'] );
-            }
+		$http_response = wp_remote_post(
+			$this->_get_url( $item_type, $args ),
+			array_merge( array(
+				'timeout' 		=> '30',
+				'redirection'   => '5',
+				'method' 		=> 'POST',
+				'blocking'		=> true,
+				'compress'		=> false,
+				'decompress'	=> true,
+				'sslverify' 	=> false,
+				'body'          => $args
+			), $args )
+		);
 
-		    $body = array_merge( $args,
-			    array(
-				    'user_key' => $this->user_key,
-				    'api_key' => $this->api_key,
-				    // Here for Pardot root-level debugging only
-				    //'act_as_user' => 'test@example.com',
-				    'offset' => $paged > 1 ? ($paged-1)*200 : 0
-			    )
-		    );
-
-            $http_response = wp_remote_post(
-                $this->_get_url( $item_type, $args ),
-                array_merge( array(
-                    'timeout' 		=> '30',
-                    'redirection'   => '5',
-                    'method' 		=> 'POST',
-                    'blocking'		=> true,
-                    'compress'		=> false,
-                    'decompress'	=> true,
-                    'sslverify' 	=> false,
-                    'body'          => $body
-                ), $body )
-            );
+		if ( isset( $args['password'] ) ) {
+			$args['password'] = Pardot_Settings::decrypt_or_original( $args['password'] );
 		}
-
-        else if ($this->auth_type == 'sso') {
-            $headers = array(
-                'Authorization' => 'Bearer ' . $this->api_key,
-                'Pardot-Business-Unit-Id' => $this->business_unit_id,
-                'offset' => $paged > 1 ? ($paged - 1) * 200 : 0
-            );
-
-            $http_response = wp_remote_post(
-                $this->_get_url( $item_type, $args ), array(
-                    'timeout' 		=> '30',
-                    'redirection'   => '5',
-                    'method' 		=> 'POST',
-                    'blocking'		=> true,
-                    'compress'		=> false,
-                    'decompress'	=> true,
-                    'sslverify' 	=> false,
-                    'headers'       => $headers
-                )
-            );
-        }
 
 		$response = false;
 		if( wp_remote_retrieve_response_code( $http_response ) == 200 ) {
@@ -601,7 +468,7 @@ x	 */
 						$this->api_key_maybe_invalidated = true;
 						$auth['new_api_key'] = $args['new_api_key'];
 					}
-					if ( $this->authenticate( $auth ) && 'Daily API rate limit met.' !== $response->err && 'This API user lacks sufficient permissions for the requested operation' !== $response->err ) {
+                    			if ( $this->authenticate( $auth ) && 'Daily API rate limit met.' !== $response->err && 'This API user lacks sufficient permissions for the requested operation' !== $response->err ) {
 						/**
 						 * Try again after a successful authentication
 						*/
@@ -627,47 +494,23 @@ x	 */
 				}
 			}
 
-		} elseif ( wp_remote_retrieve_response_code( $http_response ) == 400 ){
-            $response = new SimpleXMLElement( wp_remote_retrieve_body( $http_response ) );
-            if ( $response->err == 'access_token is invalid, unknown, or malformed' ) {
-                $this->api_key = '';
-                $response = $this->get_response( $item_type, array(), $property, true );
-                if ( isset( $args['new_api_key'] ) && is_callable( $args['new_api_key'] ) ) {
-                    call_user_func($args['new_api_key'], $this->api_key);
-                }
-            }
-        }
-
-		return $response;
+		}
+	  return $response;
 	}
 
 	/**
 	 * Returns array of auth parameter based on the auth properties of this Pardot_API object
 	 *
-	 * @return array containing auth_type, client_id, client_secret, business_unit_id, and refresh_token when using SSO auth
-     *         array containing auth_type, email, password and user_key elements when using Pardot auth
+	 * @return array containing email, password and user_key elements.
 	 *
 	 * @since 1.0.0
 	 */
 	function get_auth() {
-	    if ( $this->auth_type == 'pardot' )
-
 		return array(
-		    'auth_type' => $this->auth_type,
 			'email' => $this->email,
 			'password' => $this->password,
 			'user_key' => $this->user_key,
 		);
-
-	    elseif ( $this->auth_type == 'sso' ) {
-            return array(
-                'auth_type' => $this->auth_type,
-                'client_id' => $this->client_id,
-                'client_secret' => $this->client_secret,
-                'business_unit_id' => $this->business_unit_id,
-                'refresh_token' => $this->refresh_token
-            );
-        }
 	}
 
 	/**
@@ -678,7 +521,7 @@ x	 */
 	 * it to evolve as needed assume the $item_type continues to be a central concept in the Pardot API.
 	 *
 	 * @param string $item_type Item type requested; 'account', 'form', 'campaign' and (special case) 'login' tested.
-	 * @param array $args Authorization values ('auth_type', 'email', 'password', 'user_key', 'client_id', 'client_secret', 'business_unit_id', and 'api_key') for 'login', nothing for the rest.
+	 * @param array $args Authorization values ('email','password','user_key') for 'login', nothing for the rest.
 	 * @return string Url for a valid API call.
 	 *
 	 * @since 1.0.0

@@ -69,19 +69,17 @@ class _Pardot_Forms_Shortcode_Popup {
 			$page_link = Pardot_Settings::get_admin_page_link( array( 'target'  => '_blank' ) );
 			$error_msg = __( 'It looks like your account isn\'t connected yet. Please configure your account credentials at your %s page.', 'pardot' );
 			$error_msg = sprintf( $error_msg, $page_link );
-			$close = __( 'Close', 'pardot');
 
-			ob_start();
+			ob_start(); ?>
 
-
-            $html .= <<<HTML
-				<p>{$error_msg}</p>
+				<p><?php echo $error_msg; ?></p>
 				<div class="mceActionPanel">
 					<div class="cancel-button">
-						<input type="button" id="close" name="close" value={$close} onclick="self.parent.tb_remove()">
+						<input type="button" id="cancel" name="cancel" value="{#cancel}">
 					</div>
-				</div> 
-HTML;
+				</div>
+			<?php
+
 			$html .= ob_get_clean();
 		}
 

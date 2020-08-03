@@ -1,11 +1,10 @@
 === Pardot ===
 Contributors: cliffseal, ModernTribe
 Donate link: http://pardot.com
-Tags: pardot, salesforce, marketing automation, forms, dynamic content, tracking, web tracking
+Tags: pardot, marketing automation, forms, dynamic content, tracking, web tracking
 Requires at least: 5.2
-Tested up to: 5.4.2
-Stable tag: 1.5.0
-Requires PHP: 7.0
+Tested up to: 5.3.2
+Stable tag: 1.4.13
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -17,23 +16,10 @@ Say hello to marketing automation simplicity! With a single login, your self-hos
 
 == Installation ==
 
-1. Upload `pardot-for-wordpress/trunk` to your `/wp-content/plugins/` directory or go to Plugins > Add New in your WordPress Admin area and search for Pardot.
-2. Activate the plugin through the 'Plugins' menu in WordPress.
-3. Go to Settings > Pardot Settings and authenticate with either Pardot or Salesforce SSO.
-4. Select your campaign (for tracking code usage).
-
-= Authenticating with Salesforce SSO =
-In order to use Salesforce SSO authentication, you **must** create a connected appliation for the plugin in your Salesforce org.
-
-1. Navigate to App Manager [here](https://login.salesforce.com/lightning/setup/NavigationMenus/home).
-2. One the top right, click the "New Connected App" button.
-3. The connected app name, API name, and contact email can be anything you want. Click the "Enable OAuth Settings" toggle.  The Callback URL is the link to your Pardot WordPress settings page (.../wp-admin/options-general.php?page=pardot).  Also, be sure to add "Access Pardot Services (pardot_api)" to your selected OAuth scopes.
-4. Save your connected application.
-5. A new page will appear with the "Consumer Key" and "Consumer Secret."  Copy those values and paste them into Pardot WordPress settings.
-6. Navigate to Pardot Account Setup using the link [here](https://login.salesforce.com/lightning/setup/PardotAccountSetup/home).  There, you can see the Business Unit IDs associated your organization.  Select which one you would like to use, and copy the ID into the Pardot WordPress settings.
-7. You should be be able to "Save Settings" in Pardot WordPress settings, then "Authenticate with Salesforce".  A popup will appear where you type in your Salesforce credentials.
-8. If all things went according to plan, you should see "Authentication Status" change from "Not Authenticated" to "Authenticated".
-
+1. Upload `pardot-for-wordpress` to your `/wp-content/plugins/` directory or go to Plugins > Add New in your WordPress Admin area and search for Pardot.
+1. Activate the plugin through the 'Plugins' menu in WordPress.
+1. Go to Settings > Pardot Settings to put in your email, password, and user key.
+1. Select your campaign (for tracking code usage).
 
 == Frequently Asked Questions ==
 
@@ -41,9 +27,9 @@ In order to use Salesforce SSO authentication, you **must** create a connected a
 
 Two simple shortcodes are available for use.
 
-**Form Shortcode**
+= Form Shortcode =
 
-	`[pardot-form id="{Form ID}" title="{Form Name}" class="" width="100%" height="500" querystring=""]`
+	[pardot-form id="{Form ID}" title="{Form Name}" class="" width="100%" height="500" querystring=""]
 
 Use `[pardot-form]` with at least the `id` parameter. For instance, `[pardot-form id="1" title="Title"]` renders my Pardot form with an ID of 1.
 
@@ -59,15 +45,15 @@ The `height` parameter will set the height of the iframe in pixels only. For exa
 
 The `querystring` parameter appends an arbitrary string to the end of the form's iframe source. This is helpful for passing data directly into the form. You can also do this with filters (see below).
 
-**Dynamic Content Shortcode**
+= Dynamic Content Shortcode =
 
-	`[pardot-dynamic-content id="{Dynamic Content ID}" default="{Non-JavaScript Content}"]`
+	[pardot-dynamic-content id="{Dynamic Content ID}" default="{Non-JavaScript Content}"]
 
 Use `[pardot-dynamic-content]` with at least the `id` parameter.
 
 The `default` parameter is used for accessibility. Whatever is placed here is wrapped in `<noscript>` tags and is shown only to users who have JavaScript disabled. By default, it will automatically be your "Default Content" as designated in Pardot. So,
 
-	`[pardot-dynamic-content id="1" default="My default content."]`
+	[pardot-dynamic-content id="1" default="My default content."]
 
 would render something like:
 
@@ -145,23 +131,14 @@ Filter the regular expression used to find URLs to be converted to https://go.pa
 == Screenshots ==
 
 1. Settings area
-1. Pardot button in the Classic Editor toolbar
+1. Pardot button in the Visual Editor toolbar
 1. Choose from any form or Dynamic Content
 1. Use forms in a widget
 1. Use dynamic content in a widget
-1. A form widget on a page
+1. A form widget (with corrected styling)
 1. A page can have two forms! Here, one is in the body and one in a widget.
 
 == Changelog ==
-
-= 1.5.0 =
-
-* Maintenance - Added Salesforce SSO authentication in preparation of Pardot authentication being discontinued in February 2021
-* Improvement - Added authentication status indicator to settings page
-* Improvement - Users no longer need to refresh the settings page after resetting settings
-* Fix - Admin notices no longer overlap the Pardot logo on the settings page
-* Fix - "#cancel" button on popup when not authenticated now closes popup (also changed name to more descriptive "Close")
-* Fix - PHP error no longer appears when initially adding widget
 
 = 1.4.13 =
 
@@ -216,139 +193,128 @@ Filter the regular expression used to find URLs to be converted to https://go.pa
 
 = 1.4.3 =
 
-* Fixes a more obscure bug that would cause the plugin to become unauthenticated
+Fixes a more obscure bug that would cause the plugin to become unauthenticated
 
 = 1.4.2 =
 
-* Fixes a bug that would cause the plugin to become unauthenticated
+Fixes a bug that would cause the plugin to become unauthenticated
 
 = 1.4.1 =
 
-* Allow connection with API v4
-* Improve regex for HTTPS and add filtering
+1. Allow connection with API v4
+1. Improve regex for HTTPS and add filtering
 
 = 1.4 =
 
-* Add HTTPS option
-* Add "querystring" parameter in shortcode
-* Allow embed code to be filtered
-* Change "Pardot Settings" link to "Pardot"
-* Update branding
-* Allow override for wp-load.php in various installation configurations
-* Fixes errant notice on 404 pages
+1. Add HTTPS option
+1. Add "querystring" parameter in shortcode
+1. Allow embed code to be filtered
+1. Change "Pardot Settings" link to "Pardot"
+1. Update branding
+1. Allow override for wp-load.php in various installation configurations
+1. Fixes errant notice on 404 pages
 
 = 1.3.10 =
 
-* Improve WordPress 3.9 compatibility (Tiny popup titles; update Chosen)
+Improve WordPress 3.9 compatibility (Tiny popup titles; update Chosen)
 
 = 1.3.9 =
 
-* Fixes a small bug with a JS library being called in the wrong place
+Fixes a small bug with a JS library being called in the wrong place
 
 = 1.3.8 =
 
-* Add Chosen selector to forms and dynamic content
-* Fix async DC bug
-* Enchance password authentication encoding
+1. Add Chosen selector to forms and dynamic content
+2. Fix async DC bug
+3. Enchance password authentication encoding
 
 = 1.3.7 =
 
-* Add Chosen selector to campaign settings
-* Fix authentication issue
+1. Add Chosen selector to campaign settings
+1. Fix authentication issue
 
 = 1.3.6 =
 
-* Adds support for 400+ campaigns, form, and dynamic content blocks
-* Updates branding
+1. Adds support for 400+ campaigns, form, and dynamic content blocks
+1. Updates branding
 
 = 1.3.5 =
 
-* Fixed a bug where pardotform class might be applied to closing iframe tag (thanks palpatine1976!)
-* Optimize code to remove some debug messages
-* Improve campaign retrieval for over 200 campaigns
+1. Fixed a bug where pardotform class might be applied to closing iframe tag (thanks palpatine1976!)
+1. Optimize code to remove some debug messages
+1. Improve campaign retrieval for over 200 campaigns
 
 = 1.3.4 =
 
-* Fixed a bug where tracking code might show the wrong ID.
+Fixed a bug where tracking code might show the wrong ID.
 
 = 1.3.3 =
 
-* Accounts for a minor API change in the tracking code
-* Adds support for 200+ campaigns
+1. Accounts for a minor API change in the tracking code
+1. Adds support for 200+ campaigns
 
 = 1.3.1 =
 
-* Fixed a bug with `shortcode_exists` fatal error
+Fixed a bug with `shortcode_exists` fatal error
 
 = 1.3.1 =
 
-* Fixed a bug with `has_shortcode` fatal error
+Fixed a bug with `has_shortcode` fatal error
 
 = 1.3 =
 
-* Use new asynchronous loading for Dynamic Content
+Use new asynchronous loading for Dynamic Content
 
 = 1.2 =
 
-* Added ability to specify height, width, and class on the form
-* Added class 'pardotform' to every iframe for easier styling
+1. Added ability to specify height, width, and class on the form
+1. Added class 'pardotform' to every iframe for easier styling
 
 = 1.1.5 =
 
-* Add some helpful links to the Reset Cache button
-* Minor UI tweaks
-* Updated the Pardot logos
-* Updated screenshots for 3.5
+1. Add some helpful links to the Reset Cache button
+2. Minor UI tweaks
+3. Updated the Pardot logos
+4. Updated screenshots for 3.5
 
 = 1.1.4 =
 
-* Fix TinyMCE modal bug when no forms or dynamic content is present
-* Support for 200+ forms and dynamic content items
-* Other minor checks
+1. Fix TinyMCE modal bug when no forms or dynamic content is present
+1. Support for 200+ forms and dynamic content items
+1. Other minor checks
 
 = 1.1.3 =
 
-* Checks for mcrypt and falls back safely if not (fixes blank admin screen bug)
+Checks for mcrypt and falls back safely if not (fixes blank admin screen bug)
 
 = 1.1.2 =
 
-* Clear cache when resetting all settings
-* Be more forgiving with login whitespace
-* Make some security improvements
+1. Clear cache when resetting all settings
+1. Be more forgiving with login whitespace
+1. Make some security improvements
 
 = 1.1.1 =
-
-* Make `<noscript>` default to Default Pardot Content
+Make `<noscript>` default to Default Pardot Content
 
 = 1.1.0 =
-
-* Added dynamic content shortcodes
-* Added title field to form widget
-* Added 'Reset Cache' option
+1. Added dynamic content shortcodes
+1. Added title field to form widget
+1. Added 'Reset Cache' option
 
 = 1.0.3 =
-
-* Added form caching for faster rendering and less requests
+Added form caching for faster rendering and less requests
 
 = 1.0.2 =
-
-* Fix a caching issue that was causing the most recently-used form to render on all posts/pages
-* Extended API cache timeout
+1. Fix a caching issue that was causing the most recently-used form to render on all posts/pages
+1. Extended API cache timeout
 
 = 1.0.1 =
-
-* Fix bug with form order in content
+Fix bug with form order in content
 
 = 1.0 =
-
-* Initial release.
+Initial release.
 
 == Upgrade Notice ==
-
-= 1.5.0 =
-
-* This release adds Salesforce SSO as an authentication option.  Pardot authentication is being discontinued in February 2021.  Please reauthenticate with Salesforce SSO before then.
-* Block Editor support has also been added.
 
 = 1.4.3 =
 
@@ -416,36 +382,29 @@ Fixes blank admin screen bug (by checking for mcrypt and falling back safely if 
 
 = 1.1.2 =
 
-* Clear cache when resetting all settings
-* Be more forgiving with login whitespace
+1. Clear cache when resetting all settings
+1. Be more forgiving with login whitespace
 
 = 1.1.1 =
-
 Make `<noscript>` default to Default Pardot Content
 
 = 1.1.0 =
-
-* Added dynamic content shortcodes
-* Added title field to form widget
-* Added 'Reset Cache' option
+1. Added dynamic content shortcodes
+1. Added title field to form widget
+1. Added 'Reset Cache' option
 
 = 1.0.3 =
-
 Added form caching for faster rendering and less requests
 
 = 1.0.2 =
-
-* Fix a caching issue that was causing the most recently-used form to render on all posts/pages
-* Extended API cache timeout
+1. Fix a caching issue that was causing the most recently-used form to render on all posts/pages
+1. Extended API cache timeout
 
 = 1.0.1 =
-
 Fix bug with form order in content
 
 = 1.0 =
-
 Initial release.der in content
 
 = 1.0 =
-
 Initial release.
