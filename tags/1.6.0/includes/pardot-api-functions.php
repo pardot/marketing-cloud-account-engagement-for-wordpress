@@ -4,7 +4,7 @@
  *
  * These functions call Pardot's API via Pardot_Plugin class which has a private static api property. These functions
  * will use an instantiated API if already exists for the current page load or it will create one. Also it will grab
- * the client_id, client_secret, business_unit_id, refresh_token, and api_key from 'pardot_settings' in wp_options or it will use auth if passed via
+ * the user, password, user_key and api_key from 'pardot_setttings' in wp_options or it will use auth if passed via
  * an $args parameter.
  *
  * @author Mike Schinkel <mike@newclarity.net>

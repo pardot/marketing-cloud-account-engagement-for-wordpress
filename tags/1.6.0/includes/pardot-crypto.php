@@ -81,7 +81,7 @@ class PardotCrypto
     {
         $data = explode('::', $ciphertext);
 
-        /* First determine the method used to encrypt the client_secret or refresh_token */
+        /* First determine the method used to encrypt the password */
         switch($data[0])
         {
             case 'NACL':
