@@ -348,7 +348,6 @@ Filter the regular expression used to find URLs to be converted to https://go.pa
 = 1.5.0 =
 
 * This release adds Salesforce SSO as an authentication option.  Pardot authentication is being discontinued in February 2021.  Please reauthenticate with Salesforce SSO before then.
-* Block Editor support has also been added.
 
 = 1.4.3 =
 

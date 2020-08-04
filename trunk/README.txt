@@ -4,7 +4,7 @@ Donate link: http://pardot.com
 Tags: pardot, salesforce, marketing automation, forms, dynamic content, tracking, web tracking
 Requires at least: 5.2
 Tested up to: 5.4.2
-Stable tag: 1.5.0
+Stable tag: 1.6.0
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -351,6 +351,10 @@ Filter the regular expression used to find URLs to be converted to https://go.pa
 * Initial release.
 
 == Upgrade Notice ==
+
+= 1.6.0 =
+
+* Support for the WordPress Block Editor has been added!
 
 = 1.5.0 =
 
