@@ -70,8 +70,6 @@ class Pardot_Settings {
         'campaign'          => '',
         'https'             => '',
         'submit'            => '',
-        'clearcache'        => '',
-        'reset'             => '',
     );
 
 	/**
@@ -166,7 +164,7 @@ class Pardot_Settings {
          * if it does then we need to determine if the password setting is correctly encrypted or needs to be re-encrypted
          */
         $optstring = get_option('pardot_settings', NULL);
-        if ($optstring['password'] != NULL)
+        if (isset($optstring['password']) && $optstring['password'] != NULL)
         {
             if ((substr($optstring['password'], 0, 6) !== "NACL::") and
                 (substr($optstring['password'], 0, 6) !== "OGCM::") and
@@ -468,9 +466,7 @@ HTML;
             }
 
             if ( isset($response->{'refresh_token'}) ) {
-                $refresh_token = $response->{'refresh_token'};
-                $refresh_token = self::pardot_encrypt( $refresh_token, true );
-                self::set_setting('refresh_token', $refresh_token);
+                self::set_setting('refresh_token', $response->{'refresh_token'});
             }
 
             // Error message to remind user that they should have enabled refresh_token scope for auto-reauth
@@ -479,8 +475,8 @@ HTML;
                 settings_errors('update_settings');
             }
 
-            // After using the code_verifier, we create a new one
-            $this->create_code_verifier();
+            // After using the code_verifier is used, delete it
+            delete_option(self::$CODE_VERIFIER);
         }
 
 		/**
@@ -525,8 +521,6 @@ HTML;
 			'campaign'  => [__( 'Campaign (for Tracking Code)', 'pardot' ), ''],
 			'https'     => [__( 'Use HTTPS?', 'pardot' ), ''],
 			'submit'    => '',
-			'clearcache'=> '',
-			'reset'     => '',
 		);
 
 		/**
@@ -573,6 +567,8 @@ HTML;
 			 * First time in, create an array with all expected keys and with empty string values.
 			 */
 			$empty_settings = array_fill_keys( array_keys( self::$FIELDS ), '' );
+			$empty_settings['api_key'] = '';
+			$empty_settings['refresh_token'] = '';
         }
 		return $empty_settings;
 	}
@@ -627,7 +623,21 @@ HTML;
             $dirty['client_secret'] = self::get_setting( 'client_secret' );
         }
 
-		/**
+        /**
+         * Use existing api_key if the setting has not been changed
+         */
+        if (empty($dirty['api_key'])) {
+            $dirty['api_key'] = self::get_setting( 'api_key' );
+        }
+
+        /**
+         * Use existing refresh_token if the setting has not been changed
+         */
+        if (empty($dirty['refresh_token'])) {
+            $dirty['refresh_token'] = self::get_setting( 'refresh_token' );
+        }
+
+        /**
 		 * Sanitize each of the fields values
 		 */
 		foreach( $clean as $name => $value ) {
@@ -639,8 +649,6 @@ HTML;
 		}
 
 		$clean['password'] = self::decrypt_or_original( $clean['password'] );
-        $clean['api_key'] = self::get_setting('api_key');
-        $clean['refresh_token'] = self::get_setting('refresh_token');
 
 		/**
 		 * Call the Pardot API to attempt to authenticate
@@ -674,7 +682,7 @@ HTML;
                 add_settings_error( self::$OPTION_GROUP, 'update_settings', $msg, 'error' );
             }
 
-		    self::get_api( false )->set_auth( $clean );
+		    self::get_api( $clean );
 
         } else {
 
@@ -692,7 +700,7 @@ HTML;
 		}
 
 		/**
-		 * Add a filter to remove the values of submit, reset buttons and to obscure the password from prying eyes.
+		 * Add a filter to encrypt credentials
 		 */
 		add_filter( 'pre_update_option_pardot_settings', array( $this, 'pre_update_option_pardot_settings' ), 10, 2 );
 
@@ -807,8 +815,6 @@ HTML;
 	 * @param array $old_options The settings as they were previously in the database.
 	 * @return mixed The settings after we removed 'submit', 'reset' and encoded 'password'
 	 *
-	 * @todo Do better than 'prying eyes' encryption.
-	 *
 	 * @since 1.0.0
 	 */
 	function pre_update_option_pardot_settings( $new_options, $old_options ) {
@@ -819,12 +825,6 @@ HTML;
 		remove_filter( 'pre_update_option_pardot_settings', array( $this, 'pre_update_option_pardot_settings' ) );
 
 		/**
-		 * Don't store the values of the submit and reset buttons into wp_options.
-		 */
-		unset( $new_options['submit'] );
-		unset( $new_options['reset'] );
-
-		/**
 		 * Trim whitespace
 		 */
 		$new_options['email']    = trim( $new_options['email'] );
@@ -833,23 +833,6 @@ HTML;
         $new_options['client_id'] = trim( $new_options['client_id'] );
         $new_options['client_secret'] = trim( $new_options['client_secret'] );
         $new_options['business_unit_id'] = trim( $new_options['business_unit_id'] );
-
-		/**
-		 * Add 'prying eyes' encryption for passsword.
-		 * Base64 won't stop a hacker if they get access to the database but will keep
-		 * end users from being able to see a valid password.
-		 */
-		if ($new_options['password'] != NULL) {
-            $new_options['password'] = self::pardot_encrypt($new_options['password'], true);
-        }
-
-        if ($new_options['client_secret'] != NULL) {
-            $new_options['client_secret'] = self::pardot_encrypt($new_options['client_secret'], true);
-        }
-
-        if ($new_options['refresh_token'] != NULL) {
-            $new_options['refresh_token'] = self::pardot_encrypt($new_options['refresh_token'], true);
-        }
 
 		return $new_options;
 	}
@@ -1219,47 +1202,18 @@ HTML;
 function resetSettingsClick() {
     if (confirm('{$msgResetConfirm}')) {
         alert("{$msgResetTrue}");
-        return true;
+        document.getElementById("resetSettings").click();
     }
-    return false;
 }
 </script>
 
-
 <input type="submit" class="button-primary" name="save" value="{$value}" /> 
 <input type="submit" class="button-secondary" name="clear" value="{$valuecache}" style="margin-left: 50px;" /> 
-<input onclick="resetSettingsClick()" type="submit" class="button-secondary" name="reset" value="{$valuereset}" />
+<div onclick="resetSettingsClick()" class="button-secondary">{$valuereset}</div>
+<input type="submit" name="reset" style="display: none" id="resetSettings"/>
+
 HTML;
         echo $html;
-    }
-
-    /**
-     * Displays the Reset button for the Settings API
-     *
-     * @since 1.0.0
-     */
-    function reset_field() {
-        $value = __( 'Reset All Settings', 'pardot' );
-        $msg = __( 'This will remove all your Pardot account information from the database. Click OK to proceed', 'pardot' );
-        $html =<<<HTML
-<input onclick="return confirm('{$msg}.');" type="submit" class="button-secondary" name="reset" value="{$value}" />
-HTML;
-        //echo $html;
-    }
-
-    /**
-     * Displays the Clear Cache button for the Settings API
-     *
-     * @since 1.1.0
-     */
-    function clearcache_field() {
-        $value = __( 'Clear Cache', 'pardot' );
-        $valuetwo = __( 'Reset All Settings', 'pardot' );
-        $msg = __( 'This will remove all your Pardot account information from the database. Click OK to proceed', 'pardot' );
-        $html =<<<HTML
-<input type="submit" class="button-secondary" name="clear" value="{$value}" /> <input onclick="return confirm('{$msg}.');" type="submit" class="button-secondary" name="reset" value="{$valuetwo}" />
-HTML;
-        //echo $html;
     }
 
 	/**
@@ -1361,8 +1315,6 @@ HTML;
 	 * @static
 	 * @return array List of settings
 	 *
-	 * @todo Improve the 'prying eyes' security over base64 encoding.
-	 *
 	 * @since 1.0.0
 	 */
 	static function get_settings() {
@@ -1385,6 +1337,24 @@ HTML;
 			if ( $decrypted_pass !== $settings['password'] && ctype_print($decrypted_pass) ) {
 				$settings['password'] = $decrypted_pass;
 			}
+        }
+
+        if ( isset( $settings['client_secret'] ) && ! empty( $settings['client_secret'] ) ) {
+
+            $decrypted_token= self::pardot_decrypt( $settings['client_secret'], 'pardot_key' );
+
+            if ( $decrypted_token !== $settings['client_secret'] && ctype_print($decrypted_token) ) {
+                $settings['client_secret'] = $decrypted_token;
+            }
+        }
+
+        if ( isset( $settings['api_key'] ) && ! empty( $settings['api_key'] ) ) {
+
+            $decrypted_token= self::pardot_decrypt( $settings['api_key'], 'pardot_key' );
+
+            if ( $decrypted_token !== $settings['api_key'] && ctype_print($decrypted_token) ) {
+                $settings['api_key'] = $decrypted_token;
+            }
         }
 
         if ( isset( $settings['refresh_token'] ) && ! empty( $settings['refresh_token'] ) ) {
@@ -1449,6 +1419,22 @@ HTML;
 		 * Assign the setting for this key its value
 		 */
 		$settings[ $key ] = $value;
+
+        if ($settings['password'] != NULL) {
+            $settings['password'] = self::pardot_encrypt($settings['password'], true);
+        }
+
+        if ($settings['client_secret'] != NULL) {
+            $settings['client_secret'] = self::pardot_encrypt($settings['client_secret'], true);
+        }
+
+        if ($settings['api_key'] != NULL) {
+            $settings['api_key'] = self::pardot_encrypt($settings['api_key'], true);
+        }
+
+        if ($settings['refresh_token'] != NULL) {
+            $settings['refresh_token'] = self::pardot_encrypt($settings['refresh_token'], true);
+        }
 
 		/**
 		 * Now update all the settings as a serialized array
@@ -1546,11 +1532,8 @@ HTML;
         /* Get the password from wp_settings and decrypt it using the _old_ method for decrypting... */
         $plaintext = Pardot_Settings::old_decrypt_or_original($pwd, 'pardot_key');
 
-        /* Re-encrypt the password properly with our new system */
-        $ciphertext = Pardot_Settings::pardot_encrypt($plaintext);
-
-        /* And stick it back in wp_settings */
-        Pardot_Settings::set_setting('password', $ciphertext);
+        /* And stick it back in wp_settings (it is encrypted when the setting is set) */
+        Pardot_Settings::set_setting('password', $plaintext);
     }
 
 
