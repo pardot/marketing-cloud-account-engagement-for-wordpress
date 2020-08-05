@@ -408,7 +408,7 @@ HTML;
      * @since 1.5.0
      */
     function create_code_verifier() {
-        $random = bin2hex(openssl_random_pseudo_bytes(32));
+        $random = wp_create_nonce();
         $verifier = self::base64url_encode(pack('H*', $random));
         update_option(self::$CODE_VERIFIER, $verifier);
     }
