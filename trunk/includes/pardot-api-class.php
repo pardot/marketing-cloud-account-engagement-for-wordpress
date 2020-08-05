@@ -518,12 +518,24 @@ x	 */
 
 		} elseif ( wp_remote_retrieve_response_code( $http_response ) == 400 ){
             $response = new SimpleXMLElement( wp_remote_retrieve_body( $http_response ) );
-            if ( $response->err == 'access_token is invalid, unknown, or malformed' ) {
+            if ( $response->err == 'access_token is invalid, unknown, or malformed' && ! $this->api_key_maybe_invalidated ) {
                 $this->api_key = '';
+                $this->api_key_maybe_invalidated = true;
                 $response = $this->get_response( $item_type, array(), $property, true );
                 if ( isset( $args['new_api_key'] ) && is_callable( $args['new_api_key'] ) ) {
                     call_user_func($args['new_api_key'], $this->api_key);
                 }
+                $this->api_key_maybe_invalidated = false;
+            }
+            elseif ($response->err == 'access_token is invalid, unknown, or malformed' && $this->api_key_maybe_invalidated) {
+                $this->error = 'Authentication failed.  Attempted to get a new access token, but authorization didn\'t work. Please reset settings and authorize again.';
+                $this->api_key_maybe_invalidated = false;
+                $response = false;
+            }
+            else {
+                $this->error = 'Authentication failed.  Please reset settings and try again (Error: ' . $response->err . ')';
+                $this->api_key_maybe_invalidated = false;
+                $response = false;
             }
         }
 
