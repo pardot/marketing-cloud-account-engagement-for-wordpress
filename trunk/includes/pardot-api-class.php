@@ -132,7 +132,10 @@ class Pardot_API {
         }
 		$this->api_key = false;
 		if ( !$this->api_key && $this->refresh_token ) {
-            $this->api_key = $this->refresh_API_key($auth);
+            $response = $this->refresh_API_key($auth);
+            if ($response) {
+                $this->api_key = $response;
+            }
         }
 		return $this->api_key;
 	}
@@ -148,7 +151,7 @@ class Pardot_API {
         $body = array(
             'grant_type' => 'refresh_token',
             'client_id' => $this->client_id,
-            'client_secret' => Pardot_Settings::decrypt_or_original($this->client_secret),
+            'client_secret' => $this->client_secret,
             'refresh_token' => $this->refresh_token,
         );
 
@@ -165,11 +168,10 @@ class Pardot_API {
         $response = wp_remote_post( $url, $args );
 
         $response = json_decode(wp_remote_retrieve_body($response));
-
-        if ($response->{'access_token'}) {
+        if (property_exists($response, 'access_token')) {
             return $response->{'access_token'};
         }
-        return false;
+        return null;
     }
 
 	/**
@@ -256,7 +258,9 @@ class Pardot_API {
 		$account = false;
 		if ( $response = $this->get_response( 'account', $args, 'account' ) ) {
 			$response = $this->SimpleXMLElement_to_stdClass( $response );
-			$account = $response->account;
+            if ( property_exists($response,'account') ) {
+                $account = $response->account;
+            }
 		};
 		return $account;
 	}
