@@ -427,6 +427,14 @@ HTML;
             return;
         }
 
+		/**
+         * Checks if authorization token request failed
+         */
+        if ( $error_description = isset($_GET['error_description']) ) {
+            add_settings_error(self::$OPTION_GROUP, 'update_settings', 'Failed to authenticate.  Please check your credentials again. (' . $error_description . ')', 'error');
+            settings_errors('update_settings');
+        }
+
         /**
          * Does not create new code verifier when 'code' query string present
          * First needs to verify the code challenge passed during the authorization code process
@@ -501,7 +509,17 @@ HTML;
 		    else {
                 self::set_setting('auth_type', 'sso');
             }
+        }
 
+        if ( self::is_authenticated() ) {
+            self::get_api(array())->get_account();
+
+            $api_error = $this->retrieve_api_error();
+
+            if ( ! empty( $api_error ) ) {
+                $msg = sprintf( esc_html_x( 'Error: %s', 'pardot' ), "<i>$api_error</i>" );
+                add_settings_error( self::$OPTION_GROUP, 'update_settings', $msg, 'error' );
+            }
         }
 
 		/**
