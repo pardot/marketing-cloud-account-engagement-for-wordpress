@@ -368,7 +368,11 @@ HTML;
             return;
         }
 
-		if (!get_option(self::$CODE_VERIFIER)) {
+        /**
+         * Does not create new code verifier when 'code' query string present
+         * First needs to verify the code challenge passed during the authorization code process
+         */
+		if ( ! isset($_GET['code']) ) {
             $this->create_code_verifier();
         }
 
