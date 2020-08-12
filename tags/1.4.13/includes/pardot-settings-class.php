@@ -11,19 +11,14 @@
  */
 class Pardot_Settings {
 	/**
+	 * @var string Help page on Pardot's website discussing this plugin.
+	 */
+	const HELP_URL = 'http://www.pardot.com/help/faqs/add-ons/wordpress-plugin';
+
+	/**
 	 * @var string Admin page on Pardot's website linked to an authenticated user's account.
 	 */
 	const ACCOUNT_URL = 'https://pi.pardot.com/account/user';
-
-    /**
-     * @var string Link to App Manager on Ligntning where users can create their connected app
-     */
-    const APP_MANAGER_URL = 'https://login.salesforce.com/lightning/setup/NavigationMenus/home';
-
-    /**
-     * @var string Link to the settings page on Lightning where users can find their business unit id
-     */
-    const BUSINESS_UNIT_ID_URL = 'https://login.salesforce.com/lightning/setup/PardotAccountSetup/home';
 
 	/**
 	 * @var string Admin page on Pardot's website that allows authenticated users to add forms to a campaign
@@ -46,8 +41,6 @@ class Pardot_Settings {
 	 */
 	private static $OPTION_GROUP = 'pardot_settings';
 
-	private static $CODE_VERIFIER = 'pardot-code-verifier';
-
 	/**
 	 * @var string Key for the Options Page and for the Settings API page.
 	 * Used as a const, defined as a var so it can be private.
@@ -58,19 +51,7 @@ class Pardot_Settings {
 	 * @var array Contain array of the fields for the Settings API.
 	 * Used as a const, defined as a var so it can be private.
 	 */
-	private static $FIELDS = array(
-        'auth_status'       => '',
-        'auth_type'         => '',
-        'email'             => '',
-        'password'          => '',
-        'user_key'          => '',
-        'client_id'         => '',
-        'client_secret'     => '',
-        'business_unit_id'  => '',
-        'campaign'          => '',
-        'https'             => '',
-        'submit'            => '',
-    );
+	private static $FIELDS = array();
 
 	/**
 	 * @var Pardot_Plugin Capture $this so that other can remove_action() if needed.
@@ -93,6 +74,12 @@ class Pardot_Settings {
 	 * @see https://core.trac.wordpress.org/ticket/21989
 	 */
 	private static $showed_auth_notice = false;
+
+	/**
+	 * @var boolean A flag to help combat a bug where settings-page admin notices show twice per submission.
+	 * @see https://core.trac.wordpress.org/ticket/21989
+	 */
+	private static $showed_reset_notice = false;
 
 	/**
 	 * Return the singleton instance of this class.
@@ -164,7 +151,7 @@ class Pardot_Settings {
          * if it does then we need to determine if the password setting is correctly encrypted or needs to be re-encrypted
          */
         $optstring = get_option('pardot_settings', NULL);
-        if (isset($optstring['password']) && $optstring['password'] != NULL)
+        if ($optstring !== NULL)
         {
             if ((substr($optstring['password'], 0, 6) !== "NACL::") and
                 (substr($optstring['password'], 0, 6) !== "OGCM::") and
@@ -227,12 +214,6 @@ class Pardot_Settings {
 			return;
 		}
 
-		if (self::is_authenticated() && self::get_setting('auth_type') == 'pardot') {
-            $msg = __( 'Pardot authentication is being discontinued in February 2021.  To update your authentication to Salesforce SSO, go to your %s.', 'pardot' );
-            $msg = sprintf( $msg, self::get_admin_page_link( array( 'link_text' => __( 'Pardot plugin settings', 'pardot' ) ) ) );
-            echo "<div class=\"updated\" style=\"border-left-color: #ffb900\"><p>{$msg}</p></div>";
-        }
-
 		if ( self::is_admin_page() ) {
 			/**
 			 * No need to ask them to visit the settings page if they are already here
@@ -268,109 +249,17 @@ class Pardot_Settings {
 	 * @since 1.0.0
 	 */
 	function admin_head() {
-        $code_challenge = self::base64url_encode(pack('H*', hash('sha256', get_option(self::$CODE_VERIFIER))));
-
-        $html =<<<HTML
+		$html =<<<HTML
 <style type="text/css">
 <!--
-#settings_page_pardot h2.pardot-title{padding:40px 10px; margin-bottom: 10px}
+#settings_page_pardot h2.pardot-title{padding:40px 10px;}
 #settings_page_pardot h2.pardot-title img{margin:-20px 10px 0 0;}
 #settings_page_pardot .success{color:green;}
 #settings_page_pardot .failure{color:red;}
 #settings_page_pardot .instructions{font-style:italic;}
-#settings_page_pardot .hidden{display: none;}
-#settings_page_pardot #sso-sign-in{width: 200px; margin-left: 20px}
 -->
 </style>
-<script>
-jQuery(document).ready(function(){jQuery("#campaign").chosen();});
-
-jQuery(document).ready(function($){
-    $('#auth-type').change(function() {      
-        if (this.value === 'pardot') {        
-            $('#email-wrap').parents().eq(1).show();
-            $('#password-wrap').parents().eq(1).show();  
-            $('#user-key-wrap').parents().eq(1).show();
-            $('#client-id-wrap').parents().eq(1).hide();
-            $('#client-secret-wrap').parents().eq(1).hide(); 
-            $('#business-unit-id-wrap').parents().eq(1).hide();
-            $('#sso-sign-in').hide();
-            
-        } else if (this.value === 'sso') {        
-            $('#email-wrap').parents().eq(1).hide();    
-            $('#password-wrap').parents().eq(1).hide();
-            $('#user-key-wrap').parents().eq(1).hide();
-            $('#client-id-wrap').parents().eq(1).show();
-            $('#client-secret-wrap').parents().eq(1).show(); 
-            $('#business-unit-id-wrap').parents().eq(1).show();
-            $('#sso-sign-in').show();
-        }
-    });
-
-});
-
-// Source: https://stackoverflow.com/a/27747377
-// dec2hex :: Integer -> String
-// i.e. 0-255 -> '00'-'ff'
-function dec2hex(dec) {
-  return dec < 10
-    ? '0' + String(dec)
-    : dec.toString(16);
-}
-
-// generateId :: Integer -> String
-function generateNonce(len) {
-  let arr = new Uint8Array((len || 40) / 2);
-  window.crypto.getRandomValues(arr);
-  return Array.from(arr, dec2hex).join('');
-}
-
-let nonce = false;
-
-function clickSubmit() {
-    nonce = generateNonce();
-    
-    let authSelect = document.getElementById("auth-type");
-    let authValue = authSelect.options[authSelect.selectedIndex].value;
-    let client_id = document.getElementById("client-id").value;
-    let sign_in_sso = document.getElementById("sso-sign-in");
-    if (authValue == 'sso') {
-        if (client_id) {
-            let url = "https://login.salesforce.com/services/oauth2/authorize?client_id=" + client_id + "&redirect_uri=" +
-                window.location.href.split('?')[0] + '?page=pardot' + "&response_type=code" + "&display=popup" + "&scope=refresh_token%20pardot_api" + 
-                "&state=" + nonce + "&code_challenge=" + '{$code_challenge}';
-            window.open(url, "Sign In with Salesforce", "height=800, width=400, left=" + sign_in_sso.getBoundingClientRect().right);
-        }
-        else {
-            alert("Please type in a valid Consumer Key.");
-        }
-    }
-}
-
-window.loginCallback = function(urlString) {
-    let url = new URL(urlString);
-    let returnedState = url.searchParams.get('state');
-    if (returnedState === nonce) {
-        url.searchParams.append('status', 'success');
-        window.location.replace(url);
-    }
-    else {
-        alert("Invalid state parameter returned.");
-    }
-};
-
-const urlParams = new URLSearchParams(window.location.search);
-const codeParam = urlParams.get('code');
-const statusParam = urlParams.get('status');
-
-if (codeParam && codeParam.length > 1 && !statusParam) {
-    
-    window.opener.loginCallback(window.location.href);
-    window.close();
-}
-
-</script>
-
+<script>jQuery(document).ready(function(){jQuery("#campaign").chosen();});</script>
 HTML;
 		echo $html;
 	}
@@ -387,31 +276,6 @@ HTML;
 		return self::get_api( $auth )->is_authenticated();
 	}
 
-    /**
-     * Encodes plain text into base64 for URLs
-     * @param $plainText
-     * @return string
-     *
-     * @since 1.5.0
-     */
-    function base64url_encode($plainText)
-    {
-        $base64 = base64_encode($plainText);
-        $base64 = trim($base64, "=");
-        $base64url = strtr($base64, '+/', '-_');
-        return ($base64url);
-    }
-
-    /**
-     * Saves a new code_verifier to WP Options
-     *
-     * @since 1.5.0
-     */
-    function create_code_verifier() {
-        $random = wp_create_nonce();
-        $verifier = self::base64url_encode(pack('H*', $random));
-        update_option(self::$CODE_VERIFIER, $verifier);
-    }
 
 	/**
 	 * Configure the settings page for the Pardot Plugin if we are currently on the settings page.
@@ -423,104 +287,31 @@ HTML;
 		/**
 		 * If we are not on the admin page for this plugin, bail.
 		 */
-		if ( ! self::is_admin_page() ) {
-            return;
-        }
+		if ( ! self::is_admin_page() )
+			return;
 
-		/**
-         * Checks if authorization token request failed
-         */
-        if ( $error_description = isset($_GET['error_description']) ) {
-            add_settings_error(self::$OPTION_GROUP, 'update_settings', 'Failed to authenticate.  Please check your credentials again. (' . $error_description . ')', 'error');
-            settings_errors('update_settings');
-        }
+		if (
+			isset( $_GET['reset_settings'] )
+			&& true == $_GET['reset_settings']
+			&& ! self::$showed_reset_notice
+		) {
 
-        /**
-         * Does not create new code verifier when 'code' query string present
-         * First needs to verify the code challenge passed during the authorization code process
-         */
-		if ( ! isset($_GET['code']) ) {
-            $this->create_code_verifier();
-        }
+			$notice = sprintf(
+				__( 'Settings have been reset! Please <a href="%s">click here to refresh this page</a> so you can re-configure your Pardot settings.', 'pardot' ),
+				admin_url( 'options-general.php?page=pardot' )
+			);
 
-		if (isset($_GET['code']) && isset($_GET['status']) && $_GET['status'] == 'success' && ! self::is_authenticated()) {
-            $url = 'https://login.salesforce.com/services/oauth2/token';
-            $body = array(
-                'grant_type' => 'authorization_code',
-                'code' => $_GET['code'],
-                'client_id' => self::get_setting('client_id'),
-                'client_secret' => self::decrypt_or_original(self::get_setting('client_secret')),
-                'redirect_uri' => 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'],
-                'code_verifier' => get_option(self::$CODE_VERIFIER),
-            );
+			add_settings_error( self::$OPTION_GROUP, 'reset_settings', $notice, 'updated' );
 
-            $args = array(
-                'body'        => $body,
-                'timeout'     => '5',
-                'redirection' => '5',
-                'httpversion' => '1.0',
-                'blocking'    => true,
-                'headers'     => array("Content-type: application/json"),
-                'cookies'     => array(),
-            );
-
-            $response = wp_remote_post( $url, $args );
-
-            $response = json_decode(wp_remote_retrieve_body($response));
-
-            if (isset($response->{'error'})) {
-                add_settings_error(self::$OPTION_GROUP, 'update_settings', 'Failed to authenticate!  Please check your credentials again. (' . $response->{'error'} . ':' . $response->{'error_description'} . ')', 'error');
-                settings_errors('update_settings');
-            }
-
-            if ( isset($response->{'access_token'}) ) {
-                self::set_setting('api_key', $response->{'access_token'});
-            }
-
-            if ( isset($response->{'refresh_token'}) ) {
-                self::set_setting('refresh_token', $response->{'refresh_token'});
-            }
-
-            // Error message to remind user that they should have enabled refresh_token scope for auto-reauth
-            else if ( $body['grant_type'] != 'refresh_token' && !isset($response->{'error'}) && !isset($response->{'refresh_token'}) ) {
-                add_settings_error( self::$OPTION_GROUP, 'update_settings', 'Make sure you enable the refresh_token scope if you want to be want to be reauthenticated automatically.', 'error' );
-                settings_errors('update_settings');
-            }
-
-            // After using the code_verifier is used, delete it
-            delete_option(self::$CODE_VERIFIER);
-        }
+			self::reset_settings();
+			self::$showed_reset_notice = true;
+		}
 
 		/**
 		 * Add CSS to the header.  Called with a priority of zero (0) this can be
 		 * overridden by other CSS.
 		 */
 		add_action( 'admin_head', array( $this, 'admin_head' ), 0 );
-
-        /**
-         * If the user is already authenticated with an an email (a.k.a. Pardot auth), set auth_type to pardot
-         * If user doesn't have any credentials save, default auth_type to sso
-         * This ensures seamless compatibility with upgrading users while encouraging new users to use sso
-         */
-		if (self::get_setting( 'auth_type' ) != 'sso' && self::get_setting( 'auth_type' ) != 'pardot') {
-		    if (self::get_setting('email')) {
-                self::set_setting('auth_type', 'pardot');
-            }
-		    else {
-                self::set_setting('auth_type', 'sso');
-            }
-        }
-
-        if ( self::is_authenticated() ) {
-            self::get_api(array())->get_account();
-
-            $api_error = $this->retrieve_api_error();
-
-            if ( ! empty( $api_error ) ) {
-                $msg = sprintf( esc_html_x( 'Error: %s', 'pardot' ), "<i>$api_error</i>" );
-                add_settings_error( self::$OPTION_GROUP, 'update_settings', $msg, 'error' );
-            }
-        }
 
 		/**
 		 * Add Chosen to Campaign Selector
@@ -532,21 +323,20 @@ HTML;
 		 * Define fields and their labels
 		 */
 		self::$FIELDS = array(
-		    'auth_status'=> [__( 'Authentication Status', 'pardot' ), ''],
-            'auth_type' => [__( 'Authentication Type', 'pardot' ), ''],
-			'email'     => [__( 'Email', 'pardot' ), ( self::get_setting( 'auth_type' ) === 'sso' ? array( 'class' => 'hidden' ) : array() )],
-			'password'  => [__( 'Password', 'pardot' ), ( self::get_setting( 'auth_type' ) === 'sso' ? array( 'class' => 'hidden' ) : array() )],
-			'user_key'  => [__( 'User Key', 'pardot' ), ( self::get_setting( 'auth_type' ) === 'sso' ? array( 'class' => 'hidden' ) : array() )],
-            'client_id'  => [__( 'Consumer Key', 'pardot' ), ( self::get_setting( 'auth_type' ) === 'pardot' ? array( 'class' => 'hidden' ) : array() )],
-            'client_secret'  => [__( 'Consumer Secret', 'pardot' ), ( self::get_setting( 'auth_type' ) === 'pardot' ? array( 'class' => 'hidden' ) : array() )],
-            'business_unit_id'  => [__( 'Business Unit ID', 'pardot' ), ( self::get_setting( 'auth_type' ) === 'pardot' ? array( 'class' => 'hidden' ) : array() )],
-			'campaign'  => [__( 'Campaign (for Tracking Code)', 'pardot' ), ''],
-			'https'     => [__( 'Use HTTPS?', 'pardot' ), ''],
+			'email'     => __( 'Email', 'pardot' ),
+			'password'  => __( 'Password', 'pardot' ),
+			'user_key'  => __( 'User Key', 'pardot' ),
+			'campaign'  => __( 'Campaign (for Tracking Code)', 'pardot' ),
+			'version'   => __( 'API Version', 'pardot' ),
+			'https'     => __( 'Use HTTPS?', 'pardot' ),
 			'submit'    => '',
+			'clearcache'=> '',
+			'reset'     => '',
+			'api_key'   => '',
 		);
 
 		/**
-		 * Register the settings page required by WordPress Settings API
+		 * Register the settings page  required by WordPress Settings API
 		 *
 		 * Include the fields we'll use and the field sanitization callback function.
 		 */
@@ -560,17 +350,8 @@ HTML;
 		/**
 		 * Add the setting fields required by WordPress Settings API.
 		 */
-		foreach( self::$FIELDS as $name => $arr ) {
-            $title = null;
-            if (isset($arr[0])) {
-                $title = $arr[0];
-            }
-		    $class = null;
-		    if (isset($arr[1])) {
-		        $class = $arr[1];
-            }
-
-			add_settings_field( $name, $title, array( $this, "{$name}_field" ), self::$PAGE, self::$OPTION_GROUP , $class);
+		foreach( self::$FIELDS as $name => $label ) {
+			add_settings_field( $name, $label, array( $this, "{$name}_field" ), self::$PAGE, self::$OPTION_GROUP );
 		}
     }
 
@@ -589,9 +370,7 @@ HTML;
 			 * First time in, create an array with all expected keys and with empty string values.
 			 */
 			$empty_settings = array_fill_keys( array_keys( self::$FIELDS ), '' );
-			$empty_settings['api_key'] = '';
-			$empty_settings['refresh_token'] = '';
-        }
+		}
 		return $empty_settings;
 	}
 
@@ -604,7 +383,8 @@ HTML;
 	 * @since 1.0.0
 	 */
 	function sanitize_fields( $dirty ) {
-        /**
+
+		/**
 		 * Nothing passed? Then nothing to sanitize.
 		 */
 		if ( empty( $dirty ) )  {
@@ -619,8 +399,12 @@ HTML;
 		$clean = self::get_empty_settings();
 
 		if ( isset( $_POST['reset'] ) ) {
-            self::reset_settings();
-			wp_safe_redirect( admin_url( 'options-general.php?page=pardot' )  );
+
+			$url = add_query_arg( array(
+				'reset_settings' => true
+			), admin_url( 'options-general.php?page=pardot' ) );
+
+			wp_safe_redirect( $url );
 			exit;
 		}
 
@@ -638,28 +422,7 @@ HTML;
             $dirty['password'] = self::get_setting( 'password' );
         }
 
-        /**
-         * Use existing client_secret if the setting has not been changed
-         */
-        if (empty($dirty['client_secret'])) {
-            $dirty['client_secret'] = self::get_setting( 'client_secret' );
-        }
-
-        /**
-         * Use existing api_key if the setting has not been changed
-         */
-        if (empty($dirty['api_key'])) {
-            $dirty['api_key'] = self::get_setting( 'api_key' );
-        }
-
-        /**
-         * Use existing refresh_token if the setting has not been changed
-         */
-        if (empty($dirty['refresh_token'])) {
-            $dirty['refresh_token'] = self::get_setting( 'refresh_token' );
-        }
-
-        /**
+		/**
 		 * Sanitize each of the fields values
 		 */
 		foreach( $clean as $name => $value ) {
@@ -672,10 +435,11 @@ HTML;
 
 		$clean['password'] = self::decrypt_or_original( $clean['password'] );
 
+
 		/**
 		 * Call the Pardot API to attempt to authenticate
 		 */
-		if ( $clean['auth_type'] == 'pardot' && ! $this->authenticate( $clean ) ) {
+		if ( ! $this->authenticate( $clean ) ) {
 
 			if ( ! self::$showed_auth_notice ) {
 				$msg = __( 'Cannot authenticate. Please check the fields below and click "Save Settings" again.', 'pardot' );
@@ -690,23 +454,8 @@ HTML;
 
 				self::$showed_auth_notice = true;
 			}
-		} elseif ($clean['auth_type'] == 'sso') {
-		    if (!$clean['client_id']) {
-                $msg = __( 'Please check the Consumer Key field below and click "Save Settings" again.', 'pardot' );
-                add_settings_error( self::$OPTION_GROUP, 'update_settings', $msg, 'error' );
-            }
-		    else if (!$clean['client_secret']) {
-                $msg = __( 'Please check the Consumer Secret field below and click "Save Settings" again.', 'pardot' );
-                add_settings_error( self::$OPTION_GROUP, 'update_settings', $msg, 'error' );
-            }
-		    else if (!$clean['business_unit_id']) {
-                $msg = __( 'Please check the Business Unit ID field below and click "Save Settings" again.', 'pardot' );
-                add_settings_error( self::$OPTION_GROUP, 'update_settings', $msg, 'error' );
-            }
 
-		    self::get_api( $clean );
-
-        } else {
+		} else {
 
 			if ( ! self::$showed_auth_notice ) {
 				$msg = __( 'Authentication successful. Settings saved.', 'pardot' );
@@ -722,7 +471,7 @@ HTML;
 		}
 
 		/**
-		 * Add a filter to encrypt credentials
+		 * Add a filter to remove the values of submit, reset buttons and to obscure the password from prying eyes.
 		 */
 		add_filter( 'pre_update_option_pardot_settings', array( $this, 'pre_update_option_pardot_settings' ), 10, 2 );
 
@@ -789,7 +538,7 @@ HTML;
 
 			/**
 			 * If $auth array contains at least one value, set auth.
-			 * If not empty, it likely has credentials, maybe api_key
+			 * If not empty, it's likely to have email and password and user_key, maybe api_key.
 			 */
 			if ( count( $auth ) )
 				self::$api->set_auth( $auth );
@@ -800,11 +549,11 @@ HTML;
 	/**
 	 * Extract the auth args from the passed array.
 	 *
-	 * @param array $auth Values 'auth_type', 'email', 'password', 'user_key', 'client_id', 'client_secret', 'business_unit_id', 'refresh_token', and 'api_key' supported.
-	 * @return array Contains 'auth_type', 'email', 'password', 'user_key', 'client_id', 'client_secret', 'business_unit_id','refresh_token' and 'api_key' if they existing as keys in $auth.
+	 * @param array $auth Values 'email', 'password', 'user_key' and 'api_key' supported.
+	 * @return array Contains just 'email', 'password', 'user_key', 'api_key' if they existing as keys in $auth.
 	 */
 	static function extract_auth_args( $auth = array() ) {
-		return array_intersect_key( $auth, array_flip( array( 'auth_type', 'email', 'password', 'user_key', 'api_key', 'client_id', 'client_secret', 'business_unit_id', 'refresh_token') ) );
+		return array_intersect_key( $auth, array_flip( array( 'email', 'password', 'user_key', 'api_key' ) ) );
 	}
 
 	/**
@@ -821,7 +570,7 @@ HTML;
 	/**
 	 * Call the Pardot API to authenticate based on credentials provided by the user.
 	 *
-	 * @param array $auth Values 'auth_type', 'email', 'password', 'user_key', 'client_id', 'client_secret', 'business_unit_id', 'refresh_token', and 'api_key' supported.
+	 * @param array $auth Values 'email', 'password', 'user_key' and 'api_key' supported.
 	 * @return bool|string API Key if authenticated, false if not.
 	 *
 	 * @since 1.0.0
@@ -837,6 +586,8 @@ HTML;
 	 * @param array $old_options The settings as they were previously in the database.
 	 * @return mixed The settings after we removed 'submit', 'reset' and encoded 'password'
 	 *
+	 * @todo Do better than 'prying eyes' encryption.
+	 *
 	 * @since 1.0.0
 	 */
 	function pre_update_option_pardot_settings( $new_options, $old_options ) {
@@ -847,14 +598,24 @@ HTML;
 		remove_filter( 'pre_update_option_pardot_settings', array( $this, 'pre_update_option_pardot_settings' ) );
 
 		/**
+		 * Don't store the values of the submit and reset buttons into wp_options.
+		 */
+		unset( $new_options['submit'] );
+		unset( $new_options['reset'] );
+
+		/**
 		 * Trim whitespace
 		 */
 		$new_options['email']    = trim( $new_options['email'] );
 		$new_options['password'] = trim( $new_options['password'] );
 		$new_options['user_key'] = trim( $new_options['user_key'] );
-        $new_options['client_id'] = trim( $new_options['client_id'] );
-        $new_options['client_secret'] = trim( $new_options['client_secret'] );
-        $new_options['business_unit_id'] = trim( $new_options['business_unit_id'] );
+
+		/**
+		 * Add 'prying eyes' encryption for passsword.
+		 * Base64 won't stop a hacker if they get access to the database but will keep
+		 * endusers from being able to see a valid password.
+		 */
+		$new_options['password'] = self::pardot_encrypt( $new_options['password'], true );
 
 		return $new_options;
 	}
@@ -939,78 +700,7 @@ HTML;
 		return self::$OPTION_GROUP  . "[{$field_name}]";
 	}
 
-    /**
-     * Displays authentication status
-     *
-     * @since 1.5.0
-     */
-	function auth_status_field() {
-	    if (self::is_authenticated() && self::get_api(array())->get_account()) {
-	        if ( self::get_setting('auth_type') == 'sso' ) {
-                $message = __('Authenticated with Salesforce SSO', 'pardot');
-                $buttonValue = __( 'Re-authenticate with Salesforce', 'pardot' );
-                $html =<<<HTML
-<div id="auth-status-wrap" class="success">
-{$message}
-<input id="sso-sign-in" class="button-primary" name="sso-sign-in" style="width: 217px" value="{$buttonValue}" onclick="clickSubmit()"/>
-</div>
-HTML;
-            }
-	        else {
-                $message = __('Authenticated with Pardot', 'pardot');
-                $html =<<<HTML
-<div id="auth-status-wrap" class="success">
-{$message}
-</div>
-HTML;
-            }
-        }
-	    else {
-            $message = __('Not Authenticated', 'pardot');
-            if ( self::get_setting('auth_type') == 'sso' && self::get_setting('client_id')
-                    && self::get_setting('client_secret') && self::get_setting('business_unit_id' )) {
-                $buttonValue = __( 'Authenticate with Salesforce', 'pardot' );
-                $html =<<<HTML
-<div id="auth-status-wrap" class="failure">
-{$message}
-<input id="sso-sign-in" class="button-primary" name="sso-sign-in" value="{$buttonValue}" onclick="clickSubmit()"/>
-</div>
-HTML;
-            }
-            else {
-                $html =<<<HTML
-<div id="auth-status-wrap" class="failure">{$message}</div>
-HTML;
-            }
-        }
-        echo $html;
-    }
-
-    /**
-     * Displays the API Type (Pardot or Salesforce) drop-down field for the Settings API
-     *
-     * @since 1.5.0
-     */
-    function auth_type_field() {
-        $auth_type = self::get_setting( 'auth_type' );
-        $html_name = $this->_get_html_name( 'auth_type' );
-        $html = '<div id="auth-type-wrap"><select id="auth-type" name="' . $html_name . '">';
-        $html .= '<option';
-        if ( $auth_type === 'pardot' ) {
-            $html .= ' selected="selected"';
-        }
-        $html .= ' value="pardot">Pardot</option>';
-        $html .= '<option';
-        if ( $auth_type === 'sso' ) {
-            $html .= ' selected="selected"';
-        }
-        $html .= ' value="sso">Salesforce SSO</option>';
-        $html .= '</select></div>';
-        echo $html;
-    }
-
-
-    /**
+	/**
 	 * Displays the Email field for the Settings API
 	 *
 	 * @since 1.0.0
@@ -1026,74 +716,6 @@ HTML;
 		echo $html;
 	}
 
-    /**
-     * Displays the Consumer Key field for the Settings API
-     *
-     * @since 1.5.0
-     */
-    function client_id_field() {
-        $client_id = self::get_setting( 'client_id' );
-        $html_name = $this->_get_html_name( 'client_id' );
-        $msg = __( 'Consumer Key and Consumer Secret are obtained after creating a connected app in <a href="%s" target="_blank">App Manager</a>.', 'pardot' );
-        $msg = sprintf( $msg, self::APP_MANAGER_URL );
-
-        $html =<<<HTML
-<div id="client-id-wrap">
-	<input type="text" size="30" id="client-id" name="{$html_name}" value="{$client_id}" />
-	<p>{$msg}</p>
-</div>
-HTML;
-        echo $html;
-    }
-
-    /**
-     * Displays the Consumer Secret field for the Settings API
-     *
-     * @since 1.5.0
-     */
-    function client_secret_field() {
-        /**
-         * Grab the length of the real password and turn it into a placeholder string that looks like it is filled
-         * in whenever a password is set.
-         */
-        $secretLength = strlen(self::get_setting( 'client_secret' ));
-
-        /**
-         * Set password length to some arbitrary amount iff there is a set password already so that it shows that the
-         * password is set already without disclosing the exact number of characters in the password
-         */
-        $secretLength = $secretLength > 0 ? 64 : 0;
-        $secretPlaceholder = str_repeat("&#8226;", $secretLength);
-
-        $html_name = $this->_get_html_name( 'client_secret' );
-        $html =<<<HTML
-<div id="client-secret-wrap">
-	<input type="password" size="30" id="client-secret" name="{$html_name}" placeholder="{$secretPlaceholder}" />
-</div>
-HTML;
-        echo $html;
-    }
-
-    /**
-     * Displays the Business Unit ID Secret field for the Settings API
-     *
-     * @since 1.5.0
-     */
-    function business_unit_id_field() {
-        $business_unit_id = self::get_setting( 'business_unit_id' );
-        $html_name = $this->_get_html_name( 'business_unit_id' );
-        $msg = __( 'Find your Pardot Business Unit ID in <a href="%s" target="_blank">Pardot Account Setup</a>.', 'pardot' );
-		$msg = sprintf( $msg, self::BUSINESS_UNIT_ID_URL );
-
-        $html =<<<HTML
-<div id="business-unit-id-wrap">
-	<input type="text" size="30" id="business-unit-id" name="{$html_name}" value="{$business_unit_id}" />
-	<p>{$msg}</p>
-</div>
-HTML;
-        echo $html;
-    }
-
 	/**
 	 * Displays the Password field for the Settings API
 	 *
@@ -1105,13 +727,12 @@ HTML;
          * in whenever a password is set.
          */
         $passwordLength = strlen(self::get_setting( 'password' ));
-
         /**
          * Set password length to some arbitrary amount iff there is a set password already so that it shows that the
          * password is set already without disclosing the exact number of characters in the password
          */
         $passwordLength = $passwordLength > 0 ? 11 : 0;
-        $passwordPlaceholder = str_repeat("&#8226;", $passwordLength);
+        $passwordPlaceholder = str_repeat("&#9679;", $passwordLength);
 
 		$html_name = $this->_get_html_name( 'password' );
 $html =<<<HTML
@@ -1139,6 +760,19 @@ $html =<<<HTML
 HTML;
 		echo $html;
 	}
+	/**
+	 * Displays the hidden API Key field for the Settings API
+	 *
+	 * @since 1.0.0
+	 */
+	function api_key_field() {
+		$api_key = self::get_setting( 'api_key' );
+		$html_name = $this->_get_html_name( 'api_key' );
+$html =<<<HTML
+<input type="hidden" id="api-key" name="{$html_name}" value="{$api_key}" />
+HTML;
+		echo $html;
+	}
 
 	/**
 	 * Displays the Campaign drop-down field for the Settings API
@@ -1146,15 +780,7 @@ HTML;
 	 * @since 1.0.0
 	 */
 	function campaign_field() {
-
-	    $campaigns = null;
-
-        if ( ! self::get_setting('api_key') ) {
-            $campaigns = false;
-        }
-        else {
-            $campaigns = Pardot_Plugin::get_campaigns();
-        }
+		$campaigns = Pardot_Plugin::get_campaigns();
 
 		if ( ! $campaigns ) {
 			$msg = __( 'These will show up once you\'re connected.', 'pardot' );
@@ -1192,6 +818,29 @@ HTML;
 	}
 
 	/**
+	 * Displays the API Version drop-down field for the Settings API
+	 *
+	 * @since 1.4.1
+	 */
+	function version_field() {
+		$version = self::get_setting( 'version' );
+		$html_name = $this->_get_html_name( 'version' );
+		$html = '<div id="version-wrap"><select id="version" name="' . $html_name . '">';
+		$html .= '<option';
+		if ( $version === '3' ) {
+			$html .= ' selected="selected"';
+		}
+		$html .= ' value="3">3</option>';
+		$html .= '<option';
+		if ( $version === '4' ) {
+			$html .= ' selected="selected"';
+		}
+		$html .= ' value="4">4</option>';
+		$html .= '</select></div>';
+		echo $html;
+	}
+
+	/**
 	 * Displays the HTTPS-only checkbox for the Settings API
 	 *
 	 * @since 1.4
@@ -1208,35 +857,50 @@ HTML;
 		echo $html;
 	}
 
-    /**
-     * Displays the Submit button for the Settings API
-     *
-     * @since 1.0.0
-     */
-    function submit_field() {
-        $value      = __( 'Save Settings', 'pardot' );
-        $valuecache = __( 'Clear Cache', 'pardot' );
-        $valuereset = __( 'Reset All Settings', 'pardot' );
-        $msgResetConfirm = __( 'This will remove all your Pardot account information from the database. Click OK to proceed.', 'pardot' );
-        $msgResetTrue    = __( 'Your Pardot settings have been reset.', 'pardot' );
-        $html =<<<HTML
-<script>
-function resetSettingsClick() {
-    if (confirm('{$msgResetConfirm}')) {
-        alert("{$msgResetTrue}");
-        document.getElementById("resetSettings").click();
-    }
-}
-</script>
-
-<input type="submit" class="button-primary" name="save" value="{$value}" /> 
-<input type="submit" class="button-secondary" name="clear" value="{$valuecache}" style="margin-left: 50px;" /> 
-<div onclick="resetSettingsClick()" class="button-secondary">{$valuereset}</div>
-<input type="submit" name="reset" style="display: none" id="resetSettings"/>
-
+	/**
+	 * Displays the Submit button for the Settings API
+	 *
+	 * @since 1.0.0
+	 */
+	function submit_field() {
+		$value      = __( 'Save Settings', 'pardot' );
+		$valuecache = __( 'Clear Cache', 'pardot' );
+		$valuereset = __( 'Reset All Settings', 'pardot' );
+		$msgreset   = __( 'This will remove all your Pardot account information from the database. Click OK to proceed', 'pardot' );
+		$html =<<<HTML
+<input type="submit" class="button-primary" name="save" value="{$value}" /> <input type="submit" class="button-secondary" name="clear" value="{$valuecache}" style="margin-left: 50px;" /> <input onclick="return confirm('{$msgreset}.');" type="submit" class="button-secondary" name="reset" value="{$valuereset}" />
 HTML;
-        echo $html;
-    }
+		echo $html;
+	}
+
+	/**
+	 * Displays the Reset button for the Settings API
+	 *
+	 * @since 1.0.0
+	 */
+	function reset_field() {
+		$value = __( 'Reset All Settings', 'pardot' );
+		$msg = __( 'This will remove all your Pardot account information from the database. Click OK to proceed', 'pardot' );
+		$html =<<<HTML
+<input onclick="return confirm('{$msg}.');" type="submit" class="button-secondary" name="reset" value="{$value}" />
+HTML;
+		//echo $html;
+	}
+
+	/**
+	 * Displays the Clear Cache button for the Settings API
+	 *
+	 * @since 1.1.0
+	 */
+	function clearcache_field() {
+		$value = __( 'Clear Cache', 'pardot' );
+		$valuetwo = __( 'Reset All Settings', 'pardot' );
+		$msg = __( 'This will remove all your Pardot account information from the database. Click OK to proceed', 'pardot' );
+		$html =<<<HTML
+<input type="submit" class="button-secondary" name="clear" value="{$value}" /> <input onclick="return confirm('{$msg}.');" type="submit" class="button-secondary" name="reset" value="{$valuetwo}" />
+HTML;
+		//echo $html;
+	}
 
 	/**
 	 * Encrypts with a bit more complexity
@@ -1337,6 +1001,8 @@ HTML;
 	 * @static
 	 * @return array List of settings
 	 *
+	 * @todo Improve the 'prying eyes' security over base64 encoding.
+	 *
 	 * @since 1.0.0
 	 */
 	static function get_settings() {
@@ -1359,33 +1025,7 @@ HTML;
 			if ( $decrypted_pass !== $settings['password'] && ctype_print($decrypted_pass) ) {
 				$settings['password'] = $decrypted_pass;
 			}
-        }
 
-        if ( isset( $settings['client_secret'] ) && ! empty( $settings['client_secret'] ) ) {
-
-            $decrypted_token= self::pardot_decrypt( $settings['client_secret'], 'pardot_key' );
-
-            if ( $decrypted_token !== $settings['client_secret'] && ctype_print($decrypted_token) ) {
-                $settings['client_secret'] = $decrypted_token;
-            }
-        }
-
-        if ( isset( $settings['api_key'] ) && ! empty( $settings['api_key'] ) ) {
-
-            $decrypted_token= self::pardot_decrypt( $settings['api_key'], 'pardot_key' );
-
-            if ( $decrypted_token !== $settings['api_key'] && ctype_print($decrypted_token) ) {
-                $settings['api_key'] = $decrypted_token;
-            }
-        }
-
-        if ( isset( $settings['refresh_token'] ) && ! empty( $settings['refresh_token'] ) ) {
-
-            $decrypted_token= self::pardot_decrypt( $settings['refresh_token'], 'pardot_key' );
-
-            if ( $decrypted_token !== $settings['refresh_token'] && ctype_print($decrypted_token) ) {
-                $settings['refresh_token'] = $decrypted_token;
-            }
         }
 
 		/**
@@ -1441,22 +1081,6 @@ HTML;
 		 * Assign the setting for this key its value
 		 */
 		$settings[ $key ] = $value;
-
-        if ($settings['password'] != NULL) {
-            $settings['password'] = self::pardot_encrypt($settings['password'], true);
-        }
-
-        if ($settings['client_secret'] != NULL) {
-            $settings['client_secret'] = self::pardot_encrypt($settings['client_secret'], true);
-        }
-
-        if ($settings['api_key'] != NULL) {
-            $settings['api_key'] = self::pardot_encrypt($settings['api_key'], true);
-        }
-
-        if ($settings['refresh_token'] != NULL) {
-            $settings['refresh_token'] = self::pardot_encrypt($settings['refresh_token'], true);
-        }
 
 		/**
 		 * Now update all the settings as a serialized array
@@ -1520,7 +1144,6 @@ HTML;
 
 		$main_options = array(
 			self::$OPTION_GROUP,
-			self::$CODE_VERIFIER,
 			'_pardot_cache_keys',
 			'_pardot_transient_keys',
 			'widget_pardot-dynamic-content',
@@ -1554,8 +1177,11 @@ HTML;
         /* Get the password from wp_settings and decrypt it using the _old_ method for decrypting... */
         $plaintext = Pardot_Settings::old_decrypt_or_original($pwd, 'pardot_key');
 
-        /* And stick it back in wp_settings (it is encrypted when the setting is set) */
-        Pardot_Settings::set_setting('password', $plaintext);
+        /* Re-encrypt the password properly with our new system */
+        $ciphertext = Pardot_Settings::pardot_encrypt($plaintext);
+
+        /* And stick it back in wp_settings */
+        Pardot_Settings::set_setting('password', $ciphertext);
     }
 
 

@@ -230,10 +230,7 @@ CSS;
 		/**
 		 * Grab form_id from the instance that we set in $this->update() and use it to grab the HTML for this Pardot Form.
 		 */
-		$body_html = '<h4>Please select a Pardot form.</h4>';
-		if ( isset($instance['form_id']) ) {
-            $body_html = Pardot_Plugin::get_form_body( $instance );
-        }
+		$body_html = Pardot_Plugin::get_form_body( $instance );
 
 		/**
 		 * After all that if the $body_html is not empty, we can use it as a form.
@@ -401,6 +398,23 @@ HTML;
 			 */
 			$prompt = __( 'Select Form:', 'pardot' );
 
+			/**
+			 * Create link text for the help link
+			 */
+			$help_link_text = __( 'helpful Knowledge Base article', 'pardot' );
+
+			/**
+			 * Merge the link and help text link into a help link.
+			 */
+			$help_link = sprintf( '<a href="%s" target="_blank">%s</a>', Pardot_Settings::HELP_URL, $help_link_text );
+
+			/**
+			 * Create a variable for help text to be used in the HEREDOC
+			 * Add the link into the help text.
+			 */
+			$help_text = __( 'If some of your form is cut off or the styling isn\'t quite right, please read our %s.', 'pardot' );
+			$help_text = sprintf( $help_text, $help_link );
+
             /**
              * Create a variable for parameters helper text.
              */
@@ -459,6 +473,7 @@ HTML;
 		
 		
 		$html .= <<<HTML
+<p><small>{$help_text}</small></p>
 <p><small>{$cache_text}</small></p>
 HTML;
 		
@@ -599,10 +614,7 @@ class Pardot_Dynamic_Content_Widget extends WP_Widget {
 		/**
 		 * Grab form_id from the instance that we set in $this->update() and use it to grab the HTML for this Pardot Form.
 		 */
-		$body_html = '<h4>Please select Pardot dynamic content.</h4>';
-		if ( isset($instance['dynamicContent_id']) ) {
-            $body_html = Pardot_Plugin::get_dynamic_content_body( $instance );
-        }
+		$body_html = Pardot_Plugin::get_dynamic_content_body( $instance );
 
         wp_register_script( 'pddc', plugins_url( 'js/asyncdc.min.js' , dirname(__FILE__) ), array('jquery'), false, true);
         wp_enqueue_script( 'pddc' );
