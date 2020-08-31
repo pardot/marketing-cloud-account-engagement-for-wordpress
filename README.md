@@ -15,19 +15,18 @@ Say hello to marketing automation simplicity! With a single login, your self-hos
 ### Authenticating with Salesforce SSO
 In order to use Salesforce SSO authentication, you **must** create a connected appliation for the plugin in your Salesforce org.  
 
-1. Navigate to App Manager [here](https://login.salesforce.com/lightning/setup/NavigationMenus/home).  
-1. On the top right, click the "New Connected App" button.  
-1. Enter an app name, API name, and contact email of your choice. 
-1. Click the “Enable OAuth Settings” toggle. 
-1. Enter a Callback URL to allow Salesforce to redirect users back to your Pardot plugin settings page. The URL should look similar to: https://[YourWordpressDomainHere]/wp-admin/options-general.php?page=pardot
-1. Add “Access Pardot Services (pardot_api)” to your selected OAuth scopes.
-1. Save your connected application.
-1. A new page will appear with the “Consumer Key” and “Consumer Secret.” Copy those values and paste them into Pardot WordPress settings.
-1. Locate the Pardot Business Unit ID. To find the Pardot Business Unit ID, use Setup in Salesforce. From Setup, enter "Pardot Account Setup" in the Quick Find box. Your Pardot Business Unit ID begins with "0Uv" and is 18 characters long. If you cannot access the Pardot Account Setup information, ask your Salesforce Administrator to provide you with the Pardot Business Unit ID. 
-1. Select the appropriate Business Unit ID. Copy and paste the ID into the Pardot WordPress settings.
-1. Click “Save Settings” in the Pardot plugin settings, then “Authenticate with Salesforce”. Enter your Salesforce credentials in the popup that appears. 
+1. Navigate to [App Manager](https://login.salesforce.com/lightning/setup/NavigationMenus/home).  
+1. On the top right, click the "New Connected App" button.
+1. Enter an app name, API name, and contact email of your choice.
+1. Click the "Enable OAuth Settings" toggle.
+1. Enter a Callback URL to allow Salesforce to redirect users back to your Pardot plugin settings page. The URL should look similar to: `https://[YourWordpressDomainHere]/wp-admin/options-general.php?page=pardot`.
+1. Add "Access Pardot Services (pardot_api)" and "Perform requests on your behalf at any time (refresh_token, offline_access)" to your selected OAuth scopes.
+1. Save your connected application. A new page will appear with the Consumer Key and Consumer Secret.
+1. Enter your Consumer Key, Consumer Secret, and Pardot Business Unit ID into the Pardot WordPress settings screen. To find the Pardot Business Unit ID, go to Salesforce Setup and enter "Pardot Account Setup" in the Quick Find box. Your Pardot Business Unit ID begins with "0Uv" and is 18 characters long. If you cannot access the Pardot Account Setup information, ask your Salesforce Administrator to provide you with the Pardot Business Unit ID.
+1. Click "Save Settings".
+1. When the page reloads, click "Authenticate with Salesforce". Enter your Salesforce credentials in the popup that appears. 
 
-You should then see “Authentication Status” change from “Not Authenticated” to “Authenticated”. Select the appropriate Campaign for tracking and click “Save Settings”. 
+You should then see Authentication Status change from "Not Authenticated" to "Authenticated".
 
 ## Frequently Asked Questions
 
