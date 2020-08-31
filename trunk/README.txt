@@ -22,7 +22,10 @@ Say hello to marketing automation simplicity! With a single login, your self-hos
 3. Go to Settings > Pardot Settings and authenticate with either Pardot or Salesforce SSO.
 4. Select your campaign (for tracking code usage).
 
-= Authenticating with Salesforce SSO =
+== Frequently Asked Questions ==
+
+= How do I authenticate with Salesforce SSO? =
+
 In order to use Salesforce SSO authentication, you **must** create a connected appliation for the plugin in your Salesforce org.  
 
 1. Navigate to App Manager [here](https://login.salesforce.com/lightning/setup/NavigationMenus/home).  
@@ -38,8 +41,6 @@ In order to use Salesforce SSO authentication, you **must** create a connected a
 1. Click “Save Settings” in the Pardot plugin settings, then “Authenticate with Salesforce”. Enter your Salesforce credentials in the popup that appears. 
 
 You should then see “Authentication Status” change from “Not Authenticated” to “Authenticated”. Select the appropriate Campaign for tracking and click “Save Settings”.
-
-== Frequently Asked Questions ==
 
 = How can I use the shortcodes without the Visual Editor? =
 
