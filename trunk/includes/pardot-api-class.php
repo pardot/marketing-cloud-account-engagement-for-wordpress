@@ -631,7 +631,7 @@ x	 */
 				}
 			}
 
-		} elseif ( wp_remote_retrieve_response_code( $http_response ) == 400 ){
+		} elseif ( wp_remote_retrieve_response_code( $http_response ) >= 400 && wp_remote_retrieve_response_code( $http_response ) <= 499 ){
             $response = new SimpleXMLElement( wp_remote_retrieve_body( $http_response ) );
             if ( $response->err == 'access_token is invalid, unknown, or malformed' && ! $this->api_key_maybe_invalidated ) {
                 $this->api_key = '';
