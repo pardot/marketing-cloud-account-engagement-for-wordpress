@@ -1,10 +1,10 @@
 === Pardot ===
-Contributors: cliffseal, ModernTribe
+Contributors: Pardot
 Donate link: http://pardot.com
 Tags: pardot, salesforce, marketing automation, forms, dynamic content, tracking, web tracking
 Requires at least: 5.2
 Tested up to: 5.4.2
-Stable tag: 1.5.0
+Stable tag: 1.5.1
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -157,6 +157,10 @@ Filter the regular expression used to find URLs to be converted to https://go.pa
 1. A page can have two forms! Here, one is in the body and one in a widget.
 
 == Changelog ==
+
+= 1.5.1 =
+
+* Fix - Handle recently added error codes (4xx) to prevent de-authorization  
 
 = 1.5.0 =
 
@@ -349,9 +353,13 @@ Filter the regular expression used to find URLs to be converted to https://go.pa
 
 == Upgrade Notice ==
 
+= 1.5.1 =
+
+Fixes an issue with error handling that could cause de-authentication.
+
 = 1.5.0 =
 
-* This release adds Salesforce SSO as an authentication option.  Pardot authentication is being discontinued in February 2021.  Please reauthenticate with Salesforce SSO before then.
+This release adds Salesforce SSO as an authentication option.  Pardot authentication is being discontinued in February 2021.  Please reauthenticate with Salesforce SSO before then.
 
 = 1.4.3 =
 
