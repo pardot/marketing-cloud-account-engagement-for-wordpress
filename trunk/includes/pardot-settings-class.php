@@ -68,7 +68,7 @@ class Pardot_Settings {
         'client_secret'     => '',
         'business_unit_id'  => '',
         'campaign'          => '',
-		'version'           => '',
+        'version'           => '',
         'https'             => '',
         'submit'            => '',
     );
