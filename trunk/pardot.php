@@ -7,7 +7,7 @@
  * Plugin URI: http://wordpress.org/extend/plugins/pardot/
  * Developer: Cliff Seal of Pardot and Mike Schinkel of NewClarity LLC
  * Developer URI: http://pardot.com
- * Version: 1.5.1
+ * Version: 1.5.2
  * License: GPLv2
  *
  * Copyright 2012 Pardot LLC
@@ -29,7 +29,7 @@
 
 define( 'PARDOT_PLUGIN_FILE', __FILE__ );
 define( 'PARDOT_PLUGIN_DIR', dirname( __FILE__ ) );
-define( 'PARDOT_PLUGIN_VER', '1.5.1' );
+define( 'PARDOT_PLUGIN_VER', '1.5.2' );
 
 if ( ! defined( 'PARDOT_FORM_INCLUDE_TYPE' ) ) {
 	define( 'PARDOT_FORM_INCLUDE_TYPE', 'iframe' );	// iframe or inline
