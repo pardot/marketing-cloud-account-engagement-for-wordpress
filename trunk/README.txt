@@ -160,7 +160,7 @@ Filter the regular expression used to find URLs to be converted to https://go.pa
 
 = 1.5.2 =
 
-* Fix - Fix v3 Pardot API call that goes to appropriate endpoint
+* Fix - v3 Pardot API call that goes to appropriate endpoint
 
 = 1.5.1 =
 
@@ -359,7 +359,7 @@ Filter the regular expression used to find URLs to be converted to https://go.pa
 
 = 1.5.2 =
 
-* Fix - Fix v3 Pardot API call that goes to appropriate endpoint
+Fixes an issue that v3 Pardot API call that goes to v4 endpoint
 
 = 1.5.1 =
 
