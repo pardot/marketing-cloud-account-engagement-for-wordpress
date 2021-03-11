@@ -68,6 +68,7 @@ class Pardot_Settings {
         'client_secret'     => '',
         'business_unit_id'  => '',
         'campaign'          => '',
+        'version'           => '',
         'https'             => '',
         'submit'            => '',
     );
@@ -541,6 +542,7 @@ HTML;
             'client_secret'  => [__( 'Consumer Secret', 'pardot' ), ( self::get_setting( 'auth_type' ) === 'pardot' ? array( 'class' => 'hidden' ) : array() )],
             'business_unit_id'  => [__( 'Business Unit ID', 'pardot' ), ( self::get_setting( 'auth_type' ) === 'pardot' ? array( 'class' => 'hidden' ) : array() )],
 			'campaign'  => [__( 'Campaign (for Tracking Code)', 'pardot' ), ''],
+			'version'   => [__( 'API Version', 'pardot' ), array( 'class' => 'hidden' )],
 			'https'     => [__( 'Use HTTPS?', 'pardot' ), ''],
 			'submit'    => '',
 		);
@@ -1189,6 +1191,29 @@ HTML;
 			$html[] = '</select></div>';
 			echo implode( '', $html );
 		}
+	}
+
+	/**
+	 * Displays the API Version drop-down field for the Settings API
+	 *
+	 * @since 1.4.1
+	 */
+	function version_field() {
+		$version = self::get_setting( 'version' );
+		$html_name = $this->_get_html_name( 'version' );
+		$html = '<div id="version-wrap"><select id="version" name="' . $html_name . '">';
+		$html .= '<option';
+		if ( $version === '3' ) {
+			$html .= ' selected="selected"';
+		}
+		$html .= ' value="3">3</option>';
+		$html .= '<option';
+		if ( $version === '4' ) {
+			$html .= ' selected="selected"';
+		}
+		$html .= ' value="4">4</option>';
+		$html .= '<option';
+		echo $html;
 	}
 
 	/**
