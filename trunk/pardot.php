@@ -5,12 +5,12 @@
  * Author: Pardot
  * Author URI: http://www.pardot.com
  * Plugin URI: http://wordpress.org/extend/plugins/pardot/
- * Developer: Cliff Seal of Pardot and Mike Schinkel of NewClarity LLC
+ * Developer: Pardot
  * Developer URI: http://pardot.com
  * Version: 1.5.2
  * License: GPLv2
  *
- * Copyright 2012 Pardot LLC
+ * Copyright 2021 Pardot LLC
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License, version 2, as
