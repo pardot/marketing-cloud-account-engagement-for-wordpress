@@ -163,6 +163,15 @@ add_filter( 'pardot_https_regex', 'pardot_custom_filter_https_regex' );
 
 ## Changelog
 
+### 1.5.3
+* Fix - New response of invalid grant no longer cause oauth to become invalidated
+
+### 1.5.2
+* Fix - v3 Pardot API call goes to appropriate endpoint
+
+### 1.5.1
+* Fix - Handled an issue that cause de-authentication
+
 ### 1.5.0
 * Maintenance - Added Salesforce SSO authentication in preparation of Pardot authentication being discontinued in February 2021
 * Improvement - Added authentication status indicator to settings page
