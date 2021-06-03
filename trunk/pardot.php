@@ -7,7 +7,7 @@
  * Plugin URI: http://wordpress.org/extend/plugins/pardot/
  * Developer: Pardot
  * Developer URI: http://pardot.com
- * Version: 1.5.3
+ * Version: 1.5.4
  * License: GPLv2
  *
  * Copyright 2021 Pardot LLC
@@ -29,7 +29,7 @@
 
 define( 'PARDOT_PLUGIN_FILE', __FILE__ );
 define( 'PARDOT_PLUGIN_DIR', dirname( __FILE__ ) );
-define( 'PARDOT_PLUGIN_VER', '1.5.3' );
+define( 'PARDOT_PLUGIN_VER', '1.5.4' );
 
 if ( ! defined( 'PARDOT_FORM_INCLUDE_TYPE' ) ) {
 	define( 'PARDOT_FORM_INCLUDE_TYPE', 'iframe' );	// iframe or inline

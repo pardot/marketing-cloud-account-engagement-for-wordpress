@@ -163,6 +163,9 @@ add_filter( 'pardot_https_regex', 'pardot_custom_filter_https_regex' );
 
 ## Changelog
 
+### 1.5.4
+* Fix - Enforce Https for Salesforce SSO Redirect URI
+
 ### 1.5.3
 * Fix - New response of invalid grant no longer cause oauth to become invalidated
 
