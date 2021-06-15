@@ -453,7 +453,7 @@ HTML;
                 'code' => $_GET['code'],
                 'client_id' => self::get_setting('client_id'),
                 'client_secret' => self::decrypt_or_original(self::get_setting('client_secret')),
-                'redirect_uri' => ( 'local' !== wp_get_environment_type() ) ? admin_url( 'options-general.php?page=pardot') : admin_url( 'options-general.php?page=pardot', 'https' ),
+                'redirect_uri' => ( function_exists('wp_get_environment_type') && 'local' === wp_get_environment_type() ) ? admin_url( 'options-general.php?page=pardot') : admin_url( 'options-general.php?page=pardot', 'https' ),
                 'code_verifier' => get_option(self::$CODE_VERIFIER),
             );
 
