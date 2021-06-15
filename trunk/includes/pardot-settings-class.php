@@ -451,7 +451,7 @@ HTML;
                 'code' => $_GET['code'],
                 'client_id' => self::get_setting('client_id'),
                 'client_secret' => self::decrypt_or_original(self::get_setting('client_secret')),
-                'redirect_uri' => 'https://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'],
+                'redirect_uri' => admin_url( 'options-general.php?page=pardot', 'https' ),
                 'code_verifier' => get_option(self::$CODE_VERIFIER),
             );
 
