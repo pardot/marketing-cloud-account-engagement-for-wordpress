@@ -443,6 +443,8 @@ HTML;
 		if ( ! isset($_GET['code']) ) {
             $this->create_code_verifier();
         }
+		
+		
 
 		if (isset($_GET['code']) && isset($_GET['status']) && $_GET['status'] == 'success' && ! self::is_authenticated()) {
             $url = 'https://login.salesforce.com/services/oauth2/token';
@@ -451,7 +453,7 @@ HTML;
                 'code' => $_GET['code'],
                 'client_id' => self::get_setting('client_id'),
                 'client_secret' => self::decrypt_or_original(self::get_setting('client_secret')),
-                'redirect_uri' => admin_url( 'options-general.php?page=pardot', 'https' ),
+                'redirect_uri' => ( 'local' !== wp_get_environment_type() ) ? admin_url( 'options-general.php?page=pardot') : admin_url( 'options-general.php?page=pardot', 'https' ),
                 'code_verifier' => get_option(self::$CODE_VERIFIER),
             );
 
