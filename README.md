@@ -163,6 +163,9 @@ add_filter( 'pardot_https_regex', 'pardot_custom_filter_https_regex' );
 
 ## Changelog
 
+### 1.5.5
+* Fix - Allow retrieving more than 200 assets when authing via Salesforce SSO 
+
 ### 1.5.4
 * Fix - Enforce Https for Salesforce SSO Redirect URI
 
