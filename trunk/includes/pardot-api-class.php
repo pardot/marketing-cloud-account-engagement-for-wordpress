@@ -565,8 +565,7 @@ x	 */
         else if ($this->auth_type == 'sso') {
             $headers = array(
                 'Authorization' => 'Bearer ' . $this->api_key,
-                'Pardot-Business-Unit-Id' => $this->business_unit_id,
-                'offset' => $paged > 1 ? ($paged - 1) * 200 : 0
+                'Pardot-Business-Unit-Id' => $this->business_unit_id
             );
 
             $http_response = wp_remote_post(
@@ -578,7 +577,8 @@ x	 */
                     'compress'		=> false,
                     'decompress'	=> true,
                     'sslverify' 	=> false,
-                    'headers'       => $headers
+                    'headers'       => $headers,
+                    'offset' => $paged > 1 ? ($paged - 1) * 200 : 0
                 )
             );
         }
