@@ -575,7 +575,8 @@ x	 */
 			);
 
             $http_response = wp_remote_post(
-                $this->_get_url( $item_type, $args ), array(
+                $this->_get_url( $item_type, $args ),
+                array_merge( array(
                     'timeout' 		=> '30',
                     'redirection'   => '5',
                     'method' 		=> 'POST',
@@ -585,8 +586,7 @@ x	 */
                     'sslverify' 	=> false,
                     'headers'       => $headers,
                     'body'          => $body,
-                    $body
-                )
+                ),  $body)
             );
         }
 
