@@ -568,6 +568,12 @@ x	 */
                 'Pardot-Business-Unit-Id' => $this->business_unit_id
             );
 
+			$body = array_merge( $args,
+				array(
+					'offset' => $paged > 1 ? ($paged-1)*200 : 0
+				)
+			);
+
             $http_response = wp_remote_post(
                 $this->_get_url( $item_type, $args ), array(
                     'timeout' 		=> '30',
@@ -578,7 +584,8 @@ x	 */
                     'decompress'	=> true,
                     'sslverify' 	=> false,
                     'headers'       => $headers,
-                    'offset' => $paged > 1 ? ($paged - 1) * 200 : 0
+                    'body'          => $body,
+                    $body
                 )
             );
         }
