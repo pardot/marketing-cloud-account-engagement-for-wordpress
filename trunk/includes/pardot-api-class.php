@@ -565,12 +565,16 @@ x	 */
         else if ($this->auth_type == 'sso') {
             $headers = array(
                 'Authorization' => 'Bearer ' . $this->api_key,
-                'Pardot-Business-Unit-Id' => $this->business_unit_id,
-                'offset' => $paged > 1 ? ($paged - 1) * 200 : 0
+                'Pardot-Business-Unit-Id' => $this->business_unit_id
             );
 
+		    $body = array(
+				    'offset' => $paged > 1 ? ($paged-1)*200 : 0
+		    );
+
             $http_response = wp_remote_post(
-                $this->_get_url( $item_type, $args ), array(
+                $this->_get_url( $item_type, $args ),
+                array_merge( array(
                     'timeout' 		=> '30',
                     'redirection'   => '5',
                     'method' 		=> 'POST',
@@ -578,8 +582,9 @@ x	 */
                     'compress'		=> false,
                     'decompress'	=> true,
                     'sslverify' 	=> false,
-                    'headers'       => $headers
-                )
+                    'headers'       => $headers,
+                    'body'          => $body,
+                ),  $body)
             );
         }
 

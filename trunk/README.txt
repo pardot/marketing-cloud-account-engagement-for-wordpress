@@ -4,7 +4,7 @@ Donate link: http://pardot.com
 Tags: pardot, salesforce, marketing automation, forms, dynamic content, tracking, web tracking
 Requires at least: 5.5
 Tested up to: 5.7
-Stable tag: 1.5.4
+Stable tag: 1.5.5
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -157,6 +157,10 @@ Filter the regular expression used to find URLs to be converted to https://go.pa
 1. A page can have two forms! Here, one is in the body and one in a widget.
 
 == Changelog ==
+
+= 1.5.5 =
+
+* Fix - Allow retrieving more than 200 assets when authing via Salesforce SSO
 
 = 1.5.4 =
 
@@ -364,6 +368,10 @@ Filter the regular expression used to find URLs to be converted to https://go.pa
 * Initial release.
 
 == Upgrade Notice ==
+
+= 1.5.5 =
+
+* Fixes an issue that only maximum of 200 assets are retrieved when authing via Salesforce SSO
 
 = 1.5.4 =
 
