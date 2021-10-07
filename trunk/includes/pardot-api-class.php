@@ -172,6 +172,7 @@ class Pardot_API {
             $response = $this->refresh_API_key($auth);
             if ($response) {
                 $this->api_key = $response;
+                Pardot_Settings::set_setting( 'api_key', $this->api_key);
             }
         }
 		else if ( $this->auth_type == 'pardot' && $response = $this->get_response( 'login', $auth, 'api_key' ) ) {
