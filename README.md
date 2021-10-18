@@ -163,6 +163,10 @@ add_filter( 'pardot_https_regex', 'pardot_custom_filter_https_regex' );
 
 ## Changelog
 
+### 1.5.6
+
+* Fix - Persist access token refreshes properly
+
 ### 1.5.5
 * Fix - Allow retrieving more than 200 assets when authing via Salesforce SSO 
 
