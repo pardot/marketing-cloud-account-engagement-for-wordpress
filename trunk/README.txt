@@ -375,7 +375,7 @@ Filter the regular expression used to find URLs to be converted to https://go.pa
 
 = 1.5.6 =
 
-* Fix - Fixes an issue that Access token refreshes are not stored properly
+* Fix - Fixes an issue that access token refreshes are not stored properly
 
 = 1.5.5 =
 
