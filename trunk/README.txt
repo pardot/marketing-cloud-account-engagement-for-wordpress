@@ -377,6 +377,10 @@ Filter the regular expression used to find URLs to be converted to https://go.pa
 
 == Upgrade Notice ==
 
+= 1.5.7 =
+
+* Fix - Allow custom HTTPS tracker domains
+
 = 1.5.6 =
 
 * Fix - Fixes an issue that access token refreshes are not stored properly
