@@ -2,15 +2,15 @@
 /*
  * Plugin Name: Pardot
  * Description: Connect your WordPress to Pardot with shortcode and widgets for campaign tracking, quick form access, and dynamic content.
- * Author: Pardot
- * Author URI: http://www.pardot.com
+ * Author: Salesforce
+ * Author URI: https://www.salesforce.com/products/marketing-cloud/marketing-automation/
  * Plugin URI: http://wordpress.org/extend/plugins/pardot/
- * Developer: Pardot
- * Developer URI: http://pardot.com
- * Version: 1.5.6
+ * Developer: Salesforce
+ * Developer URI: https://www.salesforce.com/products/marketing-cloud/marketing-automation/
+ * Version: 1.5.7
  * License: GPLv2
  *
- * Copyright 2021 Pardot LLC
+ * Copyright 2022 Salesforce, Inc.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License, version 2, as
@@ -29,7 +29,7 @@
 
 define( 'PARDOT_PLUGIN_FILE', __FILE__ );
 define( 'PARDOT_PLUGIN_DIR', dirname( __FILE__ ) );
-define( 'PARDOT_PLUGIN_VER', '1.5.6' );
+define( 'PARDOT_PLUGIN_VER', '1.5.7' );
 
 if ( ! defined( 'PARDOT_FORM_INCLUDE_TYPE' ) ) {
 	define( 'PARDOT_FORM_INCLUDE_TYPE', 'iframe' );	// iframe or inline
