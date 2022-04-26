@@ -907,12 +907,16 @@ class Pardot_Plugin {
 			 */
 			$reg_exUrl = apply_filters("pardot_https_regex", "/(http|https)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,63}(\/\S*)?/");
 			preg_match( $reg_exUrl, $embed_code, $url );
-			/**
-			 * Replace whatever is there with the approved Pardot HTTPS URL
-			 */
-			$urlpieces  = parse_url($url[0]);
-			$httpsurl   = 'https://go.pardot.com' . $urlpieces['path'];
-			$embed_code = preg_replace( $reg_exUrl, $httpsurl, $embed_code );
+			
+			// Check if default domain is already HTTPS
+			if (substr( $url[0], 0, 8 ) !== "https://") {
+				/**
+				 * Replace whatever is there with the approved Pardot HTTPS URL
+				 */
+				$urlpieces  = parse_url($url[0]);
+				$httpsurl   = 'https://go.demo.pardot.com' . $urlpieces['path'];
+				$embed_code = preg_replace( $reg_exUrl, $httpsurl, $embed_code );
+			}
 		}
 
 		return $embed_code;
