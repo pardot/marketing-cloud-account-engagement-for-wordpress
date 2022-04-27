@@ -545,7 +545,7 @@ HTML;
             'business_unit_id'  => [__( 'Business Unit ID', 'pardot' ), ( self::get_setting( 'auth_type' ) === 'pardot' ? array( 'class' => 'hidden' ) : array() )],
 			'campaign'  => [__( 'Campaign (for Tracking Code)', 'pardot' ), ''],
 			'version'   => [__( 'API Version', 'pardot' ), array( 'class' => 'hidden' )],
-			'https'     => [__( 'Use HTTPS?', 'pardot' ), ''],
+			'https'     => [__( 'Always Use HTTPS', 'pardot' ), ''],
 			'submit'    => '',
 		);
 
