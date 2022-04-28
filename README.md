@@ -165,6 +165,7 @@ add_filter( 'pardot_https_regex', 'pardot_custom_filter_https_regex' );
 
 ### 1.5.7
 * Fix - Allow custom HTTPS tracker domains
+* Improvement - Automatically update form & dynamic content HTML after selection
 
 ### 1.5.6
 * Fix - Persist access token refreshes properly
