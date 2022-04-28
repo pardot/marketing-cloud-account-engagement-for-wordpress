@@ -281,13 +281,15 @@ HTML;
 		/**
 		 * Default the 'form_id' to a non-selected form ID, i.e. '0'.
 		 */
-		$instance = array( 'form_id' => 0 );
+		$instance = ['form_id' => 0];
 
 		/**
-		 * If the new instance has 'form_id' then capture it's value before returning.
+		 * If the new instance has 'form_id' then capture its value before returning.
 		 */
-		if ( isset( $new_instance['form_id'] ) )
+		if ( isset( $new_instance['form_id'] ) ) {
 			$instance['form_id'] = $new_instance['form_id'];
+			Pardot_Plugin::delete_form_html_transient($new_instance['form_id']);
+		}
 			
 		$instance['title'] = strip_tags( $new_instance['title'] );	
 		$instance['height'] = strip_tags( $new_instance['height'] );	
@@ -653,18 +655,20 @@ HTML;
 		/**
 		 * Default the 'form_id' to a non-selected form ID, i.e. '0'.
 		 */
-		$instance = array( 'dynamicContent' => 0 );
+		$instance = ['dynamicContent' => 0];
 
 		/**
-		 * If the new instance has 'form_id' then capture it's value before returning.
+		 * If the new instance has 'form_id' then capture its value before returning.
 		 */
-		if ( isset( $new_instance['dynamicContent_id'] ) )
+		if ( isset( $new_instance['dynamicContent_id'] ) ) {
 			$instance['dynamicContent_id'] = $new_instance['dynamicContent_id'];
+			Pardot_Plugin::delete_dc_html_transient($new_instance['dynamicContent_id']);
+		}
 		
 		$instance['title'] = strip_tags( $new_instance['title'] );
-        $instance['height'] = strip_tags( $new_instance['height'] );
-        $instance['width'] = strip_tags( $new_instance['width'] );
-        $instance['class'] = strip_tags( $new_instance['class'] );
+        	$instance['height'] = strip_tags( $new_instance['height'] );
+        	$instance['width'] = strip_tags( $new_instance['width'] );
+        	$instance['class'] = strip_tags( $new_instance['class'] );
 		
 		return $instance;
 	}
