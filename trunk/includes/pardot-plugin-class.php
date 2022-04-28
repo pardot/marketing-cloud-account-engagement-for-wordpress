@@ -275,18 +275,33 @@ class Pardot_Plugin {
 		die();
 	}
 	
+	
+	/**
+	 * AJAX function used to delete HTML cache of dynamic content & forms
+	 *
+	 * @since 1.5.7
+	 */
 	public function wp_ajax_delete_asset_html_transient() {
 		$assetType = $_REQUEST['asset_type'];
 		$assetId = $_REQUEST['asset_id'];
 
 		if ($assetType === 'form') {
-			delete_transient( 'pardot_form_html_' . $assetId);
-		}
-		elseif ($assetType === 'dc') {
-			delete_transient( 'pardot_dynamicContent_html_' . $assetId);
+			self::delete_form_html_transient($assetId);
+		} elseif ($assetType === 'dc') {
+			self::delete_dc_html_transient($assetId);
 		}
 
 		die();
+	}
+
+	public static function delete_form_html_transient(int $assetId)
+	{
+		delete_transient( 'pardot_form_html_' . $assetId);
+	}
+
+	public static function delete_dc_html_transient(int $assetId)
+	{
+		delete_transient( 'pardot_dynamicContent_html_' . $assetId);
 	}
 
 	/**
