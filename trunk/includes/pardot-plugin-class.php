@@ -136,6 +136,11 @@ class Pardot_Plugin {
 		 * Listen for AJAX post back for the reload button.
 		 */
 		add_action( 'wp_ajax_popup_reset_cache',  array( $this, 'wp_ajax_popup_reset_cache' ) );
+		
+		/**
+		 * Listen for AJAX post back for deleting cached HTML of assets
+		 */
+		add_action( 'wp_ajax_delete_asset_html_transient', [$this, 'wp_ajax_delete_asset_html_transient'] );
     }
 
 	/**
@@ -267,6 +272,20 @@ class Pardot_Plugin {
 		/**
 		 * And we're done.  Don't fall through and let WordPress echo a '0'.
 		 */
+		die();
+	}
+	
+	public function wp_ajax_delete_asset_html_transient() {
+		$assetType = $_REQUEST['asset_type'];
+		$assetId = $_REQUEST['asset_id'];
+
+		if ($assetType === 'form') {
+			delete_transient( 'pardot_form_html_' . $assetId);
+		}
+		elseif ($assetType === 'dc') {
+			delete_transient( 'pardot_dynamicContent_html_' . $assetId);
+		}
+
 		die();
 	}
 
