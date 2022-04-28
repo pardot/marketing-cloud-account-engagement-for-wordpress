@@ -161,7 +161,8 @@ Filter the regular expression used to find URLs to be converted to https://go.pa
 = 1.5.7 =
 
 * Fix - Allow custom HTTPS tracker domains
-* Improvement - Automatically update form & dynamic content HTML after selection
+* Improvement - Automatically update form & dynamic cached HTML after selection
+* Improvement - Eliminate Pardot Authentication Option (Not functional since February 2021)
 
 = 1.5.6 =
 
@@ -381,7 +382,8 @@ Filter the regular expression used to find URLs to be converted to https://go.pa
 = 1.5.7 =
 
 * Fix - Allow custom HTTPS tracker domains
-* Improvement - Automatically update form & dynamic content HTML after selection
+* Improvement - Automatically update form & dynamic cached HTML after selection
+* Improvement - Eliminate Pardot Authentication Option (Not functional since February 2021)
 
 = 1.5.6 =
 
