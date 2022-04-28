@@ -110,7 +110,7 @@ CSS;
 			/**
 			 * Connvert the POST_ROOT_URL into a regex (escape the '.'s)
 			 */
-			$post_root_url_regex = str_replace( '.', '\.', Pardot_Settings::POST_ROOT_URL );
+			$post_root_url_regex = str_replace( '.', '\.', Pardot_Settings::INLINE_FORM_URL );
 
 			/**
 			 * Check to make the "url" parameter matches the post's root URL

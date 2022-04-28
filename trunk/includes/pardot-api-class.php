@@ -22,7 +22,7 @@ class Pardot_API {
 	 *
 	 * @since 1.0.0
 	 */
-	const ROOT_URL = 'https://pi.pardot.com/api';
+	const API_ROOT_URL = Pardot_Settings::PI_PARDOT_URL . '/api';
 
     /**
      * @const string The URL used to refresh the Salesforce OAUTH token
@@ -42,7 +42,7 @@ class Pardot_API {
 	 * @var string Defacto constant defining the URL path template for the API.
 	 * @note This classes defines and replaces the three (3) template variables %%ITEM_TYPE%%, %%VERSION%% and %%ACTION%%.
 	 * 	%%ITEM_TYPE%%: One of 'login', 'account', 'campaign' or 'form'.
-	 * 	%%VERSION%%: Pardto_API::VERSION
+	 * 	%%VERSION%%: Pardot_API::VERSION
 	 * 	%%ACTION%%: For %%ITEM_TYPE%% == 'account' otherwise 'query'
 	 * @note This is defined as a variable because it made need to change and thus should be internal to Pardot_API.
 	 *
@@ -606,7 +606,7 @@ x	 */
 			);
 			$url = $base_url;
 		}
-		return self::ROOT_URL . $url;
+		return self::API_ROOT_URL . $url;
 	}
 
 	/**

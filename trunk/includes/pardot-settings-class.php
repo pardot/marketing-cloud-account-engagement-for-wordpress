@@ -10,10 +10,13 @@
  * @since 1.0.0
  */
 class Pardot_Settings {
+
+	const BASE_PARDOT_DOMAIN = 'pardot.com';
+
 	/**
-	 * @var string Admin page on Pardot's website linked to an authenticated user's account.
+	 * @var string Used as base for other URL constants
 	 */
-	const ACCOUNT_URL = 'https://pi.pardot.com/account/user';
+	const PI_PARDOT_URL = 'https://pi.' . self::BASE_PARDOT_DOMAIN;
 
     /**
      * @var string Link to App Manager on Ligntning where users can create their connected app
@@ -28,17 +31,17 @@ class Pardot_Settings {
 	/**
 	 * @var string Admin page on Pardot's website that allows authenticated users to add forms to a campaign
 	 */
-	const FORMS_URL = 'https://pi.pardot.com/form';
+	const FORMS_URL = self::PI_PARDOT_URL . '/form';
 
 	/**
 	 * @var string Admin page on Pardot's website that allows authenticated users to add forms to a campaign
 	 */
-	const DYNAMIC_CONTENT_URL = 'https://pi.pardot.com/content';
+	const DYNAMIC_CONTENT_URL = self::PI_PARDOT_URL . '/content';
 
 	/**
 	 * @var string The root URL used to <iframe> a Pardot Forms. Used to add inline forms support.
 	 */
-	const POST_ROOT_URL = 'http://go.pardot.com';
+	const INLINE_FORM_URL = 'http://go.' . self::BASE_PARDOT_DOMAIN;
 
 	/**
 	 * @var string Key for the Settings API option group AND for the settings stored in wp_options

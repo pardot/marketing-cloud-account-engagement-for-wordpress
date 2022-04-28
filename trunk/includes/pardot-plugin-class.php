@@ -948,7 +948,7 @@ class Pardot_Plugin {
 				 * Replace whatever is there with the approved Pardot HTTPS URL
 				 */
 				$urlpieces  = parse_url($url[0]);
-				$httpsurl   = 'https://go.pardot.com' . $urlpieces['path'];
+				$httpsurl   = 'https://go.' . Pardot_Settings::BASE_PARDOT_DOMAIN . $urlpieces['path'];
 				$embed_code = preg_replace( $reg_exUrl, $httpsurl, $embed_code );
 			}
 		}
