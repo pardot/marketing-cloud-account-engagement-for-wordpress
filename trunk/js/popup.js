@@ -178,7 +178,7 @@
 					url      : PardotShortcodePopup.ajaxurl,
 					data     : {
 						action : 'delete_asset_html_transient',
-						asset_id : formval.match(/id="([0-9]*)"/)[1],
+						asset_id : dcval.match(/id="([0-9]*)"/)[1],
 						asset_type : 'dc'
 					}
 				});
