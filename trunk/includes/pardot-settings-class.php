@@ -767,7 +767,7 @@ HTML;
 	 * @since 1.0.0
 	 */
 	function user_account_section() {
-		$msg = __( 'Use your Pardot login information to securely connect (you\'ll only need to do this once).', 'pardot' );
+		$msg = __( 'Use your Salesforce Connected App information to securely connect (you\'ll only need to do this once).', 'pardot' );
 		echo "<span id=\"instructions\">{$msg}</span>";
 	}
 
