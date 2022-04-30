@@ -1,4 +1,5 @@
 <?php
+
 /**
  * PHP class for interacting with the Pardot API.
  *
@@ -16,7 +17,8 @@
  * @version 1.0.0
  *
  */
-class Pardot_API {
+class Pardot_API
+{
 	/**
 	 * @const string The root URL for the Pardot API.
 	 *
@@ -24,11 +26,11 @@ class Pardot_API {
 	 */
 	const API_ROOT_URL = Pardot_Settings::PI_PARDOT_URL . '/api';
 
-    /**
-     * @const string The URL used to refresh the Salesforce OAUTH token
-     *
-     * @since 1.5.0
-     */
+	/**
+	 * @const string The URL used to refresh the Salesforce OAUTH token
+	 *
+	 * @since 1.5.0
+	 */
 	const OAUTH_URL = 'https://login.salesforce.com/services/oauth2/token';
 
 	/**
@@ -41,9 +43,9 @@ class Pardot_API {
 	/**
 	 * @var string Defacto constant defining the URL path template for the API.
 	 * @note This classes defines and replaces the three (3) template variables %%ITEM_TYPE%%, %%VERSION%% and %%ACTION%%.
-	 * 	%%ITEM_TYPE%%: One of 'login', 'account', 'campaign' or 'form'.
-	 * 	%%VERSION%%: Pardot_API::VERSION
-	 * 	%%ACTION%%: For %%ITEM_TYPE%% == 'account' otherwise 'query'
+	 *    %%ITEM_TYPE%%: One of 'login', 'account', 'campaign' or 'form'.
+	 *    %%VERSION%%: Pardot_API::VERSION
+	 *    %%ACTION%%: For %%ITEM_TYPE%% == 'account' otherwise 'query'
 	 * @note This is defined as a variable because it made need to change and thus should be internal to Pardot_API.
 	 *
 	 * @since 1.0.0
@@ -59,26 +61,26 @@ class Pardot_API {
 	 */
 	private static $LOGIN_URL_PATH_TEMPLATE = '/login/version/%%VERSION%%';
 
-    /**
-     * @var string A user-entered client ID.
-     *
-     * @since 1.5.0
-     */
-    var $client_id;
+	/**
+	 * @var string A user-entered client ID.
+	 *
+	 * @since 1.5.0
+	 */
+	var $client_id;
 
-    /**
-     * @var string A user-entered client secret.
-     *
-     * @since 1.5.0
-     */
-    var $client_secret;
+	/**
+	 * @var string A user-entered client secret.
+	 *
+	 * @since 1.5.0
+	 */
+	var $client_secret;
 
-    /**
-     * @var string A user-entered business unit ID.
-     *
-     * @since 1.5.0
-     */
-    var $business_unit_id;
+	/**
+	 * @var string A user-entered business unit ID.
+	 *
+	 * @since 1.5.0
+	 */
+	var $business_unit_id;
 
 	/**
 	 * @var string A key returned on authentication by SSO
@@ -87,19 +89,12 @@ class Pardot_API {
 	 */
 	var $api_key = false;
 
-    /**
-     * @var string A refresh token returned on authentication by SSO; used to get new api_key
-     *
-     * @since 1.5.0
-     */
-    var $refresh_token = false;
-
 	/**
-	 * @var boolean Used to flag the API for retry in case the api_key has expired.
+	 * @var string A refresh token returned on authentication by SSO; used to get new api_key
 	 *
-	 * @since 1.0.0
+	 * @since 1.5.0
 	 */
-	var $api_key_maybe_invalidated = false;
+	var $refresh_token = false;
 
 	/**
 	 * @var string Flag to indicate an API request failed.
@@ -119,13 +114,14 @@ class Pardot_API {
 	 *
 	 * @since 1.0.0
 	 */
-	function __construct( $auth = array() ) {
-		if ( is_array( $auth ) && count( $auth ) )
-			$this->set_auth( $auth );
+	function __construct(array $auth = [])
+	{
+		if (is_array($auth) && count($auth))
+			$this->set_auth($auth);
 	}
 
 	/**
-	 * Call Pardot API to authenticate and retrieve API Key
+	 * Call Salesforce OAuth API to authenticate and retrieve API Key
 	 *
 	 * The $auth parameters passed will be used to authenticate the login request.
 	 * If successful $this->api_key will be set.
@@ -135,54 +131,54 @@ class Pardot_API {
 	 *
 	 * @since 1.0.0
 	 */
-	function authenticate( $auth = array() ) {
-		if ( count( $auth ) ) {
-            $this->set_auth($auth);
-        }
-		$this->api_key = false;
-		if (!$this->api_key && $this->refresh_token) {
-            $response = $this->refresh_API_key($auth);
-            if ($response) {
-                $this->api_key = $response;
-                Pardot_Settings::set_setting( 'api_key', $this->api_key);
-            }
-        }
+	function authenticate(array $auth = [])
+	{
+		if (count($auth)) {
+			$this->set_auth($auth);
+		}
+		if ($this->refresh_token) {
+			$response = $this->refresh_API_key();
+			if ($response) {
+				$this->api_key = $response;
+			}
+		}
 		return $this->api_key;
 	}
 
-    /**
-     * Calls Salesforce OAuth API to get a new API token from the refresh token
-     *
-     * @return string|bool And $api_key on success, false on failure
-     * @since 1.5.0
-     */
-    function refresh_API_key( $auth = array() ) {
-        $url = self::OAUTH_URL;
-        $body = array(
-            'grant_type' => 'refresh_token',
-            'client_id' => $this->client_id,
-            'client_secret' => $this->client_secret,
-            'refresh_token' => $this->refresh_token,
-        );
+	/**
+	 * Calls Salesforce OAuth API to get a new API token from the refresh token
+	 *
+	 * @return string|bool And $api_key on success, false on failure
+	 * @since 1.5.0
+	 */
+	function refresh_API_key()
+	{
+		$url = self::OAUTH_URL;
+		$body = [
+			'grant_type' => 'refresh_token',
+			'client_id' => $this->client_id,
+			'client_secret' => $this->client_secret,
+			'refresh_token' => $this->refresh_token,
+		];
 
-        $args = array(
-            'body'        => $body,
-            'timeout'     => '5',
-            'redirection' => '5',
-            'httpversion' => '1.0',
-            'blocking'    => true,
-            'headers'     => array("Content-type: application/json"),
-            'cookies'     => array(),
-        );
+		$args = [
+			'body' => $body,
+			'timeout' => '5',
+			'redirection' => '5',
+			'httpversion' => '1.0',
+			'blocking' => true,
+			'headers' => ["Content-type: application/json"],
+			'cookies' => [],
+		];
 
-        $response = wp_remote_post( $url, $args );
+		$response = wp_remote_post($url, $args);
 
-        $response = json_decode(wp_remote_retrieve_body($response));
-        if (property_exists($response, 'access_token')) {
-            return $response->{'access_token'};
-        }
-        return null;
-    }
+		$response = json_decode(wp_remote_retrieve_body($response));
+		if (property_exists($response, 'access_token')) {
+			return $response->{'access_token'};
+		}
+		return null;
+	}
 
 	/**
 	 * Determine is the API has authenticated.
@@ -193,8 +189,9 @@ class Pardot_API {
 	 *
 	 * @since 1.0.0
 	 */
-	function is_authenticated() {
-		return ! empty( $this->api_key );
+	function is_authenticated()
+	{
+		return !empty($this->api_key);
 	}
 
 	/**
@@ -209,40 +206,41 @@ class Pardot_API {
 	 * @since 1.0.0
 	 */
 
-    function get_campaigns( $args = array() ) {
+	function get_campaigns(array $args = [])
+	{
 
 		$campaigns = false;
 
-		if ( $response = $this->get_response( 'campaign', $args ) ) {
+		if ($response = $this->get_response('campaign', $args)) {
 
-			$campaigns = array();
+			$campaigns = [];
 
-			if ( $response->result->total_results >= 200 ) {
+			if ($response->result->total_results >= 200) {
 				$limit = 200;
 			} else {
 				$limit = $response->result->total_results;
 			}
 
-			for( $i = 0; $i < $limit; $i++ ) {
-				$campaign = (object) $response->result->campaign[ $i ];
+			for ($i = 0; $i < $limit; $i++) {
+				$campaign = (object)$response->result->campaign[$i];
 
-				if ( isset( $campaign->id ) ) {
-					$campaigns[ (int) $campaign->id ] = $this->SimpleXMLElement_to_stdClass( $campaign );
+				if (isset($campaign->id)) {
+					$campaigns[(int)$campaign->id] = $this->SimpleXMLElement_to_stdClass($campaign);
 				}
 			}
 
-			if ( $limit >= 200 ) {
-				$numpag = round( $response->result->total_results / 200 ) + 1;
+			if ($limit >= 200) {
+				$numpag = round($response->result->total_results / 200) + 1;
 
-				for( $j = 2; $j <= ( $numpag ); $j++ ) {
+				for ($j = 2; $j <= ($numpag); $j++) {
 
-					if ( $response = $this->get_response( 'campaign', $args, 'result', $j ) ) {
+					if ($response = $this->get_response('campaign', $args, 'result', $j)) {
 
-						for( $i = 0; $i < ( $response->result->total_results - 200 ); $i++ ) {
-							$campaign = (object) $response->result->campaign[ $i ];
+						for ($i = 0; $i < ($response->result->total_results - 200); $i++) {
+							$campaign = (object)$response->result->campaign[$i];
 
-							if ( isset( $campaign->id ) ) {
-							    $campaigns[ (int) $campaign->id ] = $this->SimpleXMLElement_to_stdClass( $campaign );
+							if (isset($campaign->id)) {
+								$campaigns[(int)$campaign->id] = $this->SimpleXMLElement_to_stdClass($campaign);
 							}
 						}
 					}
@@ -264,13 +262,14 @@ class Pardot_API {
 	 *
 	 * @since 1.0.0
 	 */
-	function get_account( $args = array() ) {
+	function get_account(array $args = [])
+	{
 		$account = false;
-		if ( $response = $this->get_response( 'account', $args, 'account' ) ) {
-			$response = $this->SimpleXMLElement_to_stdClass( $response );
-            if ( property_exists($response,'account') ) {
-                $account = $response->account;
-            }
+		if ($response = $this->get_response('account', $args, 'account')) {
+			$response = $this->SimpleXMLElement_to_stdClass($response);
+			if (property_exists($response, 'account')) {
+				$account = $response->account;
+			}
 		};
 		return $account;
 	}
@@ -286,31 +285,32 @@ class Pardot_API {
 	 *
 	 * @since 1.0.0
 	 */
-	function get_forms( $args = array() ) {
+	function get_forms(array $args = [])
+	{
 		$forms = false;
-		if ( $response = $this->get_response( 'form', $args ) ) {
+		if ($response = $this->get_response('form', $args)) {
 
-			$forms = array();
+			$forms = [];
 
-			if ( $response->result->total_results >= 200 ) {
+			if ($response->result->total_results >= 200) {
 				$limit = 200;
 			} else {
 				$limit = $response->result->total_results;
 			}
 
-			for( $i = 0; $i < $limit; $i++ ) {
+			for ($i = 0; $i < $limit; $i++) {
 				$form = $response->result->form[$i];
-				$forms[(int)$form->id] = $this->SimpleXMLElement_to_stdClass( $form );
+				$forms[(int)$form->id] = $this->SimpleXMLElement_to_stdClass($form);
 			}
 
-			if ( $limit >= 200 ) {
-				$numpag = round($response->result->total_results/200)+1;
-				for( $j = 2; $j <= ($numpag); $j++ ) {
-					if ( $response = $this->get_response( 'form', $args, 'result', $j ) ) {
+			if ($limit >= 200) {
+				$numpag = round($response->result->total_results / 200) + 1;
+				for ($j = 2; $j <= ($numpag); $j++) {
+					if ($response = $this->get_response('form', $args, 'result', $j)) {
 						$count = count($response->result->form);
-						for( $i = 0; $i < $count; $i++ ) {
+						for ($i = 0; $i < $count; $i++) {
 							$form = $response->result->form[$i];
-							$forms[(int)$form->id] = $this->SimpleXMLElement_to_stdClass( $form );
+							$forms[(int)$form->id] = $this->SimpleXMLElement_to_stdClass($form);
 						}
 					}
 				}
@@ -331,34 +331,35 @@ class Pardot_API {
 	 *
 	 * @since 1.1.0
 	 */
-	function get_dynamicContent( $args = array() ) {
+	function get_dynamicContent(array $args = [])
+	{
 		$dynamicContents = false;
 
-		if ( $response = $this->get_response( 'dynamicContent', $args ) ) {
+		if ($response = $this->get_response('dynamicContent', $args)) {
 
-			$dynamicContents = array();
+			$dynamicContents = [];
 
-			if ( $response->result->total_results >= 200 ) {
+			if ($response->result->total_results >= 200) {
 				$limit = 200;
 			} else {
 				$limit = $response->result->total_results;
 			}
 
-			for( $i = 0; $i < $limit; $i++ ) {
+			for ($i = 0; $i < $limit; $i++) {
 				$dynamicContent = $response->result->dynamicContent[$i];
-				$dynamicContents[ (int) $dynamicContent->id ] = $this->SimpleXMLElement_to_stdClass( $dynamicContent );
+				$dynamicContents[(int)$dynamicContent->id] = $this->SimpleXMLElement_to_stdClass($dynamicContent);
 			}
 
-			if ( $limit >= 200 ) {
-				$numpag = round( $response->result->total_results / 200 ) + 1;
+			if ($limit >= 200) {
+				$numpag = round($response->result->total_results / 200) + 1;
 
-				for( $j = 2; $j <= ( $numpag ); $j++ ) {
+				for ($j = 2; $j <= ($numpag); $j++) {
 
-					if ( $response = $this->get_response( 'dynamicContent', $args, 'result', $j ) ) {
+					if ($response = $this->get_response('dynamicContent', $args, 'result', $j)) {
 
-						for( $i = 0; $i < ( $response->result->total_results - 200 ); $i++ ) {
-							$dynamicContent = $response->result->dynamicContent[ $i ];
-							$dynamicContents[ (int) $dynamicContent->id ] = $this->SimpleXMLElement_to_stdClass( $dynamicContent );
+						for ($i = 0; $i < ($response->result->total_results - 200); $i++) {
+							$dynamicContent = $response->result->dynamicContent[$i];
+							$dynamicContents[(int)$dynamicContent->id] = $this->SimpleXMLElement_to_stdClass($dynamicContent);
 						}
 					}
 				}
@@ -380,20 +381,21 @@ class Pardot_API {
 	 *
 	 * @return object
 	 */
-	function SimpleXMLElement_to_stdClass( $xml ) {
+	function SimpleXMLElement_to_stdClass($xml)
+	{
 
-		$array = array();
+		$array = [];
 
-		foreach ( $xml as $element ) {
+		foreach ($xml as $element) {
 
 			$tag = $element->getName();
 
-			$array[ $tag ] = ( 0 === count( $element->children() ) )
-				? trim( (string) $element )
-				: $this->SimpleXMLElement_to_stdClass( $element );
+			$array[$tag] = (0 === count($element->children()))
+				? trim((string)$element)
+				: $this->SimpleXMLElement_to_stdClass($element);
 		}
 
-		return (object) $array;
+		return (object)$array;
 	}
 
 	/**
@@ -403,12 +405,13 @@ class Pardot_API {
 	 * @return void
 	 *
 	 * @since 1.0.0
-x	 */
-	function set_auth( $auth = array() ) {
+	 * x     */
+	function set_auth(array $auth = [])
+	{
 		/**
 		 * First clear all the auth values.
 		 */
-        $this->api_key = $this->client_id = $this->client_secret = $this->business_unit_id = $this->refresh_token = null;
+		$this->api_key = $this->client_id = $this->client_secret = $this->business_unit_id = $this->refresh_token = null;
 		if (!empty($auth['client_id'])) {
 			$this->client_id = $auth['client_id'];
 		}
@@ -418,12 +421,12 @@ x	 */
 		if (!empty($auth['business_unit_id'])) {
 			$this->business_unit_id = $auth['business_unit_id'];
 		}
-		if (!empty( $auth['api_key'])) {
-		    $this->api_key = $auth['api_key'];
+		if (!empty($auth['api_key'])) {
+			$this->api_key = $auth['api_key'];
 		}
-        if (!empty( $auth['refresh_token'])) {
-            $this->refresh_token = $auth['refresh_token'];
-        }
+		if (!empty($auth['refresh_token'])) {
+			$this->refresh_token = $auth['refresh_token'];
+		}
 
 	}
 
@@ -433,8 +436,9 @@ x	 */
 	 * @return boolean Returns true if this object has 'client_id', 'client_secret', 'business_unit_id'
 	 *
 	 * @since 1.0.0
-x	 */
-	function has_auth() {
+	 * x     */
+	function has_auth()
+	{
 		return !empty($this->client_id) && !empty($this->client_secret) && !empty($this->business_unit_id);
 	}
 
@@ -443,8 +447,7 @@ x	 */
 	 *
 	 * Checks if this object has required properties for authentication. If yes and not authenticated, authenticates.
 	 * Next, build the API user and calls the API. On error, attempt to authenticate to retrieve a new API key unless
-	 * this is an authentication request, to avoid infinite loops. If reauthenticated and $args['new_api_key'] is a valid
-	 * callback then callsback with new API key so caller can store it.
+	 * this is an authentication request, to avoid infinite loops.
 	 *
 	 * @param string $item_type One of 'login', 'account', 'campaign' or 'form'.
 	 * @param array $args Query arguments (but might contain ignored auth arguments.
@@ -453,113 +456,90 @@ x	 */
 	 *
 	 * @since 1.0.0
 	 */
-	function get_response( $item_type, $args = [], $property = 'result', $paged = 1 ) {
+	function get_response($item_type, $args = [], $property = 'result', $paged = 1)
+	{
 		$this->error = false;
 		if (!$this->has_auth()) {
 			$this->error = 'Cannot authenticate. Missing credentials.';
 			return false;
 		}
 
-		if (!$this->api_key && 'login' != $item_type) {
-			$this->authenticate( $args );
+		if (!$this->api_key && !$item_type != 'login') {
+			$this->authenticate($args);
 		}
-
-        $http_response = null;
 
 		$headers = [
 			'Authorization' => 'Bearer ' . $this->api_key,
-			'Pardot-Business-Unit-Id' => $this->business_unit_id
+			'Pardot-Business-Unit-Id' => $this->business_unit_id,
 		];
 
 		$body = [
-				'offset' => $paged > 1 ? ($paged - 1) * 200 : 0
+			'offset' => $paged > 1 ? ($paged - 1) * 200 : 0,
 		];
 
 		$http_response = wp_remote_post(
-			$this->_get_url( $item_type, $args ),
+			$this->_get_url($item_type, $args),
 			array_merge([
-				'timeout' 		=> '30',
-				'redirection'   => '5',
-				'method' 		=> 'POST',
-				'blocking'		=> true,
-				'compress'		=> false,
-				'decompress'	=> true,
-				'sslverify' 	=> false,
-				'headers'       => $headers,
-				'body'          => $body,
+				'timeout' => '30',
+				'redirection' => '5',
+				'method' => 'POST',
+				'blocking' => true,
+				'compress' => false,
+				'decompress' => true,
+				'sslverify' => false,
+				'headers' => $headers,
+				'body' => $body,
 			], $body)
 		);
 
 		$response = false;
-		if ( wp_remote_retrieve_response_code( $http_response ) == 200 ) {
+		if (wp_remote_retrieve_response_code($http_response) == 200) {
 			// Add a check for disabled accounts: https://wordpress.org/support/topic/if-the-account-gets-disabled-this-plugin-throws-a-fatal-error/
-			if ( is_string( wp_remote_retrieve_body( $http_response ) ) && strpos( wp_remote_retrieve_body( $http_response ), 'Your account has been disabled' ) !== false ) {
+			if (is_string(wp_remote_retrieve_body($http_response)) && strpos(wp_remote_retrieve_body($http_response), 'Your account has been disabled') !== false) {
 				$this->error = true;
 			}
-			$response = new SimpleXMLElement( wp_remote_retrieve_body( $http_response ) );
-			if ( ! empty( $response->err ) ) {
-				if ( 'Your account is unable to use version 4 of the API.' == $response->err ) {
-					Pardot_Settings::set_setting( 'version', '3' );
-				} elseif ( 'Your account must use version 4 of the API.' == $response->err ) {
-					Pardot_Settings::set_setting( 'version', '4' );
+			$response = new SimpleXMLElement(wp_remote_retrieve_body($http_response));
+			if (!empty($response->err)) {
+				if ('Your account is unable to use version 4 of the API.' == $response->err) {
+					Pardot_Settings::set_setting('version', '3');
+				} elseif ('Your account must use version 4 of the API.' == $response->err) {
+					Pardot_Settings::set_setting('version', '4');
 				}
 				$this->error = $response->err;
-				if ( 'login' == $item_type ) {
+				if ('login' == $item_type) {
 					$this->api_key = false;
 				} else {
 					$auth = $this->get_auth();
-					if ( isset( $args['new_api_key'] ) ) {
-						$this->api_key_maybe_invalidated = true;
-						$auth['new_api_key'] = $args['new_api_key'];
-					}
-					if ( $this->authenticate( $auth ) && 'Daily API rate limit met.' !== $response->err && 'This API user lacks sufficient permissions for the requested operation' !== $response->err ) {
+
+					if ($this->authenticate($auth) && $response->err != 'Daily API rate limit met.' && $response->err != 'This API user lacks sufficient permissions for the requested operation') {
 						/**
 						 * Try again after a successful authentication
-						*/
-						$response = $this->get_response( $item_type, $args, $property, true );
-						if ( $response )
+						 */
+						$response = $this->get_response($item_type, $args, $property, true);
+						if ($response)
 							$this->error = false;
 					}
 				}
 			}
 
-			if ( $this->error )
+			if ($this->error)
 				$response = false;
 
-			if ( $response && empty( $response->$property ) ) {
+			if ($response && empty($response->$property)) {
 				$response = false;
 				$this->error = "HTTP Response did not contain property: {$property}.";
 			}
 
-			if ( $response && $this->api_key_maybe_invalidated && 'login' == $item_type && 'api_key' == $property ) {
-				if ( isset( $args['new_api_key'] ) && is_callable( $args['new_api_key'] ) ) {
-					call_user_func( $args['new_api_key'], (string)$response->api_key );
-					$this->api_key_maybe_invalidated = false;
-				}
+		} elseif (wp_remote_retrieve_response_code($http_response) >= 400 && wp_remote_retrieve_response_code($http_response) <= 499) {
+			$response = new SimpleXMLElement(wp_remote_retrieve_body($http_response));
+			if ($response->children()->err->attributes()->code == 184) {
+				$this->api_key = '';
+				$response = $this->get_response($item_type, [], $property, true);
+			} else {
+				$this->error = 'Authentication failed.  Please reset settings and try again (Error: ' . $response->err . ')';
+				$response = false;
 			}
-
-		} elseif ( wp_remote_retrieve_response_code( $http_response ) >= 400 && wp_remote_retrieve_response_code( $http_response ) <= 499 ){
-            $response = new SimpleXMLElement( wp_remote_retrieve_body( $http_response ) );
-            if ( $response->children()->err->attributes()->code == 184 && ! $this->api_key_maybe_invalidated ) {
-                $this->api_key = '';
-                $this->api_key_maybe_invalidated = true;
-                $response = $this->get_response( $item_type, array(), $property, true );
-                if ( isset( $args['new_api_key'] ) && is_callable( $args['new_api_key'] ) ) {
-                    call_user_func($args['new_api_key'], $this->api_key);
-                }
-                $this->api_key_maybe_invalidated = false;
-            }
-            elseif ( $response->children()->err->attributes()->code == 184 && $this->api_key_maybe_invalidated) {
-                $this->error = 'Authentication failed.  Attempted to get a new access token, but authorization didn\'t work. Please reset settings and authorize again.';
-                $this->api_key_maybe_invalidated = false;
-                $response = false;
-            }
-            else {
-                $this->error = 'Authentication failed.  Please reset settings and try again (Error: ' . $response->err . ')';
-                $this->api_key_maybe_invalidated = false;
-                $response = false;
-            }
-        }
+		}
 
 		return $response;
 	}
@@ -571,12 +551,13 @@ x	 */
 	 *
 	 * @since 1.0.0
 	 */
-	function get_auth() {
+	function get_auth()
+	{
 		return [
 			'client_id' => $this->client_id,
 			'client_secret' => $this->client_secret,
 			'business_unit_id' => $this->business_unit_id,
-			'refresh_token' => $this->refresh_token
+			'refresh_token' => $this->refresh_token,
 		];
 	}
 
@@ -593,18 +574,17 @@ x	 */
 	 *
 	 * @since 1.0.0
 	 */
-	private function _get_url( $item_type, $args = array() ) {
-		if ( 'login' == $item_type ) {
-			$this->set_auth( $args );
-			$base_url = str_replace( '%%VERSION%%', self::_get_version(), self::$LOGIN_URL_PATH_TEMPLATE );
-			$url = $base_url;
+	private function _get_url($item_type, $args = [])
+	{
+		if ('login' == $item_type) {
+			$this->set_auth($args);
+			$url = str_replace('%%VERSION%%', self::_get_version(), self::$LOGIN_URL_PATH_TEMPLATE);
 		} else {
-			$base_url = str_replace(
-				array( '%%VERSION%%', '%%ITEM_TYPE%%', '%%ACTION%%' ),
-				array( self::_get_version(), $item_type, 'account' == $item_type ? 'read' : 'query' ),
+			$url = str_replace(
+				['%%VERSION%%', '%%ITEM_TYPE%%', '%%ACTION%%'],
+				[self::_get_version(), $item_type, 'account' == $item_type ? 'read' : 'query'],
 				self::$URL_PATH_TEMPLATE
 			);
-			$url = $base_url;
 		}
 		return self::API_ROOT_URL . $url;
 	}
@@ -617,9 +597,10 @@ x	 */
 	 *
 	 * @since 1.4.1
 	 */
-	private function _get_version() {
-		if ( Pardot_Settings::get_setting( 'version' ) ) {
-			return Pardot_Settings::get_setting( 'version' );
+	private function _get_version()
+	{
+		if (Pardot_Settings::get_setting('version')) {
+			return Pardot_Settings::get_setting('version');
 		} else {
 			return self::VERSION;
 		}
