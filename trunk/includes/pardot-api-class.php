@@ -140,6 +140,7 @@ class Pardot_API
 			$response = $this->refresh_API_key();
 			if ($response) {
 				$this->api_key = $response;
+				Pardot_Settings::set_setting( 'api_key', $this->api_key);
 			}
 		}
 		return $this->api_key;

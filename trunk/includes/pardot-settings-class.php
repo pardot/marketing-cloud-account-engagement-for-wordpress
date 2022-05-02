@@ -607,9 +607,9 @@ HTML;
 		}
 
 		/**
-		 * Call the Pardot API to attempt to authenticate
+		 * Call the Pardot API to attempt to authenticate if there isn't an api_key
 		 */
-		if (!$this->authenticate($clean)) {
+		if (!$clean['api_key'] && !$this->authenticate($clean)) {
 			if (!$clean['client_id']) {
 				$msg = __('Please check the Consumer Key field below and click "Save Settings" again.', 'pardot');
 				add_settings_error(self::$OPTION_GROUP, 'update_settings', $msg);
