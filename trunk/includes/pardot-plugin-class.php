@@ -487,7 +487,7 @@ class Pardot_Plugin
 			/**
 			 * All clear, add the hooks that will add the Pardot button to TinyMCE.
 			 */
-			add_filter("mce_external_plugins", [$this, 'mce_external_plugins']);
+			add_filter('mce_external_plugins', [$this, 'mce_external_plugins']);
 			add_filter('mce_buttons', [$this, 'mce_buttons']);
 
 			new _Pardot_Forms_Shortcode_Popup();
