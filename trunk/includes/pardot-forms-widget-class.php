@@ -286,7 +286,7 @@ HTML;
 		/**
 		 * If the new instance has 'form_id' then capture its value before returning.
 		 */
-		if ( isset( $new_instance['form_id'] ) ) {
+		if (isset( $new_instance['form_id'])) {
 			$instance['form_id'] = $new_instance['form_id'];
 			Pardot_Plugin::delete_form_html_transient($new_instance['form_id']);
 		}
@@ -660,7 +660,7 @@ HTML;
 		/**
 		 * If the new instance has 'form_id' then capture its value before returning.
 		 */
-		if ( isset( $new_instance['dynamicContent_id'] ) ) {
+		if (isset( $new_instance['dynamicContent_id'])) {
 			$instance['dynamicContent_id'] = $new_instance['dynamicContent_id'];
 			Pardot_Plugin::delete_dc_html_transient($new_instance['dynamicContent_id']);
 		}
