@@ -108,9 +108,9 @@ CSS;
 			$url = preg_match( $regex, $_SERVER['HTTP_REFERER'] ) ? $_SERVER['HTTP_REFERER'] : site_url();
 
 			/**
-			 * Connvert the POST_ROOT_URL into a regex (escape the '.'s)
+			 * Convert the INLINE_FORM_URL into a regex (escape the '.'s)
 			 */
-			$post_root_url_regex = str_replace( '.', '\.', Pardot_Settings::INLINE_FORM_URL );
+			$post_root_url_regex = str_replace('.', '\.', Pardot_Settings::INLINE_FORM_URL);
 
 			/**
 			 * Check to make the "url" parameter matches the post's root URL
