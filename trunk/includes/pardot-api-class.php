@@ -402,7 +402,7 @@ class Pardot_API
 	/**
 	 * Set the auth properties of the Pardot_API.
 	 *
-	 * @param array $auth Values 'client_id', 'client_secret', 'business_unit_id', and 'api_key' supported.
+	 * @param array $auth Values 'client_id', 'client_secret', 'business_unit_id', 'api_key' and 'refresh_token' supported.
 	 * @return void
 	 *
 	 * @since 1.0.0
