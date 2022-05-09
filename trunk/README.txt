@@ -1,10 +1,10 @@
 === Pardot ===
 Contributors: Pardot
-Donate link: http://pardot.com
-Tags: pardot, salesforce, marketing automation, forms, dynamic content, tracking, web tracking
+Donate link: https://salesforce.com
+Tags: pardot, salesforce, marketing automation, forms, dynamic content, tracking, web tracking, account engagement, marketing cloud
 Requires at least: 5.5
 Tested up to: 5.7
-Stable tag: 1.5.6
+Stable tag: 1.5.7
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -157,6 +157,13 @@ Filter the regular expression used to find URLs to be converted to https://go.pa
 1. A page can have two forms! Here, one is in the body and one in a widget.
 
 == Changelog ==
+
+= 1.5.7 =
+
+* Fix - Allow custom HTTPS tracker domains
+* Fix - Campaign dropdown now appears immediately after authentication
+* Improvement - Automatically update form & dynamic cached HTML after selection
+* Improvement - Eliminate Pardot Authentication Option (Not functional since February 2021)
 
 = 1.5.6 =
 
@@ -372,6 +379,13 @@ Filter the regular expression used to find URLs to be converted to https://go.pa
 * Initial release.
 
 == Upgrade Notice ==
+
+= 1.5.7 =
+
+* Fix - Allow custom HTTPS tracker domains
+* Fix - Campaign dropdown now appears immediately after authentication
+* Improvement - Automatically update form & dynamic cached HTML after selection
+* Improvement - Eliminate Pardot Authentication Option (Not functional since February 2021)
 
 = 1.5.6 =
 

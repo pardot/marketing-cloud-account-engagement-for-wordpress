@@ -137,6 +137,17 @@
 				}
 
 				window.send_to_editor( formval );
+				
+				$.ajax({
+					type     : 'post',
+					dataType : 'html',
+					url      : PardotShortcodePopup.ajaxurl,
+					data     : {
+						action : 'delete_asset_html_transient',
+						asset_id : formval.match(/id="([0-9]*)"/)[1],
+						asset_type : 'form'
+					}
+				});
 			}
 
 			if ( ( $( '#dcshortcode' ).length != 0 ) && ( $( '#dcshortcode' ).val() != '0' ) ) {
@@ -160,6 +171,17 @@
 				}
 
 				window.send_to_editor( dcval );
+				
+				$.ajax({
+					type     : 'post',
+					dataType : 'html',
+					url      : PardotShortcodePopup.ajaxurl,
+					data     : {
+						action : 'delete_asset_html_transient',
+						asset_id : dcval.match(/id="([0-9]*)"/)[1],
+						asset_type : 'dc'
+					}
+				});
 			}
 
 		});
