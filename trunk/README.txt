@@ -4,7 +4,7 @@ Donate link: https://salesforce.com
 Tags: pardot, salesforce, marketing automation, forms, dynamic content, tracking, web tracking, account engagement, marketing cloud
 Requires at least: 5.5
 Tested up to: 6.1.1
-Stable tag: 1.5.7
+Stable tag: 1.5.8
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -41,6 +41,7 @@ In order to use Salesforce SSO authentication, you **must** create a connected a
 1. When the page reloads, click "Authenticate with Salesforce". Enter your Salesforce credentials in the popup that appears. 
 
 You should then see Authentication Status change from "Not Authenticated" to "Authenticated".
+
 = How can I use the shortcodes without the Visual Editor? =
 
 Two simple shortcodes are available for use.
@@ -158,6 +159,13 @@ Filter the regular expression used to find URLs to be converted to https://go.pa
 
 == Changelog ==
 
+= 1.5.8 =
+
+* Maintenance - Updated "Tested up to" header field to 6.1.1. While this plugin does not have a custom block, [the shortcodes](https://wordpress.org/plugins/pardot/#how%20can%20i%20use%20the%20shortcodes%20without%20the%20visual%20editor%3F) still work as expected.
+* Maintenance - Updated plugin URI.
+* Maintenance - Removed old developer link.
+* Maintenance - Added plugin contributors (if a valid WP.org profile was found).
+
 = 1.5.7 =
 
 * Fix - Allow custom HTTPS tracker domains
@@ -171,7 +179,7 @@ Filter the regular expression used to find URLs to be converted to https://go.pa
 
 = 1.5.5 =
 
-* Fix - Allow retrieving more than 200 assets when authing via Salesforce SSO
+* Fix - Allow retrieving more than 200 assets when authenticating via Salesforce SSO
 
 = 1.5.4 =
 
@@ -379,6 +387,13 @@ Filter the regular expression used to find URLs to be converted to https://go.pa
 * Initial release.
 
 == Upgrade Notice ==
+
+= 1.5.8 =
+
+* Maintenance - Updated "Tested up to" header field to 6.1.1. While this plugin does not have a custom block, [the shortcodes](https://wordpress.org/plugins/pardot/#how%20can%20i%20use%20the%20shortcodes%20without%20the%20visual%20editor%3F) still work as expected.
+* Maintenance - Updated plugin URI.
+* Maintenance - Removed old developer link.
+* Maintenance - Added plugin contributors (if a valid WP.org profile was found).
 
 = 1.5.7 =
 

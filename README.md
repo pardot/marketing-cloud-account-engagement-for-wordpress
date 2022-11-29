@@ -163,6 +163,13 @@ add_filter( 'pardot_https_regex', 'pardot_custom_filter_https_regex' );
 
 ## Changelog
 
+### 1.5.8
+
+* Maintenance - Updated "Tested up to" header field to 6.1.1. While this plugin does not have a custom block, [the shortcodes](https://wordpress.org/plugins/pardot/#how%20can%20i%20use%20the%20shortcodes%20without%20the%20visual%20editor%3F) still work as expected.
+* Maintenance - Updated plugin URI.
+* Maintenance - Removed old developer link.
+* Maintenance - Added plugin contributors (if a valid WP.org profile was found).
+
 ### 1.5.7
 * Fix - Allow custom HTTPS tracker domains
 * Fix - Campaign dropdown now appears immediately after authentication
