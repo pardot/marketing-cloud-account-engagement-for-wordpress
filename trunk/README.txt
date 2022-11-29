@@ -1,5 +1,5 @@
 === Pardot ===
-Contributors: Pardot
+Contributors: cliffseal, mikeschinkel, barryhughes, bgoewert
 Donate link: https://salesforce.com
 Tags: pardot, salesforce, marketing automation, forms, dynamic content, tracking, web tracking, account engagement, marketing cloud
 Requires at least: 5.5
