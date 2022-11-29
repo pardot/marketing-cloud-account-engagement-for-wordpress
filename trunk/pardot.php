@@ -4,7 +4,7 @@
  * Description: Connect your WordPress to Pardot with shortcode and widgets for campaign tracking, quick form access, and dynamic content.
  * Author: Salesforce
  * Author URI: https://www.salesforce.com/products/marketing-cloud/marketing-automation/
- * Plugin URI: http://wordpress.org/extend/plugins/pardot/
+ * Plugin URI: https://wordpress.org/plugins/pardot/
  * Developer: Salesforce
  * Developer URI: https://www.salesforce.com/products/marketing-cloud/marketing-automation/
  * Version: 1.5.7
