@@ -1,0 +1,13 @@
+{
+	"name": "pardot/dynamic-content",
+	"title": "Pardot Dynamic Content",
+	"category": "embed",
+	"description": "Delivers targeted messaging to prospects. Content is displayed according to rules defined in Pardot based on the prospect’s data or attributes.",
+	"textdomain": "pardot",
+	"supports": {
+		"html": false
+	},
+	"editorScript": "file:./build/index.js",
+	"editorStyle": "file:./build/index.css",
+	"style": "file:./build/style-index.css"
+}

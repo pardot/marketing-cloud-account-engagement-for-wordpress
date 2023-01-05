@@ -3,8 +3,8 @@ Contributors: Pardot
 Donate link: https://salesforce.com
 Tags: pardot, salesforce, marketing automation, forms, dynamic content, tracking, web tracking, account engagement, marketing cloud
 Requires at least: 5.5
-Tested up to: 5.7
-Stable tag: 1.5.7
+Tested up to: 6.1
+Stable tag: 1.6.0
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
