@@ -536,7 +536,7 @@ class Pardot_API
 		} elseif (wp_remote_retrieve_response_code($http_response) >= 400 && wp_remote_retrieve_response_code($http_response) <= 499) {
 			$response = new SimpleXMLElement(wp_remote_retrieve_body($http_response));
 			if ($response->children()->err->attributes()->code == 184 && $retries < 3) {
-                $retries += 1;
+				$retries += 1;
 				$this->api_key = '';
 				$response = $this->get_response($item_type, [], $property, 1, $retries);
 			} else {

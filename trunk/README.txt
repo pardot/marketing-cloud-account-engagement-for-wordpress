@@ -160,7 +160,7 @@ Filter the regular expression used to find URLs to be converted to https://go.pa
 
 = 1.5.8 =
 
-* Fix - Handled an issue that authentication failure causes the settings page stuck in loading
+* Fix - Handled an issue that authentication failure(Pardot API Error Code 184) causes the settings page stuck in loading
 
 = 1.5.7 =
 
@@ -386,7 +386,7 @@ Filter the regular expression used to find URLs to be converted to https://go.pa
 
 = 1.5.8 =
 
-* Fix - Handled an issue that authentication failure causes the settings page stuck in loading
+* Fix - Handled an issue that authentication failure(Pardot API Error Code 184) causes the settings page stuck in loading
 
 = 1.5.7 =
 
