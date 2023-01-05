@@ -164,7 +164,7 @@ add_filter( 'pardot_https_regex', 'pardot_custom_filter_https_regex' );
 ## Changelog
 
 ### 1.5.8
-* Fix - Handled an issue that authentication failure(Pardot API Error Code 184) causes the settings page stuck in loading
+* Fix - Handled an issue that authentication failure ([Pardot API Error Code 184](https://developer.salesforce.com/docs/marketing/pardot/guide/error-codes.html#numerical-list-of-error-codes)) causes the settings page stuck in loading
 
 ### 1.5.7
 * Fix - Allow custom HTTPS tracker domains
