@@ -65,7 +65,7 @@ function pardot_init() {
             'You need to run `npm start` or `npm run build` for the "create-block/pardot" block first.'
         );
     }
-    $index_js     = 'build/index.js';
+    $index_js = 'build/index.js';
     $script_asset = require( $script_asset_path );
     array_push($script_asset['dependencies'], 'wp-api');
     wp_register_script(

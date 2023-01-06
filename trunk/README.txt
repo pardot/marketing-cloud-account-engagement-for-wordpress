@@ -158,6 +158,10 @@ Filter the regular expression used to find URLs to be converted to https://go.pa
 
 == Changelog ==
 
+= 1.6.0 =
+
+* Feature - Added support for the WordPress Block Editor
+
 = 1.5.7 =
 
 * Fix - Allow custom HTTPS tracker domains
@@ -379,6 +383,10 @@ Filter the regular expression used to find URLs to be converted to https://go.pa
 * Initial release.
 
 == Upgrade Notice ==
+
+= 1.6.0 =
+
+* Feature - Added support for the WordPress Block Editor
 
 = 1.5.7 =
 
