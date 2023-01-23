@@ -1216,7 +1216,7 @@ class Pardot_Plugin
 
 		if (empty($saved_trans)) {
 			$saved_trans = [$key];
-		} else {
+		} elseif ( ! in_array($key, $saved_trans) ) { // Only add non-existing keys to array
 			$saved_trans[] = $key;
 		}
 
@@ -1239,7 +1239,7 @@ class Pardot_Plugin
 
 		if (empty($saved_keys)) {
 			$saved_keys = [$key];
-		} else {
+		} elseif( ! in_array($key, $saved_keys) ) { // Only add non-existing keys to array
 			$saved_keys[] = $key;
 		}
 
