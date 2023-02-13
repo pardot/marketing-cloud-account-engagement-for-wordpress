@@ -1,6 +1,6 @@
 {
 	"name": "pardot",
-	"version": "1.6.0",
+	"version": "2.0.0",
 	"description": "Connect your WordPress to Pardot with shortcode and widgets for campaign tracking, quick form access, and dynamic content.",
 	"author": "Salesforce",
 	"license": "GPL-2.0-or-later",

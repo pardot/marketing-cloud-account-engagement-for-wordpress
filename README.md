@@ -163,7 +163,7 @@ add_filter( 'pardot_https_regex', 'pardot_custom_filter_https_regex' );
 
 ## Changelog
 
-### 1.6.0
+### 2.0.0
 * Improvement - Added support for the WordPress Block Editor
 
 ### 1.5.7
