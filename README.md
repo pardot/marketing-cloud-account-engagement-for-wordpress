@@ -166,6 +166,9 @@ add_filter( 'pardot_https_regex', 'pardot_custom_filter_https_regex' );
 ### 2.0.0
 * Improvement - Added support for the WordPress Block Editor
 
+### 1.5.8
+* Fix - Handled an issue that authentication failure ([Pardot API Error Code 184](https://developer.salesforce.com/docs/marketing/pardot/guide/error-codes.html#numerical-list-of-error-codes)) causes the settings page to be stuck in a loading state
+
 ### 1.5.7
 * Fix - Allow custom HTTPS tracker domains
 * Fix - Campaign dropdown now appears immediately after authentication

@@ -453,11 +453,13 @@ class Pardot_API
 	 * @param string $item_type One of 'login', 'account', 'campaign' or 'form'.
 	 * @param array $args Query arguments (but might contain ignored auth arguments.
 	 * @param string $property Property to retrieve; defaults to 'result' but can be 'api_key' or 'account'.
+     * @param int $paged
+     * @param int $retries Number of retries when encountering auth error code 184
 	 * @return bool|SimpleXMLElement Returns API response as a SimpleXMLElement if successful, false if API call fails.
 	 *
 	 * @since 1.0.0
 	 */
-	function get_response($item_type, $args = [], $property = 'result', $paged = 1)
+	function get_response($item_type, $args = [], $property = 'result', $paged = 1, $retries = 0)
 	{
 		$this->error = false;
 		if (!$this->has_auth()) {
@@ -516,7 +518,7 @@ class Pardot_API
 						/**
 						 * Try again after a successful authentication
 						 */
-						$response = $this->get_response($item_type, $args, $property, true);
+						$response = $this->get_response($item_type, $args, $property);
 						if ($response)
 							$this->error = false;
 					}
@@ -533,11 +535,12 @@ class Pardot_API
 
 		} elseif (wp_remote_retrieve_response_code($http_response) >= 400 && wp_remote_retrieve_response_code($http_response) <= 499) {
 			$response = new SimpleXMLElement(wp_remote_retrieve_body($http_response));
-			if ($response->children()->err->attributes()->code == 184) {
+			if ($response->children()->err->attributes()->code == 184 && $retries < 3) {
+				$retries += 1;
 				$this->api_key = '';
-				$response = $this->get_response($item_type, [], $property, true);
+				$response = $this->get_response($item_type, [], $property, 1, $retries);
 			} else {
-				$this->error = 'Authentication failed.  Please reset settings and try again (Error: ' . $response->err . ')';
+				$this->error = 'Authentication failed. Please reset settings and try again (Error: ' . $response->err . ')';
 				$response = false;
 			}
 		}
