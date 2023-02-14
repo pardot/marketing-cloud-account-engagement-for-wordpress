@@ -155,6 +155,10 @@ Filter the regular expression used to find URLs to be converted to https://go.pa
 1. Use dynamic content in a widget
 1. A form widget on a page
 1. A page can have two forms! Here, one is in the body and one in a widget.
+1. Pardot block being added in the Block Editor.
+1. Form block being edited in the Block Editor
+1. Dynamic content block being edited in the Block Editor
+1. Remove Form block in the Block Editor
 
 == Changelog ==
 
