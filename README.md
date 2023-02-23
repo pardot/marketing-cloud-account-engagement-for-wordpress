@@ -155,7 +155,7 @@ Filter the regular expression used to find URLs to be converted to https://go.pa
 
 ```php
 function pardot_custom_filter_https_regex() {
-	return "/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,63}(\/\S*)?/";
+	return "/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,63}(\/\S[^'\"]*)?/";
 }
 
 add_filter( 'pardot_https_regex', 'pardot_custom_filter_https_regex' );

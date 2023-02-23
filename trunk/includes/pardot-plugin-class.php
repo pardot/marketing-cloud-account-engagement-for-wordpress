@@ -961,19 +961,22 @@ class Pardot_Plugin
 			/**
 			 * Look for URLs in the embed code
 			 */
-			$reg_exUrl = apply_filters("pardot_https_regex", "/(http|https)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,63}(\/\S*)?/");
-			preg_match($reg_exUrl, $embed_code, $url);
+			$reg_exUrl = apply_filters("pardot_https_regex", "/(http|https)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,63}(\/\S[^'\"]*)?/");
+            $reg_exUrlHttpOnly = "/(http)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,63}(\/\S[^'\"]*)?/";
+			preg_match_all($reg_exUrl, $embed_code, $urls);
 
 			// Check if default domain is already HTTPS
-			if (strcasecmp(substr($url[0], 0, 8), "https://")) {
-				/**
-				 * Replace whatever is there with the approved Pardot HTTPS URL
-				 */
-				$urlpieces = parse_url($url[0]);
-				$httpsurl = 'https://go.' . Pardot_Settings::BASE_PARDOT_DOMAIN . $urlpieces['path'];
-				$embed_code = preg_replace($reg_exUrl, $httpsurl, $embed_code);
-			}
-		}
+            foreach ($urls[0] as $url) {
+                if (strcasecmp(substr($url, 0, 8), "https://")) {
+                    /**
+                     * Replace whatever is there with the approved Pardot HTTPS URL
+                     */
+                    $urlpieces = parse_url($url);
+                    $httpsurl = 'https://go.' . Pardot_Settings::BASE_PARDOT_DOMAIN . $urlpieces['path'];
+                    $embed_code = preg_replace($reg_exUrlHttpOnly, $httpsurl, $embed_code, 1);
+                }
+            }
+        }
 
 		return $embed_code;
 	}

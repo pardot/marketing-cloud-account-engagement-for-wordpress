@@ -141,7 +141,7 @@ You can apply any conditional logic you want. For instance, this will append the
 Filter the regular expression used to find URLs to be converted to https://go.pardot.com. This is only used when "Use HTTPS?" is checked in the settings. You may want to filter this regex if you find it's not properly capturing and converting your URLs.
 
 	function pardot_custom_filter_https_regex() {
-		return "/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,63}(\/\S*)?/";
+		return "/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,63}(\/\S[^'\"]*)?/";
 	}
 
 	add_filter( 'pardot_https_regex', 'pardot_custom_filter_https_regex' );
