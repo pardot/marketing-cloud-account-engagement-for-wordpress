@@ -165,6 +165,7 @@ Filter the regular expression used to find URLs to be converted to https://go.pa
 = 2.0.0 =
 
 * Feature - Added support for the WordPress Block Editor
+* Fix - When Always Use HTTPS is enabled in plugin setting, none Https contents will be converted correctly
 
 = 1.5.8 =
 
@@ -395,6 +396,7 @@ Filter the regular expression used to find URLs to be converted to https://go.pa
 = 2.0.0 =
 
 * Feature - Added support for the WordPress Block Editor
+* Fix - When Always Use HTTPS is enabled in plugin setting, none Https contents will be converted correctly
 
 = 1.5.8 =
 
