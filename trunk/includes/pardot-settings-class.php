@@ -13,7 +13,7 @@
 class Pardot_Settings
 {
 
-	const BASE_PARDOT_DOMAIN = 'pardot.com';
+	const BASE_PARDOT_DOMAIN = 'demo.pardot.com';
 
 	/**
 	 * @var string Used as base for other URL constants
