@@ -965,7 +965,7 @@ class Pardot_Plugin
                 preg_match_all($reg_exUrl, $embed_code, $urls);
 
                 // Check if default domain is already HTTPS
-                $reg_exUrlHttpOnly = "/(http)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,63}(\/\S[^'\"]*)?/";
+                $reg_exUrl_http_only = "/(http)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,63}(\/\S[^'\"]*)?/";
                 foreach ($urls[0] as $url) {
                     /**
                      * If the URL does not use HTTPS, replace it with the approved Pardot HTTPS URL
@@ -973,13 +973,12 @@ class Pardot_Plugin
                     if (strcasecmp(substr($url, 0, 8), "https://")) {
                         $urlpieces = parse_url($url);
                         $httpsurl = 'https://go.' . Pardot_Settings::BASE_PARDOT_DOMAIN . $urlpieces['path'];
-                        $embed_code = preg_replace($reg_exUrlHttpOnly, $httpsurl, $embed_code, 1);
+                        $embed_code = preg_replace($reg_exUrl_http_only, $httpsurl, $embed_code, 1);
                     }
                 }
             }
             return $embed_code;
         }
-
 
 	/**
 	 * Grab the HTML for the Pardot Dynamic Content to be displayed via a widget or via a shortcode.
