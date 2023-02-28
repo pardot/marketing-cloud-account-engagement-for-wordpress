@@ -1,0 +1,31 @@
+{
+	"name": "pardot",
+	"version": "2.0.0",
+	"description": "Connect your WordPress to Pardot with shortcode and widgets for campaign tracking, quick form access, and dynamic content.",
+	"author": "Salesforce",
+	"license": "GPL-2.0-or-later",
+	"homepage": "https://wordpress.org/plugins/pardot/",
+	"repository": "git+https://github.com/pardot/pardot-for-wordpress.git",
+	"bugs": {
+		"url": "https://github.com/pardot/pardot-for-wordpress/issues"
+	},
+	"main": "build/index.js",
+	"scripts": {
+		"build": "wp-scripts build",
+		"format:js": "wp-scripts format-js",
+		"lint:css": "wp-scripts lint-style",
+		"lint:js": "wp-scripts lint-js",
+		"start": "wp-scripts start",
+		"packages-update": "wp-scripts packages-update"
+	},
+	"devDependencies": {
+		"@wordpress/scripts": "^12.1.1"
+	},
+	"dependencies": {
+		"@wordpress/block-editor": "^11.3.0",
+		"@wordpress/blocks": "^6.20.3",
+		"@wordpress/element": "^2.16.0",
+		"@wordpress/server-side-render": "^1.16.4",
+		"npm": "^6.14.7"
+	}
+}

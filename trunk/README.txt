@@ -3,8 +3,8 @@ Contributors: Pardot
 Donate link: https://salesforce.com
 Tags: pardot, salesforce, marketing automation, forms, dynamic content, tracking, web tracking, account engagement, marketing cloud
 Requires at least: 5.5
-Tested up to: 5.7
-Stable tag: 1.5.8
+Tested up to: 6.1
+Stable tag: 2.0.0
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -19,7 +19,7 @@ Say hello to marketing automation simplicity! With a single login, your self-hos
 
 1. Upload `pardot-for-wordpress/trunk` to your `/wp-content/plugins/` directory or go to Plugins > Add New in your WordPress Admin area and search for Pardot.
 2. Activate the plugin through the 'Plugins' menu in WordPress.
-3. Go to Settings > Pardot Settings and authenticate with either Pardot or Salesforce SSO.
+3. Go to Settings > Pardot Settings and authenticate with Salesforce SSO.
 4. Select your campaign (for tracking code usage).
 
 == Frequently Asked Questions ==
@@ -141,7 +141,7 @@ You can apply any conditional logic you want. For instance, this will append the
 Filter the regular expression used to find URLs to be converted to https://go.pardot.com. This is only used when "Use HTTPS?" is checked in the settings. You may want to filter this regex if you find it's not properly capturing and converting your URLs.
 
 	function pardot_custom_filter_https_regex() {
-		return "/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,63}(\/\S*)?/";
+		return "/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,63}(\/\S[^'\"]*)?/";
 	}
 
 	add_filter( 'pardot_https_regex', 'pardot_custom_filter_https_regex' );
@@ -155,8 +155,17 @@ Filter the regular expression used to find URLs to be converted to https://go.pa
 1. Use dynamic content in a widget
 1. A form widget on a page
 1. A page can have two forms! Here, one is in the body and one in a widget.
+1. Pardot block being added in the Block Editor.
+1. Form block being edited in the Block Editor
+1. Dynamic content block being edited in the Block Editor
+1. Remove Form block in the Block Editor
 
 == Changelog ==
+
+= 2.0.0 =
+
+* Feature - Added support for the WordPress Block Editor
+* Fix - When "Always Use HTTPS" is enabled in the plugin settings, non-HTTPS content will be properly converted to HTTPS
 
 = 1.5.8 =
 
@@ -383,6 +392,11 @@ Filter the regular expression used to find URLs to be converted to https://go.pa
 * Initial release.
 
 == Upgrade Notice ==
+
+= 2.0.0 =
+
+* Feature - Added support for the WordPress Block Editor
+* Fix - When "Always Use HTTPS" is enabled in the plugin settings, non-HTTPS content will be properly converted to HTTPS
 
 = 1.5.8 =
 

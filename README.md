@@ -9,7 +9,7 @@ Say hello to marketing automation simplicity! With a single login, your self-hos
 
 1. Upload `pardot-for-wordpress/trunk` to your `/wp-content/plugins/` directory or go to Plugins > Add New in your WordPress Admin area and search for Pardot.
 2. Activate the plugin through the 'Plugins' menu in WordPress.
-3. Go to Settings > Pardot Settings and authenticate with either Pardot or Salesforce SSO.
+3. Go to Settings > Pardot Settings and authenticate with Salesforce SSO.
 4. Select your campaign (for tracking code usage).
 
 ### Authenticating with Salesforce SSO
@@ -155,13 +155,17 @@ Filter the regular expression used to find URLs to be converted to https://go.pa
 
 ```php
 function pardot_custom_filter_https_regex() {
-	return "/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,63}(\/\S*)?/";
+	return "/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,63}(\/\S[^'\"]*)?/";
 }
 
 add_filter( 'pardot_https_regex', 'pardot_custom_filter_https_regex' );
 ```
 
 ## Changelog
+
+### 2.0.0
+* Improvement - Added support for the WordPress Block Editor
+* Fix - When "Always Use HTTPS" is enabled in the plugin settings, non-HTTPS content will be properly converted to HTTPS
 
 ### 1.5.8
 * Fix - Handled an issue that authentication failure ([Pardot API Error Code 184](https://developer.salesforce.com/docs/marketing/pardot/guide/error-codes.html#numerical-list-of-error-codes)) causes the settings page to be stuck in a loading state
