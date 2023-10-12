@@ -1,16 +1,16 @@
 <?php
 
 /**
- * Manages the general functionality for the Pardot Plugin that doesn't fit elsewhere.
+ * Manages the general functionality for the Account Engagement Plugin that doesn't fit elsewhere.
  *
  * Includes:
  *  - Automatic Javascript in the theme footer
  * 	- [pardot-form] Shortcode
  *  - [pardot-dynamic-content] Shortcode
  *  - Caching support
- *  - Call and retrieve values from the Pardot API
- *  - Hooks to support the Pardot Forms Shortcode Insert button for TinyMCE
- *  - AJAX support for the Pardot Forms Shortcode Insert popup
+ *  - Call and retrieve values from the Account Engagement API
+ *  - Hooks to support the Account Engagement Forms Shortcode Insert button for TinyMCE
+ *  - AJAX support for the Account Engagement Forms Shortcode Insert popup
  *  - Adds 'Settings' link to the plugins admin page for this plugin.
  *  - admin_init to ensure hooks are added for admin pages.
  *
@@ -54,7 +54,7 @@ class Pardot_Plugin
 	public static $saved_transient_keys = '_pardot_transient_keys';
 
 	/**
-	 * Create singleton instance of the Pardot Plugin object.
+	 * Create singleton instance of the Account Engagement Plugin object.
 	 *
 	 * @since 1.0.0
 	 */
@@ -103,12 +103,12 @@ class Pardot_Plugin
 	function init()
 	{
 		/**
-		 * Load the pardot text domain for language translations
+		 * Load the Account Engagement text domain for language translations
 		 */
 		add_action('plugins_loaded', [$this, 'plugins_loaded']);
 
 		/**
-		 * Add the Pardot Javascript to the form.
+		 * Add the Account Engagement Javascript to the form.
 		 */
 		add_action('wp_footer', [$this, 'wp_footer']);
 
@@ -149,26 +149,26 @@ class Pardot_Plugin
 	}
 
 	/**
-	 * AJAX function used to return the list of Pardot forms for the current accounts selected campaign.
+	 * AJAX function used to return the list of Account Engagement forms for the current accounts selected campaign.
 	 *
 	 * @since 1.0.0
 	 */
 	function wp_ajax_get_pardot_forms_shortcode_select_html()
 	{
 		/**
-		 * Use the API or the cache to retrieve an array of Pardot Forms
+		 * Use the API or the cache to retrieve an array of Account Engagement Forms
 		 */
 		$forms = self::get_forms();
 
 		/**
-		 * Do we have Pardot Forms?
+		 * Do we have Account Engagement Forms?
 		 */
 		if (!empty($forms)) {
 
 			/**
-			 * YES, we have Pardot Forms! :-)
+			 * YES, we have Account Engagement forms! :-)
 			 *
-			 * Grab the HTML that contains a <select> which lets the user select a Pardot Form
+			 * Grab the HTML that contains a <select> which lets the user select an Account Engagement form
 			 * for which it insert a shortcode for that form into the TinyMCE editing space.
 			 */
 			$html = $this->get_forms_shortcode_select_html('formshortcode', $forms);
@@ -176,9 +176,9 @@ class Pardot_Plugin
 		} else {
 
 			/**
-			 * No, we have no Pardot Forms today. :-(
+			 * No, we have no Account Engagement forms today. :-(
 			 *
-			 * Grab the URL where users can define forms on Pardot's website and
+			 * Grab the URL where users can define forms on Account Engagement's website and
 			 * put into a variable that can be embedded in a string.
 			 */
 			$forms_url = Pardot_Settings::FORMS_URL;
@@ -189,12 +189,12 @@ class Pardot_Plugin
 			$link_text = __('create one', 'pardot');
 
 			/**
-			 * Assemble the link for where Pardot Forms can be defined.
+			 * Assemble the link for where Account Engagement forms can be defined.
 			 */
 			$page_link = "<a target=\"_blank\" href=\"{$forms_url}\">{$link_text}</a>";
 
 			/**
-			 * Assemble the link for where Pardot Forms can be defined.
+			 * Assemble the link for where Account Engagement forms can be defined.
 			 */
 			$error_msg = __('It looks like you don\'t have any forms set up yet. Please %s.', 'pardot');
 
@@ -205,7 +205,7 @@ class Pardot_Plugin
 		}
 
 		/**
-		 * Output either <select> with Pardot Forms as <options>, or an error message with instructions to add Pardot Forms.
+		 * Output either <select> with Account Engagement forms as <options>, or an error message with instructions to add Account Engagement forms.
 		 */
 		echo $html;
 
@@ -216,26 +216,26 @@ class Pardot_Plugin
 	}
 
 	/**
-	 * AJAX function used to return the list of Pardot dynamic content for the current accounts selected campaign.
+	 * AJAX function used to return the list of Account Engagement dynamic content for the current accounts selected campaign.
 	 *
 	 * @since 1.1.0
 	 */
 	function wp_ajax_get_pardot_dynamicContent_shortcode_select_html()
 	{
 		/**
-		 * Use the API or the cache to retrieve an array of Pardot dynamicContents
+		 * Use the API or the cache to retrieve an array of Account Engagement dynamicContent
 		 */
 		$dynamicContents = self::get_dynamicContent();
 
 		/**
-		 * Do we have Pardot dynamicContents?
+		 * Do we have Account Engagement dynamicContent?
 		 */
 		if (!empty($dynamicContents)) {
 
 			/**
-			 * YES, we have Pardot dynamicContents! :-)
+			 * YES, we have Account Engagement dynamicContent! :-)
 			 *
-			 * Grab the HTML that contains a <select> which lets the user select a Pardot dynamicContent
+			 * Grab the HTML that contains a <select> which lets the user select a Account Engagement dynamicContent
 			 * for which it insert a shortcode for that dynamicContent into the TinyMCE editing space.
 			 */
 			$lmth = $this->get_dynamicContents_shortcode_select_html('dcshortcode', $dynamicContents);
@@ -243,9 +243,9 @@ class Pardot_Plugin
 		} else {
 
 			/**
-			 * No, we have no Pardot dynamicContents today. :-(
+			 * No, we have no Account Engagement dynamicContent today. :-(
 			 *
-			 * Grab the URL where users can define dynamicContents on Pardot's website and
+			 * Grab the URL where users can define dynamicContent on Account Engagement's website and
 			 * put into a variable that can be embedded in a string.
 			 */
 			$dynamicContents_url = Pardot_Settings::DYNAMIC_CONTENT_URL;
@@ -256,12 +256,12 @@ class Pardot_Plugin
 			$link_text = __('create some', 'pardot');
 
 			/**
-			 * Assemble the link for where Pardot dynamicContents can be defined.
+			 * Assemble the link for where Account Engagement dynamicContent can be defined.
 			 */
 			$page_link = "<a target=\"_blank\" href=\"{$dynamicContents_url}\">{$link_text}</a>";
 
 			/**
-			 * Assemble the link for where Pardot dynamicContents can be defined.
+			 * Assemble the link for where Account Engagement dynamicContent can be defined.
 			 */
 			$error_msg = __('<br />It looks like you don\'t have any Dynamic Content set up yet. Please %s.', 'pardot');
 
@@ -272,7 +272,7 @@ class Pardot_Plugin
 		}
 
 		/**
-		 * Output either <select> with Pardot dynamicContents as <options>, or an error message with instructions to add Pardot dynamicContents.
+		 * Output either <select> with Account Engagement dynamicContent as <options>, or an error message with instructions to add Account Engagement dynamicContent.
 		 */
 		echo $lmth;
 
@@ -328,12 +328,12 @@ class Pardot_Plugin
 	}
 
 	/**
-	 * Assemble <select> element for selected Pardot Forms.
+	 * Assemble <select> element for selected Account Engagement forms.
 	 *
 	 * The <option> value will be the WordPress [pardot-form] shortcode to insert into TinyMCE
 	 *
 	 * @param string $select_name The HTML name for the <select> element
-	 * @param array $forms The array for Pardot Forms returned form the Pardot API.
+	 * @param array $forms The array for Account Engagement forms returned form the Account Engagement API.
 	 * @return string The HTML string to display
 	 *
 	 * @since 1.0.0
@@ -359,7 +359,7 @@ class Pardot_Plugin
 		$html[] = "<option value=\"0\">Select</option>";
 
 		/**
-		 * For each Pardot Form
+		 * For each Account Engagement form
 		 */
 		foreach ($forms as $form) {
 			/**
@@ -378,12 +378,12 @@ class Pardot_Plugin
 	}
 
 	/**
-	 * Assemble <select> element for selected Pardot dynamicContents.
+	 * Assemble <select> element for selected Account Engagement dynamicContent.
 	 *
 	 * The <option> value will be the WordPress [pardot-dynamic-content] shortcode to insert into TinyMCE
 	 *
 	 * @param string $select_name The HTML name for the <select> element
-	 * @param array $dynamicContents The array for Pardot dynamicContents returned dynamicContent the Pardot API.
+	 * @param array $dynamicContents The array for Account Engagement dynamicContent returned dynamicContent the Account Engagement API.
 	 * @return string The HTML string to display
 	 *
 	 * @since 1.1.0
@@ -409,7 +409,7 @@ class Pardot_Plugin
 		$lmth[] = "<option value=\"0\">Select</option>";
 
 		/**
-		 * For each Pardot dynamicContent
+		 * For each Account Engagement dynamicContent
 		 */
 		foreach ($dynamicContents as $dynamicContent) {
 			/**
@@ -436,7 +436,7 @@ class Pardot_Plugin
 	function plugins_loaded()
 	{
 		/**
-		 * Load the 'pardot' text domain for language translation using the /languages/ subdirectory.
+		 * Load the 'Account Engagement' text domain for language translation using the /languages/ subdirectory.
 		 */
 		load_plugin_textdomain('pardot', false, dirname(plugin_basename(__FILE__)) . '/languages/');
 	}
@@ -461,7 +461,7 @@ class Pardot_Plugin
 		}
 
 		/**
-		 * Test to see if we should add the TinyMCE support for Pardot
+		 * Test to see if we should add the TinyMCE support for Account Engagement
 		 *
 		 * Check to see if we are adding or editing a post or page.
 		 */
@@ -485,7 +485,7 @@ class Pardot_Plugin
 		 */
 		if (get_user_option('rich_editing') == 'true') {
 			/**
-			 * All clear, add the hooks that will add the Pardot button to TinyMCE.
+			 * All clear, add the hooks that will add the Account Engagement button to TinyMCE.
 			 */
 			add_filter('mce_external_plugins', [$this, 'mce_external_plugins']);
 			add_filter('mce_buttons', [$this, 'mce_buttons']);
@@ -532,7 +532,7 @@ class Pardot_Plugin
 	}
 
 	/**
-	 * Filter hook to add a TinyMCE plugin for Pardot Forms.
+	 * Filter hook to add a TinyMCE plugin for Account Engagement forms.
 	 *
 	 * @param array $plugin_array List of TinyMCE buttons where key is string identifying the button and value is
 	 * the path to the javascript file implementing the buttons functionality.
@@ -546,7 +546,7 @@ class Pardot_Plugin
 	function mce_external_plugins($plugin_array)
 	{
 		/**
-		 * 'pardotformsshortcodeinsert' identifies the Pardot Forms button to TinyMCE.
+		 * 'pardotformsshortcodeinsert' identifies the Account Engagement forms button to TinyMCE.
 		 * '.../editor_plugin.js' implements the button's functionality.
 		 */
 		$plugin_array['pardotformsshortcodeinsert'] = plugins_url('/js/tinymce.js', PARDOT_PLUGIN_FILE);
@@ -554,7 +554,7 @@ class Pardot_Plugin
 	}
 
 	/**
-	 * Filter hook to add a TinyMCE button to launch the Pardot Forms Shortcode Insert Popup
+	 * Filter hook to add a TinyMCE button to launch the Account Engagement forms Shortcode Insert Popup
 	 *
 	 * @param array $buttons String indicators like 'bold', 'italic' and 'pardotformsshortcodeinsert'
 	 * @return array Filtered array of string indicators for buttons.
@@ -566,14 +566,14 @@ class Pardot_Plugin
 	function mce_buttons($buttons)
 	{
 		/**
-		 * 'pardotformsshortcodeinsert' identifies the Pardot Forms button to TinyMCE prefixed with a separator.
+		 * 'pardotformsshortcodeinsert' identifies the Account Engagement forms button to TinyMCE prefixed with a separator.
 		 */
 		array_push($buttons, 'separator', 'pardotformsshortcodeinsert');
 		return $buttons;
 	}
 
 	/**
-	 * Adds the Pardot Javascript Tracking Code to the end of any theme that calls wp_footer().
+	 * Adds the Account Engagement Javascript Tracking Code to the end of any theme that calls wp_footer().
 	 *
 	 * If you want to use after the template tag the_pardot_tracking_js() elsewhere
 	 * then call remove_pardot_wp_footer() before the 'wp_footer' hook is called,
@@ -603,7 +603,7 @@ class Pardot_Plugin
 		$atts['form_id'] = isset($atts['id']) ? $atts['id'] : 0;
 
 		/**
-		 * Output the Pardot form
+		 * Output the Account Engagement form
 		 */
 		return self::get_form_body($atts);
 	}
@@ -628,13 +628,13 @@ class Pardot_Plugin
 		$atts['dynamicContent_default'] = isset($atts['default']) ? $atts['default'] : '';
 
 		/**
-		 * Output the Pardot form
+		 * Output the Account Engagement form
 		 */
 		return self::get_dynamic_content_body($atts);
 	}
 
 	/**
-	 * Grab the HTML for the Pardot Form to be displayed via a widget or via a shortcode.
+	 * Grab the HTML for the Account Engagement form to be displayed via a widget or via a shortcode.
 	 *
 	 * @static
 	 * @param array $args Contains 'form_id' and maybe 'height'
@@ -733,7 +733,7 @@ class Pardot_Plugin
 								 */
 								$height = $atts['height'];
 								/**
-								 * Find it in the embedCode HTML returned by Pardot's API
+								 * Find it in the embedCode HTML returned by Account Engagement's API
 								 */
 								if (preg_match('#height="[^"]+"#', $form_html, $matches)) {
 									/**
@@ -756,7 +756,7 @@ class Pardot_Plugin
 								 */
 								$width = $atts['width'];
 								/**
-								 * Find it in the embedCode HTML returned by Pardot's API
+								 * Find it in the embedCode HTML returned by Account Engagement's API
 								 */
 								if (preg_match('#width="[^"]+"#', $form_html, $matches)) {
 									/**
@@ -812,7 +812,7 @@ class Pardot_Plugin
 							$url = preg_replace('#^<iframe src="([^"]+)".*$#', '$1', $form->embedCode);
 
 							/**
-							 * Now call the URL to get the HTML page that Pardot expects to be inlined
+							 * Now call the URL to get the HTML page that Account Engagement expects to be inlined
 							 */
 							$response = (object)wp_remote_get($url);
 
@@ -835,7 +835,7 @@ class Pardot_Plugin
 
 									/**
 									 * Craft an action that posts back to this site at /pardot-form-submit/ URL path with the
-									 * read URL at Pardot as an url parameter named 'url'.
+									 * read URL at Account Engagement as a URL parameter named 'url'.
 									 */
 									$local_form_action = site_url('/pardot-form-submit/?url=' . urlencode($form_action[1]));
 
@@ -848,7 +848,7 @@ class Pardot_Plugin
 
 									/**
 									 * Finally prepend 'INLINE' to the form content we extracted from the form
-									 * that Pardot expected to be used in an <iframe> tag.
+									 * that Account Engagement expected to be used in an <iframe> tag.
 									 */
 									$form_html = "INLINE:<div class=\"pardot-inline-form\">{$matches[1]}{$matches[2]}</div>"; //
 								}
@@ -968,7 +968,7 @@ class Pardot_Plugin
                 $reg_exUrl_http_only = "/(http)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,63}(\/\S[^'\"]*)?/";
                 foreach ($urls[0] as $url) {
                     /**
-                     * If the URL does not use HTTPS, replace it with the approved Pardot HTTPS URL
+                     * If the URL does not use HTTPS, replace it with the approved Account Engagement HTTPS URL
                      */
                     if (strcasecmp(substr($url, 0, 8), "https://")) {
                         $urlpieces = parse_url($url);
@@ -981,7 +981,7 @@ class Pardot_Plugin
         }
 
 	/**
-	 * Grab the HTML for the Pardot Dynamic Content to be displayed via a widget or via a shortcode.
+	 * Grab the HTML for the Account Engagement Dynamic Content to be displayed via a widget or via a shortcode.
 	 *
 	 * @static
 	 * @param array $args Contains 'dynamicContent_id'
@@ -1049,7 +1049,7 @@ class Pardot_Plugin
 	}
 
 	/**
-	 * Get an instance of Pardot_API
+	 * Get an instance of Account Engagement_API
 	 *
 	 * If API is not instantiated yet, passes $auth array which if empty will retrieve values from self::get_settings().
 	 *
@@ -1082,7 +1082,7 @@ class Pardot_Plugin
 	}
 
 	/**
-	 * Returns array of Campaigns as defined by the Pardot API.
+	 * Returns array of Campaigns as defined by the Account Engagement API.
 	 *
 	 * @param array $args Combined authorization parameters and query arguments.
 	 * @return array|bool The array of Campaigns, or false if not authenticated or API error.
@@ -1095,7 +1095,7 @@ class Pardot_Plugin
 	}
 
 	/**
-	 * Returns array of Forms as defined by the Pardot API.
+	 * Returns array of Forms as defined by the Account Engagement API.
 	 *
 	 * @param array $args Combined authorization parameters and query arguments.
 	 * @return array|bool The array of Forms, or false if not authenticated or API error.
@@ -1108,7 +1108,7 @@ class Pardot_Plugin
 	}
 
 	/**
-	 * Returns array of Dynamic Content as defined by the Pardot API.
+	 * Returns array of Dynamic Content as defined by the Account Engagement API.
 	 *
 	 * @param array $args Combined authorization parameters and query arguments.
 	 * @return array|bool The array of Forms, or false if not authenticated or API error.
@@ -1121,7 +1121,7 @@ class Pardot_Plugin
 	}
 
 	/**
-	 * Returns an Account as defined by the Pardot API.
+	 * Returns an Account as defined by the Account Engagement API.
 	 *
 	 * @param array $args Combined authorization parameters and query arguments.
 	 * @return array|bool The Account, or false if not authenticated or API error.
@@ -1134,12 +1134,12 @@ class Pardot_Plugin
 	}
 
 	/**
-	 * Function to streamline calling the Pardot API
+	 * Function to streamline calling the Account Engagement API
 	 * @static
 	 * @param string $key Name of item to call, i.e. 'forms', 'campaigns', 'account', etc.
 	 * @param array $args Combined authorization parameters and query arguments.
 	 *
-	 * @return mixed Value returned by Pardot API; an array of items like forms or campaigns but representing an account.
+	 * @return mixed Value returned by Account Engagement API; an array of items like forms or campaigns but representing an account.
 	 *
 	 * @since 1.0.0
 	 */
@@ -1292,7 +1292,7 @@ class Pardot_Plugin
 	}
 
 	/**
-	 * Totally clears out all Pardot transients and wp_cache items.
+	 * Totally clears out all Account Engagement transients and wp_cache items.
 	 *
 	 * @return bool True if the cache was cleared, false otherwise.
 	 * @since 1.4.6

@@ -1,8 +1,8 @@
 <?php
 /**
- * Functions to simplify calling the Pardot API.
+ * Functions to simplify calling the Account Engagement API.
  *
- * These functions call Pardot's API via Pardot_Plugin class which has a private static api property. These functions
+ * These functions call Account Engagement's API via Pardot_Plugin class which has a private static api property. These functions
  * will use an instantiated API if already exists for the current page load or it will create one. Also it will grab
  * the user, password, user_key and api_key from 'pardot_setttings' in wp_options or it will use auth if passed via
  * an $args parameter.
@@ -11,7 +11,7 @@
  * @since 1.0.0
  */
 /**
- * Returns an API key via the Pardot API as implemented in the Pardot_Plugin class.
+ * Returns an API key via the Account Engagement API as implemented in the Pardot_Plugin class.
  *
  * @param array $args
  * @return Pardot_API
@@ -23,7 +23,7 @@ function get_pardot_api_key( $args = array() ) {
 }
 
 /**
- * Returns an account object via the Pardot API as implemented in the Pardot_Plugin class.
+ * Returns an account object via the Account Engagement API as implemented in the Pardot_Plugin class.
  *
  * @param array $args
  * @return Pardot_API
@@ -35,7 +35,7 @@ function get_pardot_account( $args = array() ) {
 }
 
 /**
- * Returns an array of campaigns via the Pardot API as implemented in the Pardot_Plugin class.
+ * Returns an array of campaigns via the Account Engagement API as implemented in the Pardot_Plugin class.
  *
  * @param array $args
  * @return Pardot_API
@@ -47,7 +47,7 @@ function get_pardot_campaigns( $args = array() ) {
 }
 
 /**
- * Returns an array of forms via the Pardot API as implemented in the Pardot_Plugin class.
+ * Returns an array of forms via the Account Engagement API as implemented in the Pardot_Plugin class.
  *
  * @param array $args
  * @return Pardot_API
@@ -59,7 +59,7 @@ function get_pardot_forms( $args = array() ) {
 }
 
 /**
- * Returns an array of dynamic content via the Pardot API as implemented in the Pardot_Plugin class.
+ * Returns an array of dynamic content via the Account Engagement API as implemented in the Pardot_Plugin class.
  *
  * @param array $args
  * @return Pardot_API

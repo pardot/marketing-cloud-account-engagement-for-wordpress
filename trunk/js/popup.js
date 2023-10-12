@@ -69,7 +69,7 @@
 		});
 
 		/**
-		 * Currently-unused function to clear Pardot API cache and get "fresh" data for form's Chosen fields.
+		 * Currently-unused function to clear Account Engagement API cache and get "fresh" data for form's Chosen fields.
 		 *
 		 * @since 1.0.0
 		 */
@@ -109,7 +109,7 @@
 		}
 
 		/**
-		 * Take the form choices and use them to create a Pardot shortcode in the editor.
+		 * Take the form choices and use them to create an Account Engagement shortcode in the editor.
 		 *
 		 * @since 1.0.0
 		 */
@@ -187,7 +187,7 @@
 		});
 
 		/**
-		 * Cancels form submission and closes the Pardot shortcode builder modal.
+		 * Cancels form submission and closes the Account Engagement shortcode builder modal.
 		 *
 		 * @since 1.4.4
 		 */
@@ -201,7 +201,7 @@
 		});
 
 		/**
-		 * Body class and jQuery event that let us customize the Pardot shortcode-builder without
+		 * Body class and jQuery event that let us customize the Account Engagement shortcode-builder without
 		 * altering other Thickbox modals that might be on the page.
 		 *
 		 * @since 1.4.6

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * WordPress Pardot Forms Widget
+ * WordPress Account Engagement Forms Widget
  *
  * @author Mike Schinkel <mike@newclarity.net>
  *
@@ -123,7 +123,7 @@ CSS;
 			 */
 			if (isset($_GET['url']) && preg_match("#^{$post_root_url_regex}/#", $_GET['url'])) {
 				/**
-				 * Post back to Pardot's website using the WordPress HTTP function.
+				 * Post back to Account Engagement's website using the WordPress HTTP function.
 				 *
 				 * $_POST will contain the prior $_POST's body, just pass it along.
 				 *
@@ -131,7 +131,7 @@ CSS;
 				$response = wp_remote_post(
 					$_GET['url'], [
 						'body' => $_POST,
-						'user-agent' => 'Pardot WordPress Plugin',
+						'user-agent' => 'Account Engagement WordPress Plugin',
 					]
 				);
 
@@ -173,7 +173,7 @@ CSS;
 		 */
 		$widget_ops = [
 			'classname' => 'pardot-forms',
-			'description' => __('Embed a Pardot form in your sidebar.', 'pardot'),
+			'description' => __('Embed an Account Engagement form in your sidebar.', 'pardot'),
 		];
 		/**
 		 * @var array Empty array lists to document that parameters for the WP_Widget parent constructor.
@@ -184,15 +184,15 @@ CSS;
 		/**
 		 * Call the WP_Widget parent constructor.
 		 */
-		parent::__construct('pardot-forms', __('Pardot Forms', 'pardot'), $widget_ops, $control_ops);
+		parent::__construct('pardot-forms', __('Account Engagement Forms', 'pardot'), $widget_ops, $control_ops);
 	}
 	/*
 
 	*/
 	/**
-	 * Displays Pardot forms for Widget HTML on front end of site.
+	 * Displays Account Engagement forms for Widget HTML on front end of site.
 	 *
-	 * Echos form defined in Pardot account and specified for this widget.  Can display as IFrame or as inline HTML the
+	 * Echos form defined in Account Engagement business unit and specified for this widget.  Can display as iFrame or as inline HTML the
 	 * latter of which is experimental.
 	 *
 	 * @param array $args Arguments passed by the sidebar. $args can be one of:
@@ -236,9 +236,9 @@ CSS;
 		$title_html = !empty($title) ? "{$args['before_title']}{$title}{$args['after_title']}" : false;
 
 		/**
-		 * Grab form_id from the instance that we set in $this->update() and use it to grab the HTML for this Pardot Form.
+		 * Grab form_id from the instance that we set in $this->update() and use it to grab the HTML for this Account Engagement Form.
 		 */
-		$body_html = '<h4>Please select a Pardot form.</h4>';
+		$body_html = '<h4>Please select an Account Engagement form.</h4>';
 		if (isset($instance['form_id'])) {
 			$body_html = Pardot_Plugin::get_form_body($instance);
 		}
@@ -354,7 +354,7 @@ HTML;
 			 * We DO have forms!
 			 *
 			 * If the instance hasn't been initialized via $this->update(), give it's 'form_id' element
-			 * a value indicating no Pardot form has yet to be selected by an admin user.
+			 * a value indicating no Account Engagement form has yet to be selected by an admin user.
 			 */
 			if (!isset($instance['form_id']))
 				$instance['form_id'] = 0;
@@ -375,7 +375,7 @@ HTML;
 			array_unshift($forms, $label_option);
 
 			/**
-			 * For each Pardot form that the current account has configured
+			 * For each Account Engagement form that the current account has configured
 			 */
 			foreach ($forms as $form) {
 				/**
@@ -422,12 +422,12 @@ HTML;
 			 * Create link to Settings Page
 			 */
 			$pardot_settings_url = admin_url('/options-general.php?page=pardot');
-			$cache_text = __('<strong>Not seeing something you added recently in Pardot?</strong> Please click the Clear Cache button on the %s.', 'pardot');
-			$cache_link = sprintf('<a href="%s" target="_parent">%s</a>', $pardot_settings_url, 'Pardot Settings Page');
+			$cache_text = __('<strong>Not seeing something you added recently in Account Engagement?</strong> Please click the Clear Cache button on the %s.', 'pardot');
+			$cache_link = sprintf('<a href="%s" target="_parent">%s</a>', $pardot_settings_url, 'Account Engagement Settings Page');
 			$cache_text = sprintf($cache_text, $cache_link);
 
 			/**
-			 * Create the HTML for displaying the select of Pardot forms
+			 * Create the HTML for displaying the select of Account Engagement forms
 			 */
 			$html = <<<HTML
 <p><label for="{$html_id}">{$prompt}</label><select id="{$html_id}" name="{$html_name}" style="max-width:100%" class="js-chosen">{$options}</select></p>
@@ -475,7 +475,7 @@ HTML;
 Pardot_Forms_Widget::on_load();
 
 /**
- * WordPress Pardot Dynamic Content Widget
+ * WordPress Account Engagement Dynamic Content Widget
  *
  * @author Cliff Seal <cliff.seal@pardot.com>
  *
@@ -540,7 +540,7 @@ class Pardot_Dynamic_Content_Widget extends WP_Widget
 		 */
 		$widget_ops = [
 			'classname' => 'pardot-dynamic-content',
-			'description' => __('Use Pardot Dynamic Content in your sidebar.', 'pardot'),
+			'description' => __('Use Account Engagement Dynamic Content in your sidebar.', 'pardot'),
 		];
 		/**
 		 * @var array Empty array lists to document that parameters for the WP_Widget parent constructor.
@@ -551,15 +551,15 @@ class Pardot_Dynamic_Content_Widget extends WP_Widget
 		/**
 		 * Call the WP_Widget parent constructor.
 		 */
-		parent::__construct('pardot-dynamic-content', __('Pardot Dynamic Content', 'pardot'), $widget_ops, $control_ops);
+		parent::__construct('pardot-dynamic-content', __('Account Engagement Dynamic Content', 'pardot'), $widget_ops, $control_ops);
 	}
 	/*
 
 	*/
 	/**
-	 * Displays Pardot dynamic content for Widget HTML on front end of site.
+	 * Displays Account Engagement dynamic content for Widget HTML on front end of site.
 	 *
-	 * Echos dynamic content defined in Pardot account and specified for this widget.
+	 * Echos dynamic content defined in Account Engagement business unit and specified for this widget.
 	 *
 	 * @param array $args Arguments passed by the sidebar. $args can be one of:
 	 *
@@ -602,9 +602,9 @@ class Pardot_Dynamic_Content_Widget extends WP_Widget
 		$title_html = !empty($title) ? "{$args['before_title']}{$title}{$args['after_title']}" : false;
 
 		/**
-		 * Grab form_id from the instance that we set in $this->update() and use it to grab the HTML for this Pardot Form.
+		 * Grab form_id from the instance that we set in $this->update() and use it to grab the HTML for this Account Engagement Form.
 		 */
-		$body_html = '<h4>Please select Pardot dynamic content.</h4>';
+		$body_html = '<h4>Please select Account Engagement dynamic content.</h4>';
 		if (isset($instance['dynamicContent_id'])) {
 			$body_html = Pardot_Plugin::get_dynamic_content_body($instance);
 		}
@@ -723,7 +723,7 @@ HTML;
 			 * We DO have forms!
 			 *
 			 * If the instance hasn't been initialized via $this->update(), give it's 'form_id' element
-			 * a value indicating no Pardot form has yet to be selected by an admin user.
+			 * a value indicating no Account Engagement form has yet to be selected by an admin user.
 			 */
 			if (!isset($instance['dynamicContent_id']))
 				$instance['dynamicContent_id'] = 0;
@@ -744,7 +744,7 @@ HTML;
 			array_unshift($dynamicContents, $label_option);
 
 			/**
-			 * For each Pardot form that the current account has configured
+			 * For each Account Engagement form that the current account has configured
 			 */
 			foreach ($dynamicContents as $dynamicContent) {
 				/**
@@ -783,8 +783,8 @@ HTML;
 			 * Create link to Settings Page
 			 */
 			$pardot_settings_url = admin_url('/options-general.php?page=pardot');
-			$cache_text = __('<strong>Not seeing something you added recently in Pardot?</strong> Please click the Clear Cache button on the %s.', 'pardot');
-			$cache_link = sprintf('<a href="%s" target="_parent">%s</a>', $pardot_settings_url, 'Pardot Settings Page');
+			$cache_text = __('<strong>Not seeing something you added recently in Account Engagement?</strong> Please click the Clear Cache button on the %s.', 'pardot');
+			$cache_link = sprintf('<a href="%s" target="_parent">%s</a>', $pardot_settings_url, 'Account Engagement Settings Page');
 			$cache_text = sprintf($cache_text, $cache_link);
 
 			/**
@@ -793,7 +793,7 @@ HTML;
 			$param_text = __('Height and width should be in px or % (i.e. 250px or 90%).', 'pardot');
 
 			/**
-			 * Create the HTML for displaying the select of Pardot forms
+			 * Create the HTML for displaying the select of Account Engagement forms
 			 */
 			$html = <<<HTML
 <p><label for="{$html_id}">{$prompt}</label><select id="{$html_id}" name="{$html_name}" style="max-width:100%" class="js-chosen">{$options}</select></p>

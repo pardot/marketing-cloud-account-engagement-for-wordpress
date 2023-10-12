@@ -1,9 +1,9 @@
 <?php
 
 /**
- * PHP class for interacting with the Pardot API.
+ * PHP class for interacting with the Account Engagement API.
  *
- * Developed for the Pardot WordPress Plugin.
+ * Developed for the Account Engagement WordPress Plugin.
  *
  * @note $URL_PATH_TEMPLATE and $LOGIN_URL_PATH_TEMPLATE are private static rather than const because const cannot be made private
  * and both these are "convenience" constants to ensure they are placed close to the top of the file but their
@@ -20,7 +20,7 @@
 class Pardot_API
 {
 	/**
-	 * @const string The root URL for the Pardot API.
+	 * @const string The root URL for the Account Engagement API.
 	 *
 	 * @since 1.0.0
 	 */
@@ -34,7 +34,7 @@ class Pardot_API
 	const OAUTH_URL = 'https://login.salesforce.com/services/oauth2/token';
 
 	/**
-	 * @const string The supported version of the Pardot API, this value is embedded into the API's URLs
+	 * @const string The supported version of the Account Engagement API, this value is embedded into the API's URLs
 	 *
 	 * @since 1.0.0
 	 */
@@ -105,7 +105,7 @@ class Pardot_API
 
 
 	/**
-	 * Creates a Pardot API object.
+	 * Creates a Account Engagement API object.
 	 *
 	 * If more than one value is passed for $auth it will pass to set_auth() to save the auth parameters
 	 * into the object's same named properties.
@@ -196,9 +196,9 @@ class Pardot_API
 	}
 
 	/**
-	 * Returns an array of campaign objects from Pardot's API
+	 * Returns an array of campaign objects from Account Engagement's API
 	 *
-	 * The structure of the campaign objects are based on Pardot's API returned XML format captured using PHP's SimpleXML
+	 * The structure of the campaign objects are based on Account Engagement's API returned XML format captured using PHP's SimpleXML
 	 * and converted to an array of stdClass objects.
 	 *
 	 * @param array $args Combined authorization parameters and query arguments.
@@ -253,9 +253,9 @@ class Pardot_API
 	}
 
 	/**
-	 * Returns an account object from Pardot's API
+	 * Returns an account object from Account Engagement's API
 	 *
-	 * The structure of the campaign objects are based on Pardot's API returned XML format captured using PHP's SimpleXML
+	 * The structure of the campaign objects are based on Account Engagement's API returned XML format captured using PHP's SimpleXML
 	 * and converted to an array of stdClass objects.
 	 *
 	 * @param array $args Combined authorization parameters and query arguments.
@@ -276,9 +276,9 @@ class Pardot_API
 	}
 
 	/**
-	 * Returns an array of form objects from Pardot's API
+	 * Returns an array of form objects from Account Engagement's API
 	 *
-	 * The structure of the form objects are based on Pardot's API returned XML format captured using PHP's SimpleXML
+	 * The structure of the form objects are based on Account Engagement's API returned XML format captured using PHP's SimpleXML
 	 * and converted to an array of stdClass objects.
 	 *
 	 * @param array $args Combined authorization parameters and query arguments.
@@ -322,9 +322,9 @@ class Pardot_API
 	}
 
 	/**
-	 * Returns an dynamic content from Pardot's API
+	 * Returns an dynamic content from Account Engagement's API
 	 *
-	 * The structure of the dynamic content objects are based on Pardot's API returned XML format captured using PHP's SimpleXML
+	 * The structure of the dynamic content objects are based on Account Engagement's API returned XML format captured using PHP's SimpleXML
 	 * and converted to an array of stdClass objects.
 	 *
 	 * @param array $args Combined authorization parameters and query arguments.
@@ -400,7 +400,7 @@ class Pardot_API
 	}
 
 	/**
-	 * Set the auth properties of the Pardot_API.
+	 * Set the auth properties of the Account Engagement_API.
 	 *
 	 * @param array $auth Values 'client_id', 'client_secret', 'business_unit_id', 'api_key' and 'refresh_token' supported.
 	 * @return void
@@ -566,11 +566,11 @@ class Pardot_API
 	}
 
 	/**
-	 * Simple helper function to return the URL required for an $item_type specific Pardot API.
+	 * Simple helper function to return the URL required for an $item_type specific Account Engagement API.
 	 *
 	 * This function could easily require significant modification to support the complete API which probably
 	 * means a significant rearchitecture.  However, it's a black box and it's $args 2nd parameter should enable
-	 * it to evolve as needed assume the $item_type continues to be a central concept in the Pardot API.
+	 * it to evolve as needed assume the $item_type continues to be a central concept in the Account Engagement API.
 	 *
 	 * @param string $item_type Item type requested; 'account', 'form', 'campaign' and (special case) 'login' tested.
 	 * @param array $args Authorization values ('client_id', 'client_secret', 'business_unit_id', and 'api_key') for 'login', nothing for the rest.

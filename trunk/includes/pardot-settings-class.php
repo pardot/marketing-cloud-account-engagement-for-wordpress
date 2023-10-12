@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Manage the Settings page and access to settings for the Pardot Plugin
+ * Manage the Settings page and access to settings for the Account Engagement Plugin
  *
  * We are using private static variables in UPPERCASE to simulate private constants
  * because constants can't be private and we don't want to expose these as they are
@@ -13,7 +13,7 @@
 class Pardot_Settings
 {
 
-	const BASE_PARDOT_DOMAIN = 'pardot.com';
+	const BASE_PARDOT_DOMAIN = 'demo.pardot.com';
 
 	/**
 	 * @var string Used as base for other URL constants
@@ -31,17 +31,17 @@ class Pardot_Settings
 	const BUSINESS_UNIT_ID_URL = 'https://login.salesforce.com/lightning/setup/PardotAccountSetup/home';
 
 	/**
-	 * @var string Admin page on Pardot's website that allows authenticated users to add forms to a campaign
+	 * @var string Admin page on Account Engagement's website that allows authenticated users to add forms to a campaign
 	 */
 	const FORMS_URL = self::PI_PARDOT_URL . '/form';
 
 	/**
-	 * @var string Admin page on Pardot's website that allows authenticated users to add forms to a campaign
+	 * @var string Admin page on Account Engagement's website that allows authenticated users to add forms to a campaign
 	 */
 	const DYNAMIC_CONTENT_URL = self::PI_PARDOT_URL . '/content';
 
 	/**
-	 * @var string The root URL used to <iframe> a Pardot Forms. Used to add inline forms support.
+	 * @var string The root URL used to <iframe> Account Engagement forms. Used to add inline forms support.
 	 */
 	const INLINE_FORM_URL = 'http://go.' . self::BASE_PARDOT_DOMAIN;
 
@@ -132,12 +132,12 @@ class Pardot_Settings
 		self::$self = $this;
 
 		/**
-		 * Configure the settings page for the Pardot Plugin if we are currently on the settings page.
+		 * Configure the settings page for the Account Engagement Plugin if we are currently on the settings page.
 		 */
 		add_action('admin_init', [$this, 'admin_init']);
 
 		/**
-		 * Configure the admin menu that points to this settings page for the Pardot Plugin.
+		 * Configure the admin menu that points to this settings page for the Account Engagement Plugin.
 		 */
 		add_action('admin_menu', [$this, 'admin_menu']);
 
@@ -154,9 +154,9 @@ class Pardot_Settings
 
 
 		/**
-		 * Because a crypto key is *REQUIRED* we're going to check to see if a pardot crypto key exists
+		 * Because a crypto key is *REQUIRED* we're going to check to see if an Account Engagement crypto key exists
 		 * in the settings table, and if it doesn't we're going to create one for use. We only ever want to do this
-		 * one time so it's not going to be continuing logic and it won't be stored with other pardot settings
+		 * one time so it's not going to be continuing logic and it won't be stored with other Account Engagement settings
 		 */
 		if (get_option('pardot_crypto_key', NULL) === NULL) {
 			$crypto = new PardotCrypto();
@@ -165,7 +165,7 @@ class Pardot_Settings
 	}
 
 	/**
-	 * Use to determine if we are in the Pardot Settings admin page.
+	 * Use to determine if we are in the Account Engagement Settings admin page.
 	 *
 	 * @return bool
 	 * @since 1.0.0
@@ -201,7 +201,7 @@ class Pardot_Settings
 	 */
 	function admin_menu()
 	{
-		$title = __('Pardot', 'pardot');
+		$title = __('Account Engagement', 'pardot');
 		self::$admin_page = add_options_page($title, $title, 'manage_options', self::$PAGE, [$this, 'settings_page']);
 	}
 
@@ -235,17 +235,17 @@ class Pardot_Settings
 		}
 
 		/**
-		 * The Pardot plugin has been activated but it can't be authenticated yet because it has no credentials.
+		 * The Account Engagement plugin has been activated but it can't be authenticated yet because it has no credentials.
 		 * Give the user a message so they know where to go to make it work.
 		 */
-		$msg = __('<strong>The Pardot plugin is activated (yay!)</strong>, but it needs some quick %s to start working correctly.', 'pardot');
+		$msg = __('<strong>The Account Engagement plugin is activated (yay!)</strong>, but it needs some quick %s to start working correctly.', 'pardot');
 		$msg = sprintf($msg, self::get_admin_page_link(['link_text' => __('configuration', 'pardot')]));
 		echo "<div class=\"updated\"><p>{$msg}</p></div>";
 
 	}
 
 	/**
-	 * Insert CSS for Pardot Setting page into the seeting page's HTML <head>.
+	 * Insert CSS for Account Engagement Setting page into the seeting page's HTML <head>.
 	 *
 	 * Called with a priority of zero (0) this can be overridden with other CSS.
 	 * We chose to incldue this in the head rather than in a CSS file to mininize
@@ -377,7 +377,7 @@ HTML;
 	}
 
 	/**
-	 * Configure the settings page for the Pardot Plugin if we are currently on the settings page.
+	 * Configure the settings page for the Account Engagement Plugin if we are currently on the settings page.
 	 *
 	 * @since 1.0.0
 	 */
@@ -607,7 +607,7 @@ HTML;
 		}
 
 		/**
-		 * Call the Pardot API to attempt to authenticate if there isn't an api_key
+		 * Call the Account Engagement API to attempt to authenticate if there isn't an api_key
 		 */
 		if (!$clean['api_key'] && !$this->authenticate($clean)) {
 			if (!$clean['client_id']) {
@@ -669,20 +669,20 @@ HTML;
 	}
 
 	/**
-	 * Get an instance of Pardot_API
+	 * Get an instance of Account Engagement_API
 	 *
 	 * @static
 	 * @param null|array|bool $auth If false, don't initialize. If empty array, initialize w/defaults then $auth array get set.
-	 * @return Pardot_API
+	 * @return Account Engagement_API
 	 */
 	static function get_api($auth = [])
 	{
 		/**
-		 * If self::$api not already a new Pardot_API
+		 * If self::$api not already a new Account Engagement_API
 		 */
 		if (!self::$api instanceof Pardot_API) {
 			/**
-			 * Get one, either from arg passed in $auth, or by instantiating a new Pardot_API
+			 * Get one, either from arg passed in $auth, or by instantiating a new Account Engagement_API
 			 */
 			self::$api = isset($auth['api']) && $auth['api'] instanceof Pardot_API ? $auth['api'] : new Pardot_API();
 		}
@@ -733,7 +733,7 @@ HTML;
 	 *
 	 * If the object already have an api_key then use it, otherwise get defaults.
 	 *
-	 * @return string API key returned by the Pardot API.
+	 * @return string API key returned by the Account Engagement API.
 	 */
 	function get_api_key()
 	{
@@ -741,7 +741,7 @@ HTML;
 	}
 
 	/**
-	 * Call the Pardot API to authenticate based on credentials provided by the user.
+	 * Call the Account Engagement API to authenticate based on credentials provided by the user.
 	 *
 	 * @param array $auth Values 'client_id', 'client_secret', 'business_unit_id', 'refresh_token', and 'api_key' supported.
 	 * @return bool|string API Key if authenticated, false if not.
@@ -754,7 +754,7 @@ HTML;
 	}
 
 	/**
-	 * Clean the Pardot settings before saving to wp_options
+	 * Clean the Account Engagement settings before saving to wp_options
 	 *
 	 * @param array $new_options The settings as they user edited them.
 	 * @param array $old_options The settings as they were previously in the database.
@@ -818,12 +818,12 @@ HTML;
 		/**
 		 * Grab the URL for the logo
 		 */
-		$logo_url = plugins_url('/images/pardot-logo.png', dirname(__FILE__));
+		$logo_url = plugins_url('/images/salesforce-logo.png', dirname(__FILE__));
 
 		/**
 		 * Grab alt text the logo
 		 */
-		$alt_text = __('Pardot, a Salesforce Company', 'pardot');
+		$alt_text = __('Account Engagement', 'pardot');
 
 		/**
 		 * Grab title to be displayed behind the logo
@@ -969,7 +969,7 @@ HTML;
 	{
 		$business_unit_id = self::get_setting('business_unit_id');
 		$html_name = $this->_get_html_name('business_unit_id');
-		$msg = __('Find your Pardot Business Unit ID in <a href="%s" target="_blank">Pardot Account Setup</a>.', 'pardot');
+		$msg = __('Find your Account Engagement Business Unit ID in <a href="%s" target="_blank">Account Engagement Account Setup</a>.', 'pardot');
 		$msg = sprintf($msg, self::BUSINESS_UNIT_ID_URL);
 
 		$html = <<<HTML
@@ -1082,8 +1082,8 @@ HTML;
 		$value = __('Save Settings', 'pardot');
 		$valuecache = __('Clear Cache', 'pardot');
 		$valuereset = __('Reset All Settings', 'pardot');
-		$msgResetConfirm = __('This will remove all your Pardot account information from the database. Click OK to proceed.', 'pardot');
-		$msgResetTrue = __('Your Pardot settings have been reset.', 'pardot');
+		$msgResetConfirm = __('This will remove all your Account Engagement account information from the database. Click OK to proceed.', 'pardot');
+		$msgResetTrue = __('Your Account Engagement settings have been reset.', 'pardot');
 		$html = <<<HTML
 <script>
 function resetSettingsClick() {
@@ -1202,7 +1202,7 @@ HTML;
 	}
 
 	/**
-	 * Return list of Pardot plugin settings
+	 * Return list of Account Engagement plugin settings
 	 *
 	 * @static
 	 * @return array List of settings
@@ -1256,7 +1256,7 @@ HTML;
 	}
 
 	/**
-	 * Return an individual Pardot plugin settings
+	 * Return an individual Account Engagement plugin settings
 	 *
 	 * @static
 	 * @param string $key Identifies a setting
@@ -1274,7 +1274,7 @@ HTML;
 		}
 
 		/**
-		 * Provides an opportunity to intercept and override Pardot settings.
+		 * Provides an opportunity to intercept and override Account Engagement settings.
 		 *
 		 * @param mixed $value
 		 * @param string $key
@@ -1285,7 +1285,7 @@ HTML;
 	}
 
 	/**
-	 * Save a Pardot plugin settings
+	 * Save a Account Engagement plugin settings
 	 *
 	 * @static
 	 * @param string $key Identifies a setting
@@ -1312,7 +1312,7 @@ HTML;
 	}
 
 	/**
-	 * Clear an individual Pardot plugin settings
+	 * Clear an individual Account Engagement plugin settings
 	 *
 	 * @static
 	 * @param string $key
@@ -1325,7 +1325,7 @@ HTML;
 	}
 
 	/**
-	 * Get the URL for the Pardot plugin settings page in the admin.
+	 * Get the URL for the Account Engagement plugin settings page in the admin.
 	 *
 	 * @static
 	 * @return string URL for the settings page.
@@ -1363,7 +1363,7 @@ HTML;
 	}
 
 	/**
-	 * Deletes the main Pardot plugin options (and some persistent transients) from the database.
+	 * Deletes the main Account Engagement plugin options (and some persistent transients) from the database.
 	 *
 	 * @since 1.4.6
 	 */

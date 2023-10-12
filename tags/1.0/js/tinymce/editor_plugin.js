@@ -19,7 +19,7 @@ Author: Mike Schinkel <mike@newclarity.net>
 			ed.addButton('pardotformsshortcodeinsert',{
 				title:'Insert a Pardot Forms Shortcode',
 				cmd:'mcePardotFormsShortcodeInsert',
-				image:url+"/img/pardot-button.png"}
+				image:url+"/img/salesforce-button.png"}
 			);
 		},
 		createControl:function(n,cm) {

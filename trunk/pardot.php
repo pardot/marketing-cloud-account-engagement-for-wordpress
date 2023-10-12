@@ -1,7 +1,7 @@
 <?php
 /*
- * Plugin Name: Pardot
- * Description: Connect your WordPress to Pardot with shortcode and widgets for campaign tracking, quick form access, and dynamic content.
+ * Plugin Name: Account Engagement
+ * Description: Connect your WordPress to Account Engagement with shortcode and widgets for campaign tracking, quick form access, and dynamic content.
  * Author: Salesforce
  * Author URI: https://www.salesforce.com/products/marketing-cloud/marketing-automation/
  * Plugin URI: http://wordpress.org/extend/plugins/pardot/

@@ -1,6 +1,6 @@
-=== Pardot ===
+=== Account Engagement ===
 Contributors: salesforcepardot
-Tags: pardot, salesforce, marketing automation, forms, dynamic content, tracking, web tracking, account engagement, marketing cloud
+Tags: account engagement, salesforce, marketing automation, forms, dynamic content, tracking, web tracking, account engagement, marketing cloud
 Requires at least: 5.5
 Tested up to: 6.1
 Stable tag: 2.0.0
@@ -8,17 +8,17 @@ Requires PHP: 7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Integrate Pardot with WordPress: easily track visitors, embed forms and dynamic content in pages and posts, or use the forms or dynamic content widgets.
+Integrate Account Engagement with WordPress: easily track visitors, embed forms and dynamic content in pages and posts, or use the forms or dynamic content widgets.
 
 == Description ==
 
-Say hello to marketing automation simplicity! With a single login, your self-hosted WordPress installation will be securely connected with Pardot. With the selection of your campaign, you'll be able to track visitors and work with forms and dynamic content without touching a single line of code. You can use the widget to place a form or dynamic content anywhere a sidebar appears, or embed them in a page or post using a shortcode or the Pardot button on the Visual Editor's toolbar.
+Say hello to marketing automation simplicity! With a single login, your self-hosted WordPress installation will be securely connected with Account Engagement. With the selection of your campaign, you'll be able to track visitors and work with forms and dynamic content without touching a single line of code. You can use the widget to place a form or dynamic content anywhere a sidebar appears, or embed them in a page or post using a shortcode or the Account Engagement button on the Visual Editor's toolbar.
 
 == Installation ==
 
-1. Upload `pardot-for-wordpress/trunk` to your `/wp-content/plugins/` directory or go to Plugins > Add New in your WordPress Admin area and search for Pardot.
+1. Upload `pardot-for-wordpress/trunk` to your `/wp-content/plugins/` directory or go to Plugins > Add New in your WordPress Admin area and search for Account Engagement.
 2. Activate the plugin through the 'Plugins' menu in WordPress.
-3. Go to Settings > Pardot Settings and authenticate with Salesforce SSO.
+3. Go to Settings > Account Engagement Settings and authenticate with Salesforce SSO.
 4. Select your campaign (for tracking code usage).
 
 == Frequently Asked Questions ==
@@ -32,10 +32,10 @@ In order to use Salesforce SSO authentication, you **must** create a connected a
 1. On the top right, click the "New Connected App" button.
 1. Enter an app name, API name, and contact email of your choice.
 1. Click the "Enable OAuth Settings" toggle.
-1. Enter a Callback URL to allow Salesforce to redirect users back to your Pardot plugin settings page. The URL should look similar to: `https://[YourWordpressDomainHere]/wp-admin/options-general.php?page=pardot`.
-1. Add "Access Pardot Services (pardot_api)" and "Perform requests on your behalf at any time (refresh_token, offline_access)" to your selected OAuth scopes.
+1. Enter a Callback URL to allow Salesforce to redirect users back to your Account Engagement plugin settings page. The URL should look similar to: `https://[YourWordpressDomainHere]/wp-admin/options-general.php?page=pardot`.
+1. Add "Access Account Engagement Services (pardot_api)" and "Perform requests on your behalf at any time (refresh_token, offline_access)" to your selected OAuth scopes.
 1. Save your connected application. A new page will appear with the Consumer Key and Consumer Secret.
-1. Enter your Consumer Key, Consumer Secret, and Pardot Business Unit ID into the Pardot WordPress settings screen. To find the Pardot Business Unit ID, go to Salesforce Setup and enter "Pardot Account Setup" in the Quick Find box. Your Pardot Business Unit ID begins with "0Uv" and is 18 characters long. If you cannot access the Pardot Account Setup information, ask your Salesforce Administrator to provide you with the Pardot Business Unit ID.
+1. Enter your Consumer Key, Consumer Secret, and Account Engagement Business Unit ID into the Account Engagement WordPress settings screen. To find the Account Engagement Business Unit ID, go to Salesforce Setup and enter "Account Engagement Business Unit Setup" in the Quick Find box. Your Account Engagement Business Unit ID begins with "0Uv" and is 18 characters long. If you cannot access the Account Engagement Business Unit Setup information, ask your Salesforce Administrator to provide you with the Account Engagement Business Unit ID.
 1. Click "Save Settings".
 1. When the page reloads, click "Authenticate with Salesforce". Enter your Salesforce credentials in the popup that appears. 
 
@@ -48,7 +48,7 @@ Two simple shortcodes are available for use.
 
 	`[pardot-form id="{Form ID}" title="{Form Name}" class="" width="100%" height="500" querystring=""]`
 
-Use `[pardot-form]` with at least the `id` parameter. For instance, `[pardot-form id="1" title="Title"]` renders my Pardot form with an ID of 1.
+Use `[pardot-form]` with at least the `id` parameter. For instance, `[pardot-form id="1" title="Title"]` renders my Account Engagement form with an ID of 1.
 
 Optional parameters:
 
@@ -68,7 +68,7 @@ The `querystring` parameter appends an arbitrary string to the end of the form's
 
 Use `[pardot-dynamic-content]` with at least the `id` parameter.
 
-The `default` parameter is used for accessibility. Whatever is placed here is wrapped in `<noscript>` tags and is shown only to users who have JavaScript disabled. By default, it will automatically be your "Default Content" as designated in Pardot. So,
+The `default` parameter is used for accessibility. Whatever is placed here is wrapped in `<noscript>` tags and is shown only to users who have JavaScript disabled. By default, it will automatically be your "Default Content" as designated in Account Engagement. So,
 
 	`[pardot-dynamic-content id="1" default="My default content."]`
 
@@ -80,13 +80,13 @@ would render something like:
 
 = How do I change my campaign? =
 
-Simply choose another campaign in Settings > Pardot Settings and click 'Save Settings'.
+Simply choose another campaign in Settings > Account Engagement Settings and click 'Save Settings'.
 
 = Some of my form is cut off. What should I do? =
 
-Since every WordPress theme is different, embedded forms won’t always automatically fit. You’ll want to make a Pardot Layout Template specifically for your WordPress theme:
+Since every WordPress theme is different, embedded forms won’t always automatically fit. You’ll want to make a Account Engagement Layout Template specifically for your WordPress theme:
 
-1. Go to <a href="https://pi.pardot.com/form" target="_blank">Forms</a> in Pardot. Find and edit the form that needs updating.
+1. Go to <a href="https://pi.pardot.com/form" target="_blank">Forms</a> in Account Engagement. Find and edit the form that needs updating.
 1. Click ahead to the 'Look and Feel' step of the wizard and select the 'Styles' tab.
 1. Set 'Label Alignment' to 'Above' and click 'Confirm and Save.'.
 1. Click the link to the layout template being used by the form.
@@ -102,7 +102,7 @@ A width of 150px is just a starting point. Adjust this value until it fits on yo
 
 = I just added a form or dynamic content, and it's not showing up to select it yet. =
 
-Go to Settings > Pardot Settings and click 'Reset Cache'. This should reinitialize and update your Pardot content.
+Go to Settings > Account Engagement Settings and click 'Reset Cache'. This should reinitialize and update your Account Engagement content.
 
 = The editor popup doesn't work, and I know that my WordPress installation is a little different. =
 
@@ -148,13 +148,13 @@ Filter the regular expression used to find URLs to be converted to https://go.pa
 == Screenshots ==
 
 1. Settings area
-1. Pardot button in the Classic Editor toolbar
+1. Account Engagement button in the Classic Editor toolbar
 1. Choose from any form or Dynamic Content
 1. Use forms in a widget
 1. Use dynamic content in a widget
 1. A form widget on a page
 1. A page can have two forms! Here, one is in the body and one in a widget.
-1. Pardot block being added in the Block Editor.
+1. Account Engagement block being added in the Block Editor.
 1. Form block being edited in the Block Editor
 1. Dynamic content block being edited in the Block Editor
 1. Remove Form block in the Block Editor
@@ -168,14 +168,14 @@ Filter the regular expression used to find URLs to be converted to https://go.pa
 
 = 1.5.8 =
 
-* Fix - Handled an issue that authentication failure (Pardot API Error Code 184: https://developer.salesforce.com/docs/marketing/pardot/guide/error-codes.html#numerical-list-of-error-codes) causes the settings page to be stuck in a loading state
+* Fix - Handled an issue that authentication failure (Account Engagement API Error Code 184: https://developer.salesforce.com/docs/marketing/pardot/guide/error-codes.html#numerical-list-of-error-codes) causes the settings page to be stuck in a loading state
 
 = 1.5.7 =
 
 * Fix - Allow custom HTTPS tracker domains
 * Fix - Campaign dropdown now appears immediately after authentication
 * Improvement - Automatically update form & dynamic cached HTML after selection
-* Improvement - Eliminate Pardot Authentication Option (Not functional since February 2021)
+* Improvement - Eliminate Account Engagement Authentication Option (Not functional since February 2021)
 
 = 1.5.6 =
 
@@ -195,7 +195,7 @@ Filter the regular expression used to find URLs to be converted to https://go.pa
 
 = 1.5.2 =
 
-* Fix - v3 Pardot API call that goes to appropriate endpoint
+* Fix - v3 Account Engagement API call that goes to appropriate endpoint
 
 = 1.5.1 =
 
@@ -203,10 +203,10 @@ Filter the regular expression used to find URLs to be converted to https://go.pa
 
 = 1.5.0 =
 
-* Maintenance - Added Salesforce SSO authentication in preparation of Pardot authentication being discontinued in February 2021
+* Maintenance - Added Salesforce SSO authentication in preparation of Account Engagement authentication being discontinued in February 2021
 * Improvement - Added authentication status indicator to settings page
 * Improvement - Users no longer need to refresh the settings page after resetting settings
-* Fix - Admin notices no longer overlap the Pardot logo on the settings page
+* Fix - Admin notices no longer overlap the Account Engagement logo on the settings page
 * Fix - "#cancel" button on popup when not authenticated now closes popup (also changed name to more descriptive "Close")
 * Fix - PHP error no longer appears when initially adding widget
 
@@ -238,11 +238,11 @@ Filter the regular expression used to find URLs to be converted to https://go.pa
 
 = 1.4.8 =
 
-* Fix - Show any authentication-related error messages returned by the Pardot API to the user, where possible, to aid troubleshooting [106707]
+* Fix - Show any authentication-related error messages returned by the Account Engagement API to the user, where possible, to aid troubleshooting [106707]
 
 = 1.4.7 =
 
-* Fix - Restored some older cache-clearing code to help ensure Pardot data that preceded the 1.4.6 release is indeed cleared from the cache [104403]
+* Fix - Restored some older cache-clearing code to help ensure Account Engagement data that preceded the 1.4.6 release is indeed cleared from the cache [104403]
 
 = 1.4.6 =
 
@@ -255,11 +255,11 @@ Filter the regular expression used to find URLs to be converted to https://go.pa
 
 = 1.4.5 =
 
-* Fix - Fixed some layout issues when the Pardot shortcode-builder form is viewed in smaller browser sizes or mobile devices [89563]
+* Fix - Fixed some layout issues when the Account Engagement shortcode-builder form is viewed in smaller browser sizes or mobile devices [89563]
 
 = 1.4.4 =
 
-* Fix - Restored functionality of the Pardot button in the visual editor [86322]
+* Fix - Restored functionality of the Account Engagement button in the visual editor [86322]
 
 = 1.4.3 =
 
@@ -279,7 +279,7 @@ Filter the regular expression used to find URLs to be converted to https://go.pa
 * Add HTTPS option
 * Add "querystring" parameter in shortcode
 * Allow embed code to be filtered
-* Change "Pardot Settings" link to "Pardot"
+* Change "Account Engagement Settings" link to "Account Engagement"
 * Update branding
 * Allow override for wp-load.php in various installation configurations
 * Fixes errant notice on 404 pages
@@ -344,7 +344,7 @@ Filter the regular expression used to find URLs to be converted to https://go.pa
 
 * Add some helpful links to the Reset Cache button
 * Minor UI tweaks
-* Updated the Pardot logos
+* Updated the Account Engagement logos
 * Updated screenshots for 3.5
 
 = 1.1.4 =
@@ -365,7 +365,7 @@ Filter the regular expression used to find URLs to be converted to https://go.pa
 
 = 1.1.1 =
 
-* Make `<noscript>` default to Default Pardot Content
+* Make `<noscript>` default to Default Account Engagement Content
 
 = 1.1.0 =
 
@@ -399,14 +399,14 @@ Filter the regular expression used to find URLs to be converted to https://go.pa
 
 = 1.5.8 =
 
-* Fix - Handled an issue that authentication failure (Pardot API Error Code 184: https://developer.salesforce.com/docs/marketing/pardot/guide/error-codes.html#numerical-list-of-error-codes) causes the settings page to be stuck in a loading state
+* Fix - Handled an issue that authentication failure (Account Engagement API Error Code 184: https://developer.salesforce.com/docs/marketing/pardot/guide/error-codes.html#numerical-list-of-error-codes) causes the settings page to be stuck in a loading state
 
 = 1.5.7 =
 
 * Fix - Allow custom HTTPS tracker domains
 * Fix - Campaign dropdown now appears immediately after authentication
 * Improvement - Automatically update form & dynamic cached HTML after selection
-* Improvement - Eliminate Pardot Authentication Option (Not functional since February 2021)
+* Improvement - Eliminate Account Engagement Authentication Option (Not functional since February 2021)
 
 = 1.5.6 =
 
@@ -426,7 +426,7 @@ Fixes an issue that new response of invalid grant causes oauth to become invalid
 
 = 1.5.2 =
 
-Fixes an issue that v3 Pardot API call that goes to v4 endpoint
+Fixes an issue that v3 Account Engagement API call that goes to v4 endpoint
 
 = 1.5.1 =
 
@@ -434,7 +434,7 @@ Fixes an issue with error handling that could cause de-authentication.
 
 = 1.5.0 =
 
-This release adds Salesforce SSO as an authentication option.  Pardot authentication is being discontinued in February 2021.  Please reauthenticate with Salesforce SSO before then.
+This release adds Salesforce SSO as an authentication option.  Account Engagement authentication is being discontinued in February 2021.  Please reauthenticate with Salesforce SSO before then.
 
 = 1.4.3 =
 
@@ -446,11 +446,11 @@ Fixes a bug that would cause the plugin to become unauthenticated.
 
 = 1.4.1 =
 
-This update fixes an issue with the new Pardot API version and improves the HTTPS functionality used to find and replace the Pardot URLs.
+This update fixes an issue with the new Account Engagement API version and improves the HTTPS functionality used to find and replace the Account Engagement URLs.
 
 = 1.4 =
 
-This update adds an option to embed HTTPS forms (activate it in Settings > Pardot), adds the "querystring" parameter to the shortcode, makes the form embed code filterable, allows custom overrides for various directory configurations, updates branding, and fixes some bugs.
+This update adds an option to embed HTTPS forms (activate it in Settings > Account Engagement), adds the "querystring" parameter to the shortcode, makes the form embed code filterable, allows custom overrides for various directory configurations, updates branding, and fixes some bugs.
 
 = 1.3.10 =
 
@@ -507,7 +507,7 @@ Fixes blank admin screen bug (by checking for mcrypt and falling back safely if 
 
 = 1.1.1 =
 
-Make `<noscript>` default to Default Pardot Content
+Make `<noscript>` default to Default Account Engagement Content
 
 = 1.1.0 =
 

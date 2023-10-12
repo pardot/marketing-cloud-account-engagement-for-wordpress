@@ -42,7 +42,7 @@ class _Pardot_Forms_Shortcode_Popup {
 		wp_enqueue_script( 'pardot-popup-js', plugins_url( 'js/popup.js', PARDOT_PLUGIN_FILE ), array( 'pardot-chosen-js', 'jquery' ) );
 		wp_localize_script( 'pardot-popup-js', 'PardotShortcodePopup', array(
 			'ajaxurl'            => admin_url( 'admin-ajax.php' ),
-			'tinymce_button_url' => plugins_url( 'images/pardot-button.png', PARDOT_PLUGIN_FILE )
+			'tinymce_button_url' => plugins_url( 'images/salesforce-button.png', PARDOT_PLUGIN_FILE )
 		) );
 	}
 
@@ -91,12 +91,12 @@ HTML;
 	}
 
 	/**
-	 * Returns the HTML for the  HTML popup dialog that allows selection of Pardot Forms
+	 * Returns the HTML for the  HTML popup dialog that allows selection of Account Engagement forms
 	 *
 	 * Mostly delegates to $this->get_dialog_html() but it presents an error message if an
 	 * API key cannot be retrieved indicating the account has not yet been configured.
 	 *
-	 * @note Uses WordPress AJAX to retrieve list of Pardot forms to avoid painful pause in initial dialog display.
+	 * @note Uses WordPress AJAX to retrieve list of Account Engagement forms to avoid painful pause in initial dialog display.
 	 *
 	 * @return string The HTML to containing the <form> tag with it's <div> wrapper.
 	 *

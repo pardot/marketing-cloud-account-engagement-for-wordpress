@@ -20,7 +20,7 @@ class _Pardot_Forms_Shortcode_Popup {
 	 * @since 1.0.0
 	 */
 	function __construct() {
-		$this->title = __( 'Insert a Pardot Form Shortcode', 'pardot' );
+		$this->title = __( 'Insert an Account Engagement Form Shortcode', 'pardot' );
 		$this->jquery_url  = site_url( '/wp-includes/js/jquery/jquery.js' );
 		$this->tiny_mce_popup_url = site_url( '/wp-includes/js/tinymce/tiny_mce_popup.js' );
 		$this->js = $this->get_js();

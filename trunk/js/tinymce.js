@@ -1,5 +1,5 @@
 /*
-TinyMCE Button for Pardot WordPress Plugin
+TinyMCE Button for Account Engagement WordPress Plugin
 See: http://www.tinymce.com/wiki.php/Creating_a_plugin
 Author: Mike Schinkel <mike@newclarity.net>
 */
@@ -10,7 +10,7 @@ Author: Mike Schinkel <mike@newclarity.net>
 		init : function( ed, url ) {
 
 			ed.addButton( 'pardotformsshortcodeinsert', {
-				title   : 'Pardot',
+				title   : 'Account Engagement',
 				image   : PardotShortcodePopup.tinymce_button_url,
 				classes : 'pardot-tinymce-button',
 				onClick : function() {
@@ -25,8 +25,8 @@ Author: Mike Schinkel <mike@newclarity.net>
 
 		getInfo : function() {
 			return {
-				longname  : 'Pardot Form or Dynamic Content Shortcode Insert Button',
-				author    : 'Pardot',
+				longname  : 'Account Engagement Form or Dynamic Content Shortcode Insert Button',
+				author    : 'Account Engagement',
 				authorurl : 'http://www.pardot.com',
 				infourl   : 'http://wordpress.org/extend/plugins/pardot',
 				version   : '1.0'
