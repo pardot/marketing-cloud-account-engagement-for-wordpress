@@ -456,8 +456,6 @@ class Pardot_Plugin
 		 */
 		if ('plugins.php' == $pagenow) {
 			add_filter('plugin_action_links_pardot/pardot.php', [$this, 'plugin_action_links']);
-			add_filter('plugin_row_meta', [$this, 'plugin_row_meta'], 10, 2);
-
 		}
 
 		/**
@@ -511,24 +509,6 @@ class Pardot_Plugin
 		 */
 		array_unshift($actions, Pardot_Settings::get_admin_page_link());
 		return $actions;
-	}
-
-	/**
-	 * Filter hook to add a new link under the plugin description.
-	 *
-	 * @param array $plugin_meta List of HTML links.
-	 * @param string $plugin_file slug for the plugin
-	 * @return array Filtered HTML links for the plugin page for this plugin.
-	 *
-	 * @since 1.0.0
-	 */
-	function plugin_row_meta($plugin_meta, $plugin_file)
-	{
-		if (false !== strpos($plugin_file, '/pardot.php')) {
-			$link_text = __("Visit developer's site", 'pardot');
-			$plugin_meta[] = "<a href=\"http://about.me/mikeschinkel\" target=\"_blank\">{$link_text}</a>";
-		}
-		return $plugin_meta;
 	}
 
 	/**
