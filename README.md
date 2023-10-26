@@ -163,6 +163,9 @@ add_filter( 'pardot_https_regex', 'pardot_custom_filter_https_regex' );
 
 ## Changelog
 
+### 2.1.0
+* Maintenance - Rebrand Pardot Plugin to Account Engagement Plugin
+
 ### 2.0.0
 * Improvement - Added support for the WordPress Block Editor
 * Fix - When "Always Use HTTPS" is enabled in the plugin settings, non-HTTPS content will be properly converted to HTTPS

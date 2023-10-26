@@ -2,8 +2,8 @@
 Contributors: salesforcepardot
 Tags: account engagement, salesforce, marketing automation, forms, dynamic content, tracking, web tracking, account engagement, marketing cloud
 Requires at least: 5.5
-Tested up to: 6.1
-Stable tag: 2.0.0
+Tested up to: 6.3.2
+Stable tag: 2.1.0
 Requires PHP: 7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -160,6 +160,10 @@ Filter the regular expression used to find URLs to be converted to https://go.pa
 1. Remove Form block in the Block Editor
 
 == Changelog ==
+
+= 2.1.0 =
+
+* Maintenance - Rebrand Pardot Plugin to Account Engagement Plugin
 
 = 2.0.0 =
 
@@ -391,6 +395,10 @@ Filter the regular expression used to find URLs to be converted to https://go.pa
 * Initial release.
 
 == Upgrade Notice ==
+
+= 2.1.0 =
+
+* Maintenance - Rebrand Pardot Plugin to Account Engagement Plugin
 
 = 2.0.0 =
 
