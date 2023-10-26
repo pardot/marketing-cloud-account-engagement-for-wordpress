@@ -33,7 +33,7 @@ In order to use Salesforce SSO authentication, you **must** create a connected a
 1. Enter an app name, API name, and contact email of your choice.
 1. Click the "Enable OAuth Settings" toggle.
 1. Enter a Callback URL to allow Salesforce to redirect users back to your Account Engagement plugin settings page. The URL should look similar to: `https://[YourWordpressDomainHere]/wp-admin/options-general.php?page=pardot`.
-1. Add "Access Account Engagement Services (pardot_api)" and "Perform requests on your behalf at any time (refresh_token, offline_access)" to your selected OAuth scopes.
+1. Add "Access Pardot Services (pardot_api)" and "Perform requests on your behalf at any time (refresh_token, offline_access)" to your selected OAuth scopes.
 1. Save your connected application. A new page will appear with the Consumer Key and Consumer Secret.
 1. Enter your Consumer Key, Consumer Secret, and Account Engagement Business Unit ID into the Account Engagement WordPress settings screen. To find the Account Engagement Business Unit ID, go to Salesforce Setup and enter "Account Engagement Business Unit Setup" in the Quick Find box. Your Account Engagement Business Unit ID begins with "0Uv" and is 18 characters long. If you cannot access the Account Engagement Business Unit Setup information, ask your Salesforce Administrator to provide you with the Account Engagement Business Unit ID.
 1. Click "Save Settings".

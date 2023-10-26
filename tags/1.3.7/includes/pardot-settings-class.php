@@ -534,7 +534,7 @@ HTML;
 		/**
 		 * Grab the URL for the logo
 		 */
-		$logo_url = plugins_url( '/images/salesforce-logo.png', dirname( __FILE__ ) );
+		$logo_url = plugins_url( '/images/pardot-logo.png', dirname( __FILE__ ) );
 
 		/**
 		 * Grab alt text the logo
