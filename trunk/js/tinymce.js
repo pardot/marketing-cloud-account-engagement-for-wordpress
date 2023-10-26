@@ -14,7 +14,7 @@ Author: Mike Schinkel <mike@newclarity.net>
 				image   : PardotShortcodePopup.tinymce_button_url,
 				classes : 'pardot-tinymce-button',
 				onClick : function() {
-					tb_show( 'Pardot', '#TB_inline?width=400&inlineId=pardot-forms-shortcode-popup' );
+					tb_show( 'Account Engagement', '#TB_inline?width=400&inlineId=pardot-forms-shortcode-popup' );
 				}
 			});
 		},

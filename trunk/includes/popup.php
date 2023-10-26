@@ -102,7 +102,7 @@
 		</section><!-- .pardot-forms-modal-actions -->
 
 		<section id="pardot-forms-cache-notice">
-			<small><?php printf( __( '<strong>Not seeing something you added recently in Pardot?</strong> Please click the Clear Cache button on the <a href="%s" target="_parent">Pardot Settings Page</a>.', 'pardot' ), esc_url( $pardot_settings_url ) ); ?></small>
+			<small><?php printf( __( '<strong>Not seeing something you added recently in Account Engagement?</strong> Please click the Clear Cache button on the <a href="%s" target="_parent">Account Engagement Settings Page</a>.', 'pardot' ), esc_url( $pardot_settings_url ) ); ?></small>
 		</section>
 	</form>
 </div>
