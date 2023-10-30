@@ -148,16 +148,10 @@ Filter the regular expression used to find URLs to be converted to https://go.pa
 == Screenshots ==
 
 1. Settings area
-1. Account Engagement button in the Classic Editor toolbar
-1. Choose from any form or Dynamic Content
-1. Use forms in a widget
-1. Use dynamic content in a widget
-1. A form widget on a page
-1. A page can have two forms! Here, one is in the body and one in a widget.
 1. Account Engagement block being added in the Block Editor.
 1. Form block being edited in the Block Editor
-1. Dynamic content block being edited in the Block Editor
-1. Remove Form block in the Block Editor
+1. Dynamic Content block being edited in the Block Editor
+1. A Form block on a page
 
 == Changelog ==
 
