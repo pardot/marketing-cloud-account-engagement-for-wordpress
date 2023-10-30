@@ -192,7 +192,7 @@ CSS;
 	/**
 	 * Displays Account Engagement forms for Widget HTML on front end of site.
 	 *
-	 * Echos form defined in Account Engagement business unit and specified for this widget.  Can display as iFrame or as inline HTML the
+	 * Echos form defined in Account Engagement business unit and specified for this widget.  Can display as iframe or as inline HTML the
 	 * latter of which is experimental.
 	 *
 	 * @param array $args Arguments passed by the sidebar. $args can be one of:

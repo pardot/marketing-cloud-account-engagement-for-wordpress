@@ -2,7 +2,7 @@
 Contributors: salesforcepardot
 Tags: account engagement, salesforce, marketing automation, forms, dynamic content, tracking, web tracking, account engagement, marketing cloud
 Requires at least: 5.5
-Tested up to: 6.3.2
+Tested up to: 6.4
 Stable tag: 2.1.0
 Requires PHP: 7.0
 License: GPLv2 or later
@@ -172,14 +172,14 @@ Filter the regular expression used to find URLs to be converted to https://go.pa
 
 = 1.5.8 =
 
-* Fix - Handled an issue that authentication failure (Account Engagement API Error Code 184: https://developer.salesforce.com/docs/marketing/pardot/guide/error-codes.html#numerical-list-of-error-codes) causes the settings page to be stuck in a loading state
+* Fix - Handled an issue that authentication failure (Pardot API Error Code 184: https://developer.salesforce.com/docs/marketing/pardot/guide/error-codes.html#numerical-list-of-error-codes) causes the settings page to be stuck in a loading state
 
 = 1.5.7 =
 
 * Fix - Allow custom HTTPS tracker domains
 * Fix - Campaign dropdown now appears immediately after authentication
 * Improvement - Automatically update form & dynamic cached HTML after selection
-* Improvement - Eliminate Account Engagement Authentication Option (Not functional since February 2021)
+* Improvement - Eliminate Pardot Authentication Option (Not functional since February 2021)
 
 = 1.5.6 =
 
@@ -199,7 +199,7 @@ Filter the regular expression used to find URLs to be converted to https://go.pa
 
 = 1.5.2 =
 
-* Fix - v3 Account Engagement API call that goes to appropriate endpoint
+* Fix - v3 Pardot API call that goes to appropriate endpoint
 
 = 1.5.1 =
 
@@ -207,10 +207,10 @@ Filter the regular expression used to find URLs to be converted to https://go.pa
 
 = 1.5.0 =
 
-* Maintenance - Added Salesforce SSO authentication in preparation of Account Engagement authentication being discontinued in February 2021
+* Maintenance - Added Salesforce SSO authentication in preparation of Pardot authentication being discontinued in February 2021
 * Improvement - Added authentication status indicator to settings page
 * Improvement - Users no longer need to refresh the settings page after resetting settings
-* Fix - Admin notices no longer overlap the Account Engagement logo on the settings page
+* Fix - Admin notices no longer overlap the Pardot logo on the settings page
 * Fix - "#cancel" button on popup when not authenticated now closes popup (also changed name to more descriptive "Close")
 * Fix - PHP error no longer appears when initially adding widget
 
@@ -242,11 +242,11 @@ Filter the regular expression used to find URLs to be converted to https://go.pa
 
 = 1.4.8 =
 
-* Fix - Show any authentication-related error messages returned by the Account Engagement API to the user, where possible, to aid troubleshooting [106707]
+* Fix - Show any authentication-related error messages returned by the Pardot API to the user, where possible, to aid troubleshooting [106707]
 
 = 1.4.7 =
 
-* Fix - Restored some older cache-clearing code to help ensure Account Engagement data that preceded the 1.4.6 release is indeed cleared from the cache [104403]
+* Fix - Restored some older cache-clearing code to help ensure Pardot data that preceded the 1.4.6 release is indeed cleared from the cache [104403]
 
 = 1.4.6 =
 
@@ -259,11 +259,11 @@ Filter the regular expression used to find URLs to be converted to https://go.pa
 
 = 1.4.5 =
 
-* Fix - Fixed some layout issues when the Account Engagement shortcode-builder form is viewed in smaller browser sizes or mobile devices [89563]
+* Fix - Fixed some layout issues when the Pardot shortcode-builder form is viewed in smaller browser sizes or mobile devices [89563]
 
 = 1.4.4 =
 
-* Fix - Restored functionality of the Account Engagement button in the visual editor [86322]
+* Fix - Restored functionality of the Pardot button in the visual editor [86322]
 
 = 1.4.3 =
 
@@ -283,7 +283,7 @@ Filter the regular expression used to find URLs to be converted to https://go.pa
 * Add HTTPS option
 * Add "querystring" parameter in shortcode
 * Allow embed code to be filtered
-* Change "Account Engagement Settings" link to "Account Engagement"
+* Change "Pardot Settings" link to "Pardot"
 * Update branding
 * Allow override for wp-load.php in various installation configurations
 * Fixes errant notice on 404 pages
@@ -348,7 +348,7 @@ Filter the regular expression used to find URLs to be converted to https://go.pa
 
 * Add some helpful links to the Reset Cache button
 * Minor UI tweaks
-* Updated the Account Engagement logos
+* Updated the Pardot logos
 * Updated screenshots for 3.5
 
 = 1.1.4 =
@@ -369,7 +369,7 @@ Filter the regular expression used to find URLs to be converted to https://go.pa
 
 = 1.1.1 =
 
-* Make `<noscript>` default to Default Account Engagement Content
+* Make `<noscript>` default to Default Pardot Content
 
 = 1.1.0 =
 
@@ -407,14 +407,14 @@ Filter the regular expression used to find URLs to be converted to https://go.pa
 
 = 1.5.8 =
 
-* Fix - Handled an issue that authentication failure (Account Engagement API Error Code 184: https://developer.salesforce.com/docs/marketing/pardot/guide/error-codes.html#numerical-list-of-error-codes) causes the settings page to be stuck in a loading state
+* Fix - Handled an issue that authentication failure (Pardot API Error Code 184: https://developer.salesforce.com/docs/marketing/pardot/guide/error-codes.html#numerical-list-of-error-codes) causes the settings page to be stuck in a loading state
 
 = 1.5.7 =
 
 * Fix - Allow custom HTTPS tracker domains
 * Fix - Campaign dropdown now appears immediately after authentication
 * Improvement - Automatically update form & dynamic cached HTML after selection
-* Improvement - Eliminate Account Engagement Authentication Option (Not functional since February 2021)
+* Improvement - Eliminate Pardot Authentication Option (Not functional since February 2021)
 
 = 1.5.6 =
 
@@ -434,7 +434,7 @@ Fixes an issue that new response of invalid grant causes oauth to become invalid
 
 = 1.5.2 =
 
-Fixes an issue that v3 Account Engagement API call that goes to v4 endpoint
+Fixes an issue that v3 Pardot API call that goes to v4 endpoint
 
 = 1.5.1 =
 
@@ -442,7 +442,7 @@ Fixes an issue with error handling that could cause de-authentication.
 
 = 1.5.0 =
 
-This release adds Salesforce SSO as an authentication option.  Account Engagement authentication is being discontinued in February 2021.  Please reauthenticate with Salesforce SSO before then.
+This release adds Salesforce SSO as an authentication option.  Pardot authentication is being discontinued in February 2021.  Please reauthenticate with Salesforce SSO before then.
 
 = 1.4.3 =
 
@@ -454,11 +454,11 @@ Fixes a bug that would cause the plugin to become unauthenticated.
 
 = 1.4.1 =
 
-This update fixes an issue with the new Account Engagement API version and improves the HTTPS functionality used to find and replace the Account Engagement URLs.
+This update fixes an issue with the new Pardot API version and improves the HTTPS functionality used to find and replace the Pardot URLs.
 
 = 1.4 =
 
-This update adds an option to embed HTTPS forms (activate it in Settings > Account Engagement), adds the "querystring" parameter to the shortcode, makes the form embed code filterable, allows custom overrides for various directory configurations, updates branding, and fixes some bugs.
+This update adds an option to embed HTTPS forms (activate it in Settings > Pardot), adds the "querystring" parameter to the shortcode, makes the form embed code filterable, allows custom overrides for various directory configurations, updates branding, and fixes some bugs.
 
 = 1.3.10 =
 
@@ -515,7 +515,7 @@ Fixes blank admin screen bug (by checking for mcrypt and falling back safely if 
 
 = 1.1.1 =
 
-Make `<noscript>` default to Default Account Engagement Content
+Make `<noscript>` default to Default Pardot Content
 
 = 1.1.0 =
 

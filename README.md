@@ -171,13 +171,13 @@ add_filter( 'pardot_https_regex', 'pardot_custom_filter_https_regex' );
 * Fix - When "Always Use HTTPS" is enabled in the plugin settings, non-HTTPS content will be properly converted to HTTPS
 
 ### 1.5.8
-* Fix - Handled an issue that authentication failure ([Account Engagement API Error Code 184](https://developer.salesforce.com/docs/marketing/pardot/guide/error-codes.html#numerical-list-of-error-codes)) causes the settings page to be stuck in a loading state
+* Fix - Handled an issue that authentication failure ([Pardot API Error Code 184](https://developer.salesforce.com/docs/marketing/pardot/guide/error-codes.html#numerical-list-of-error-codes)) causes the settings page to be stuck in a loading state
 
 ### 1.5.7
 * Fix - Allow custom HTTPS tracker domains
 * Fix - Campaign dropdown now appears immediately after authentication
 * Improvement - Automatically update form & dynamic cached HTML after selection
-* Improvement - Eliminate Account Engagement Authentication Option (Not functional since February 2021) 
+* Improvement - Eliminate Pardot Authentication Option (Not functional since February 2021) 
 
 ### 1.5.6
 * Fix - Persist access token refreshes properly
@@ -192,16 +192,16 @@ add_filter( 'pardot_https_regex', 'pardot_custom_filter_https_regex' );
 * Fix - New response of invalid grant no longer cause oauth to become invalidated
 
 ### 1.5.2
-* Fix - v3 Account Engagement API call goes to appropriate endpoint
+* Fix - v3 Pardot API call goes to appropriate endpoint
 
 ### 1.5.1
 * Fix - Handled an issue that cause de-authentication
 
 ### 1.5.0
-* Maintenance - Added Salesforce SSO authentication in preparation of Account Engagement authentication being discontinued in February 2021
+* Maintenance - Added Salesforce SSO authentication in preparation of Pardot authentication being discontinued in February 2021
 * Improvement - Added authentication status indicator to settings page
 * Improvement - Users no longer need to refresh the settings page after resetting settings
-* Fix - Admin notices no longer overlap the Account Engagement logo on the settings page
+* Fix - Admin notices no longer overlap the Pardot logo on the settings page
 * Fix - "#cancel" button on popup when not authenticated now closes popup (also changed name to more descriptive "Close")
 * Fix - PHP error no longer appears when initially adding widget
 
@@ -228,10 +228,10 @@ add_filter( 'pardot_https_regex', 'pardot_custom_filter_https_regex' );
 * Fix - Remove undefined tb_close JS function causing console error
 
 ### 1.4.8
-* Fix - Show any authentication-related error messages returned by the Account Engagement API to the user, where possible, to aid troubleshooting [106707]
+* Fix - Show any authentication-related error messages returned by the Pardot API to the user, where possible, to aid troubleshooting [106707]
 
 ### 1.4.7
-* Fix - Restored some older cache-clearing code to help ensure Account Engagement data that preceded the 1.4.6 release is indeed cleared from the cache [104403]
+* Fix - Restored some older cache-clearing code to help ensure Pardot data that preceded the 1.4.6 release is indeed cleared from the cache [104403]
 
 ### 1.4.6
 * Fix - Added support for OpenSSL-based protection of settings data, addressing the deprecation and removal of Mcrypt-support in PHP 7.x [90688]
@@ -242,10 +242,10 @@ add_filter( 'pardot_https_regex', 'pardot_custom_filter_https_regex' );
 * Tweak - Added filter hook `pardot_get_setting` [100888]
 
 ### 1.4.5
-* Fix - Fixed some layout issues when the Account Engagement shortcode-builder form is viewed in smaller browser sizes or mobile devices [89563]
+* Fix - Fixed some layout issues when the Pardot shortcode-builder form is viewed in smaller browser sizes or mobile devices [89563]
 
 ### 1.4.4
-* Fix - Restored functionality of the Account Engagement button in the visual editor [86322]
+* Fix - Restored functionality of the Pardot button in the visual editor [86322]
 
 ### 1.4.3
 * Fixes a more obscure bug that would cause the plugin to become unauthenticated
@@ -261,7 +261,7 @@ add_filter( 'pardot_https_regex', 'pardot_custom_filter_https_regex' );
 * Add HTTPS option
 * Add "querystring" parameter in shortcode
 * Allow embed code to be filtered
-* Change "Account Engagement Settings" link to "Account Engagement"
+* Change "Pardot Settings" link to "Pardot"
 * Update branding
 * Allow override for wp-load.php in various installation configurations
 * Fixes errant notice on 404 pages
@@ -313,7 +313,7 @@ add_filter( 'pardot_https_regex', 'pardot_custom_filter_https_regex' );
 ### 1.1.5
 * Add some helpful links to the Reset Cache button
 * Minor UI tweaks
-* Updated the Account Engagement logos
+* Updated the Pardot logos
 * Updated screenshots for 3.5
 
 ### 1.1.4
@@ -330,7 +330,7 @@ add_filter( 'pardot_https_regex', 'pardot_custom_filter_https_regex' );
 * Make some security improvements
 
 ### 1.1.1
-* Make `<noscript>` default to Default Account Engagement Content
+* Make `<noscript>` default to Default Pardot Content
 
 ### 1.1.0
 * Added dynamic content shortcodes
