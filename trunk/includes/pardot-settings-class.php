@@ -1153,7 +1153,7 @@ HTML;
 		if (
 			!empty($decrypted_pass)
 			&& $decrypted_pass !== $input_string
-			&& ctype_print($decrypted_pass)
+			&& ctype_print(is_string($decrypted_pass) ?: '')
 		) {
 			return $decrypted_pass;
 		}
@@ -1226,7 +1226,7 @@ HTML;
 		if (isset($settings['client_secret']) && !empty($settings['client_secret'])) {
 			$decrypted_token = self::pardot_decrypt($settings['client_secret']);
 
-			if ($decrypted_token !== $settings['client_secret'] && ctype_print($decrypted_token)) {
+			if ($decrypted_token !== $settings['client_secret'] && ctype_print(is_string($decrypted_token) ?: '')) {
 				$settings['client_secret'] = $decrypted_token;
 			}
 		}
@@ -1235,7 +1235,7 @@ HTML;
 
 			$decrypted_token = self::pardot_decrypt($settings['api_key']);
 
-			if ($decrypted_token !== $settings['api_key'] && ctype_print($decrypted_token)) {
+			if ($decrypted_token !== $settings['api_key'] && ctype_print(is_string($decrypted_token) ?: '')) {
 				$settings['api_key'] = $decrypted_token;
 			}
 		}
@@ -1244,7 +1244,7 @@ HTML;
 
 			$decrypted_token = self::pardot_decrypt($settings['refresh_token']);
 
-			if ($decrypted_token !== $settings['refresh_token'] && ctype_print($decrypted_token)) {
+			if ($decrypted_token !== $settings['refresh_token'] && ctype_print(is_string($decrypted_token) ?: '')) {
 				$settings['refresh_token'] = $decrypted_token;
 			}
 		}
