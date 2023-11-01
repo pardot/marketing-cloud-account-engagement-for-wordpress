@@ -91,8 +91,6 @@ function pardot_init() {
         filemtime( "$dir/$style_css" )
     );
 
-    wp_localize_script( 'build/index.js', 'ajaxurl', admin_url( 'includes/admin-ajax.php' ));
-
     register_block_type( 'pardot/form', array(
         'editor_script'   => 'pardot-editor',
         'editor_style'    => 'pardot-editor',
