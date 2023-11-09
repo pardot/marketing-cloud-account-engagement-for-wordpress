@@ -5,9 +5,9 @@
 	"author": "Salesforce",
 	"license": "GPL-2.0-or-later",
 	"homepage": "https://wordpress.org/plugins/pardot/",
-	"repository": "git+https://github.com/pardot/pardot-for-wordpress.git",
+	"repository": "git+https://github.com/pardot/marketing-cloud-account-engagement-for-wordpress.git",
 	"bugs": {
-		"url": "https://github.com/pardot/pardot-for-wordpress/issues"
+		"url": "https://github.com/pardot/marketing-cloud-account-engagement-for-wordpress/issues"
 	},
 	"main": "build/index.js",
 	"scripts": {
