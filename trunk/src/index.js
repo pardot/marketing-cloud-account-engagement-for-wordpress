@@ -46,7 +46,7 @@ registerBlockType('pardot/form', {
 	 * This is the display title for your block, which can be translated with `i18n` functions.
 	 * The block inserter will show this name.
 	 */
-	title: __('Pardot Form', 'pardot'),
+	title: __('Account Engagement Form', 'pardot'),
 
 	/**
 	 * This is a short description for your block, can be translated with `i18n` functions.
@@ -120,14 +120,14 @@ registerBlockType('pardot/dynamic-content', {
 	 * This is the display title for your block, which can be translated with `i18n` functions.
 	 * The block inserter will show this name.
 	 */
-	title: __('Pardot Dynamic Content', 'pardot'),
+	title: __('Account Engagement Dynamic Content', 'pardot'),
 
 	/**
 	 * This is a short description for your block, can be translated with `i18n` functions.
 	 * It will be shown in the Block Tab in the Settings Sidebar.
 	 */
 	description: __(
-		'Delivers targeted messaging to prospects. Content is displayed according to rules defined in Pardot based on the prospect’s data or attributes.',
+		'Delivers targeted messaging to prospects. Content is displayed according to rules defined in Account Engagement based on the prospect’s data or attributes.',
 		'pardot'
 	),
 

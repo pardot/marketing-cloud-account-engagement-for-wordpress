@@ -1,16 +1,16 @@
 <?php
 /*
- * Plugin Name: Pardot
- * Description: Connect your WordPress to Pardot with shortcode and widgets for campaign tracking, quick form access, and dynamic content.
+ * Plugin Name: Account Engagement
+ * Description: Connect your WordPress to Account Engagement with shortcode and widgets for campaign tracking, quick form access, and dynamic content.
  * Author: Salesforce
  * Author URI: https://www.salesforce.com/products/marketing-cloud/marketing-automation/
  * Plugin URI: http://wordpress.org/extend/plugins/pardot/
  * Developer: Salesforce
  * Developer URI: https://www.salesforce.com/products/marketing-cloud/marketing-automation/
- * Version: 2.0.0
+ * Version: 2.1.0
  * License: GPLv2
  *
- * Copyright 2022 Salesforce, Inc.
+ * Copyright 2023 Salesforce, Inc.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License, version 2, as
@@ -29,7 +29,7 @@
 
 define( 'PARDOT_PLUGIN_FILE', __FILE__ );
 define( 'PARDOT_PLUGIN_DIR', dirname( __FILE__ ) );
-define( 'PARDOT_PLUGIN_VER', '2.0.0' );
+define( 'PARDOT_PLUGIN_VER', '2.1.0' );
 
 if ( ! defined( 'PARDOT_FORM_INCLUDE_TYPE' ) ) {
 	define( 'PARDOT_FORM_INCLUDE_TYPE', 'iframe' );	// iframe or inline
@@ -90,8 +90,6 @@ function pardot_init() {
         array(),
         filemtime( "$dir/$style_css" )
     );
-
-    wp_localize_script( 'build/index.js', 'ajaxurl', admin_url( 'includes/admin-ajax.php' ));
 
     register_block_type( 'pardot/form', array(
         'editor_script'   => 'pardot-editor',

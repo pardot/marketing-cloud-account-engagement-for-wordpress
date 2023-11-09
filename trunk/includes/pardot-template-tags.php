@@ -24,10 +24,10 @@ if ( !function_exists('shortcode_exists') ) {
 }
 
 /**
- * Template Tag for Pardot Javascript Tracking Code.
+ * Template Tag for Account Engagement Javascript Tracking Code.
  *
  * This function is a WordPress template tag that can be used in a theme
- * to add the Javascript needed to Pardot enable a website. If called before
+ * to add the Javascript needed to Account Engagement enable a website. If called before
  * the 'wp_footer' it won't be done twice. If you want to use after the
  * 'wp_footer' hook you need to call remove_pardot_wp_footer() before
  * the 'wp_footer' hook is called, such as in an 'init' hook.
@@ -58,7 +58,7 @@ function pardot_dc_async_script() {
 }
 
 /**
- * Used to remove the 'wp_footer' hook that automatically adds the Pardot Javascript.
+ * Used to remove the 'wp_footer' hook that automatically adds the Account Engagement Javascript.
  *
  * This could be done in an 'init' action or anytime prior to 'wp_footer' firing at
  * priority 10.
@@ -71,7 +71,7 @@ function remove_pardot_wp_footer() {
 }
 /**
  *
- * @return string Javascript that uses Pardot to track a website.
+ * @return string Javascript that uses Account Engagement to track a website.
  *
  * @author Mike Schinkel <mike@newclarity.net>
  * @since 1.0.0
