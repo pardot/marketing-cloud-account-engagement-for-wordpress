@@ -42,7 +42,8 @@ class _Pardot_Forms_Shortcode_Popup {
 		wp_enqueue_script( 'pardot-popup-js', plugins_url( 'js/popup.js', PARDOT_PLUGIN_FILE ), array( 'pardot-chosen-js', 'jquery' ) );
 		wp_localize_script( 'pardot-popup-js', 'PardotShortcodePopup', array(
 			'ajaxurl'            => admin_url( 'admin-ajax.php' ),
-			'tinymce_button_url' => plugins_url( 'images/salesforce-button.png', PARDOT_PLUGIN_FILE )
+			'tinymce_button_url' => plugins_url( 'images/salesforce-button.png', PARDOT_PLUGIN_FILE ),
+			'security' => wp_create_nonce('PardotShortcodePopup')
 		) );
 	}
 

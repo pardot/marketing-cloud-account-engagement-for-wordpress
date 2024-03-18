@@ -155,6 +155,10 @@ class Pardot_Plugin
 	 */
 	function wp_ajax_get_pardot_forms_shortcode_select_html()
 	{
+		if (!check_ajax_referer('PardotShortcodePopup','nonce')) {
+		    wp_send_json_error();
+		}
+
 		/**
 		 * Use the API or the cache to retrieve an array of Account Engagement Forms
 		 */
@@ -169,7 +173,7 @@ class Pardot_Plugin
 			 * YES, we have Account Engagement forms! :-)
 			 *
 			 * Grab the HTML that contains a <select> which lets the user select an Account Engagement form
-			 * for which it insert a shortcode for that form into the TinyMCE editing space.
+			 * for which it inserts a shortcode for that form into the TinyMCE editing space.
 			 */
 			$html = $this->get_forms_shortcode_select_html('formshortcode', $forms);
 
@@ -222,6 +226,10 @@ class Pardot_Plugin
 	 */
 	function wp_ajax_get_pardot_dynamicContent_shortcode_select_html()
 	{
+		if (!check_ajax_referer('PardotShortcodePopup','nonce')) {
+		    wp_send_json_error();
+		}
+
 		/**
 		 * Use the API or the cache to retrieve an array of Account Engagement dynamicContent
 		 */
@@ -293,10 +301,14 @@ class Pardot_Plugin
 		$assetType = $_REQUEST['asset_type'];
 		$assetId = $_REQUEST['asset_id'];
 
+		if (!check_ajax_referer('PardotShortcodePopup','nonce')) {
+		    wp_send_json_error();
+		}
+
 		if ($assetType === 'form') {
-			self::delete_form_html_transient($assetId);
+		    self::delete_form_html_transient($assetId);
 		} elseif ($assetType === 'dc') {
-			self::delete_dc_html_transient($assetId);
+		    self::delete_dc_html_transient($assetId);
 		}
 
 		die();
@@ -320,6 +332,9 @@ class Pardot_Plugin
 
 	function wp_ajax_popup_reset_cache()
 	{
+		if (!check_ajax_referer('PardotShortcodePopup','nonce')) {
+		    wp_send_json_error();
+		}
 
 		delete_transient('pardot_forms');
 		delete_transient('pardot_dynamicContent');

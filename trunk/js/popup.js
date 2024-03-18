@@ -42,7 +42,8 @@
 			dataType : 'html',
 			url      : PardotShortcodePopup.ajaxurl,
 			data     : {
-				action : 'get_pardot_forms_shortcode_select_html'
+				action : 'get_pardot_forms_shortcode_select_html',
+				nonce : PardotShortcodePopup.security
 			},
 			success: function( response ) {
 			 	$( document.getElementById( 'pardot-forms-shortcode-select' ) ).html( response );
@@ -60,7 +61,8 @@
 			dataType : 'html',
 			url      : PardotShortcodePopup.ajaxurl,
 			data     : {
-				action : 'get_pardot_dynamicContent_shortcode_select_html'
+				action : 'get_pardot_dynamicContent_shortcode_select_html',
+				nonce : PardotShortcodePopup.security
 			},
 			success: function( response ) {
 			 	$( document.getElementById( 'pardot-dc-shortcode-select' ) ).html( response );
@@ -79,7 +81,8 @@
 				type : 'post',
 				url  : PardotShortcodePopup.ajaxurl,
 				data : {
-					action : 'popup_reset_cache'
+					action : 'popup_reset_cache',
+					nonce : PardotShortcodePopup.security
 				}
 			});
 
@@ -88,7 +91,8 @@
 				dataType : 'html',
 				url      : PardotShortcodePopup.ajaxurl,
 				data     : {
-					action : 'get_pardot_forms_shortcode_select_html'
+					action : 'get_pardot_forms_shortcode_select_html',
+					nonce : PardotShortcodePopup.security
 				},
 				success: function( response ) {
 				 	$( document.getElementById( 'pardot-forms-shortcode-select' ) ).html( response );
@@ -100,7 +104,8 @@
 				dataType : 'html',
 				url      : PardotShortcodePopup.ajaxurl,
 				data     : {
-					action : 'get_pardot_dynamicContent_shortcode_select_html'
+					action : 'get_pardot_dynamicContent_shortcode_select_html',
+					nonce : PardotShortcodePopup.security
 				},
 				success: function( response ) {
 				 	$( document.getElementById( 'pardot-dc-shortcode-select' ) ).html( response );
@@ -145,7 +150,8 @@
 					data     : {
 						action : 'delete_asset_html_transient',
 						asset_id : formval.match(/id="([0-9]*)"/)[1],
-						asset_type : 'form'
+						asset_type : 'form',
+						nonce : PardotShortcodePopup.security
 					}
 				});
 			}
@@ -179,7 +185,8 @@
 					data     : {
 						action : 'delete_asset_html_transient',
 						asset_id : dcval.match(/id="([0-9]*)"/)[1],
-						asset_type : 'dc'
+						asset_type : 'dc',
+						nonce : PardotShortcodePopup.security
 					}
 				});
 			}
