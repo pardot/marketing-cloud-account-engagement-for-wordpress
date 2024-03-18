@@ -2,8 +2,8 @@
 Contributors: salesforcepardot
 Tags: account engagement, salesforce, marketing automation, forms, dynamic content, tracking, web tracking, account engagement, marketing cloud
 Requires at least: 5.5
-Tested up to: 6.4
-Stable tag: 2.1.0
+Tested up to: 6.4.3
+Stable tag: 2.1.1
 Requires PHP: 7.2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -154,6 +154,10 @@ Filter the regular expression used to find URLs to be converted to https://go.pa
 1. A Form block on a page
 
 == Changelog ==
+
+= 2.1.1 =
+
+* Maintenance - Security patch for ajax requests
 
 = 2.1.0 =
 
@@ -389,6 +393,10 @@ Filter the regular expression used to find URLs to be converted to https://go.pa
 * Initial release.
 
 == Upgrade Notice ==
+
+= 2.1.1 =
+
+* Maintenance - Security patch for ajax requests
 
 = 2.1.0 =
 
