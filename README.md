@@ -163,6 +163,9 @@ add_filter( 'pardot_https_regex', 'pardot_custom_filter_https_regex' );
 
 ## Changelog
 
+### 2.1.1
+* Maintenance - Security patch for ajax requests
+
 ### 2.1.0
 * Maintenance - Rebrand Pardot Plugin to Account Engagement Plugin
 
