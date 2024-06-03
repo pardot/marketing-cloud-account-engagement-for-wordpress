@@ -163,6 +163,9 @@ add_filter( 'pardot_https_regex', 'pardot_custom_filter_https_regex' );
 
 ## Changelog
 
+### 2.1.2
+* Maintenance - Patch for some javascript ajax requests missing nonce
+
 ### 2.1.1
 * Maintenance - Security patch for ajax requests
 

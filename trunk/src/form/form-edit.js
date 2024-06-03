@@ -47,6 +47,7 @@ class FormEdit extends Component {
         xhr.open('POST', ajaxurl)
         let formData = new FormData();
         formData.append("action", "get_pardot_forms_shortcode_select_html");
+        formData.append("nonce", PardotShortcodePopup.security);
         xhr.send(formData);
     }
 
