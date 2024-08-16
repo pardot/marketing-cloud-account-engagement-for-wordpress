@@ -476,9 +476,9 @@ class Pardot_API
 			'Pardot-Business-Unit-Id' => $this->business_unit_id,
 		];
 
-		$body = [
+		$body = array_merge([
 			'offset' => $paged > 1 ? ($paged - 1) * 200 : 0,
-		];
+		], $args);
 
 		$http_response = wp_remote_post(
 			$this->_get_url($item_type, $args),
