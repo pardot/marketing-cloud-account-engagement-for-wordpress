@@ -26,6 +26,6 @@
 		"@wordpress/blocks": "^6.20.3",
 		"@wordpress/element": "^2.16.0",
 		"@wordpress/server-side-render": "^1.16.4",
-		"npm": "^6.14.7"
+		"npm": "^9.5.1"
 	}
 }
